@@ -42,10 +42,10 @@ jobs:
         run: uv sync --frozen && uv pip install -e .
 
       - name: Setup database
-        run: uv run bash scripts/setup_db.sh
+        run: uv run bash scripts/download_files.sh
 
       - name: Build static site
-        run: uv run python scripts/build_site.py   # script should output to ./site
+        run: uv run python scripts/setup_site.py   # script should output to ./site
       
       - name: Setup Pages
         uses: actions/configure-pages@v5
