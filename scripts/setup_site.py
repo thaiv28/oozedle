@@ -34,7 +34,9 @@ def main():
 
     # Choose the answer player deterministically by date
     if len(filtered) > 0:
-        answer_idx = today.toordinal() % len(filtered)
+        # Add a fixed offset to change the player selection
+        offset = 7
+        answer_idx = (today.toordinal() + offset) % len(filtered)
         chosen_statline = filtered[answer_idx]
     else:
         chosen_statline = None
