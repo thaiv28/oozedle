@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Oozedle - Statline Guessing Game</title>
+    <link rel="stylesheet" href="static/style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Oozedle</h1>
+        <h2>Tournament of the Day: <span id="tournament">SBQ</span></h2>
+        <p>Guess the statline! You have 6 tries to match the chosen player's stats for this tournament.</p>
+        <div id="game"></div>
+        <div id="feedback"></div>
+        <div id="guesses"></div>
+    </div>
+    <script>
+        // Player data injected by Jinja2
+        const PLAYERS = [{"Assists": 2, "Blocks": 0, "Goals": 0, "Name": "Lincoln", "Points Played": 39, "Tournament": "SBQ", "Turnovers": 4}, {"Assists": 1, "Blocks": 0, "Goals": 3, "Name": "Gavin", "Points Played": 41, "Tournament": "SBQ", "Turnovers": 5}, {"Assists": 1, "Blocks": 2, "Goals": 1, "Name": "Jayden", "Points Played": 39, "Tournament": "SBQ", "Turnovers": 5}, {"Assists": 9, "Blocks": 1, "Goals": 7, "Name": "Rowan", "Points Played": 42, "Tournament": "SBQ", "Turnovers": 3}, {"Assists": 5, "Blocks": 2, "Goals": 2, "Name": "Farmer", "Points Played": 45, "Tournament": "SBQ", "Turnovers": 5}, {"Assists": 1, "Blocks": 0, "Goals": 2, "Name": "Colin", "Points Played": 25, "Tournament": "SBQ", "Turnovers": 0}, {"Assists": 2, "Blocks": 6, "Goals": 3, "Name": "Tripp", "Points Played": 32, "Tournament": "SBQ", "Turnovers": 6}, {"Assists": 8, "Blocks": 4, "Goals": 2, "Name": "Hugo", "Points Played": 34, "Tournament": "SBQ", "Turnovers": 6}, {"Assists": 0, "Blocks": 0, "Goals": 0, "Name": "Mithu", "Points Played": 16, "Tournament": "SBQ", "Turnovers": 1}, {"Assists": 4, "Blocks": 1, "Goals": 5, "Name": "Dario", "Points Played": 21, "Tournament": "SBQ", "Turnovers": 0}, {"Assists": 1, "Blocks": 1, "Goals": 2, "Name": "Jay", "Points Played": 10, "Tournament": "SBQ", "Turnovers": 1}, {"Assists": 1, "Blocks": 2, "Goals": 2, "Name": "Malcolm", "Points Played": 47, "Tournament": "SBQ", "Turnovers": 1}, {"Assists": 5, "Blocks": 7, "Goals": 4, "Name": "Preston", "Points Played": 48, "Tournament": "SBQ", "Turnovers": 6}, {"Assists": 1, "Blocks": 2, "Goals": 2, "Name": "Jacob", "Points Played": 43, "Tournament": "SBQ", "Turnovers": 4}, {"Assists": 5, "Blocks": 5, "Goals": 7, "Name": "Thai", "Points Played": 44, "Tournament": "SBQ", "Turnovers": 0}, {"Assists": 3, "Blocks": 2, "Goals": 3, "Name": "Evan", "Points Played": 46, "Tournament": "SBQ", "Turnovers": 4}, {"Assists": 2, "Blocks": 2, "Goals": 1, "Name": "Chappy", "Points Played": 47, "Tournament": "SBQ", "Turnovers": 10}, {"Assists": 0, "Blocks": 4, "Goals": 9, "Name": "Cole", "Points Played": 37, "Tournament": "SBQ", "Turnovers": 4}, {"Assists": 6, "Blocks": 5, "Goals": 1, "Name": "Aryan", "Points Played": 33, "Tournament": "SBQ", "Turnovers": 4}, {"Assists": 0, "Blocks": 2, "Goals": 2, "Name": "Alex", "Points Played": 20, "Tournament": "SBQ", "Turnovers": 2}, {"Assists": 2, "Blocks": 2, "Goals": 1, "Name": "Nick", "Points Played": 17, "Tournament": "SBQ", "Turnovers": 1}, {"Assists": 0, "Blocks": 1, "Goals": 1, "Name": "Tim", "Points Played": 12, "Tournament": "SBQ", "Turnovers": 2}, {"Assists": 0, "Blocks": 2, "Goals": 0, "Name": "Ian", "Points Played": 13, "Tournament": "SBQ", "Turnovers": 2}];
+        const CHOSEN = {"Assists": 2, "Blocks": 2, "Goals": 1, "Name": "Chappy", "Points Played": 47, "Tournament": "SBQ", "Turnovers": 10};
+    </script>
+    <script src="static/main.js"></script>
+</body>
+</html>

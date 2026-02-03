@@ -6,14 +6,16 @@ from oozedle.stats import get_combined_df
 
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
 ROOT_DIR = os.path.abspath(os.path.join(SCRIPT_DIR, '..'))
-SITE_DIR = os.path.join(ROOT_DIR, 'site')
-TEMPLATES_DIR = os.path.join(SITE_DIR, 'templates')
-STATIC_DIR = os.path.join(SITE_DIR, 'static')
 
-# Ensure site directories exist
+# Output directory for the static site
+SITE_DIR = os.path.join(ROOT_DIR, 'output')
+TEMPLATES_DIR = os.path.join(ROOT_DIR, 'site', 'templates')
+STATIC_DIR = os.path.join(ROOT_DIR, 'site', 'static')
+OUTPUT_STATIC_DIR = os.path.join(SITE_DIR, 'static')
+
+# Ensure output directories exist
 os.makedirs(SITE_DIR, exist_ok=True)
-os.makedirs(TEMPLATES_DIR, exist_ok=True)
-os.makedirs(STATIC_DIR, exist_ok=True)
+os.makedirs(OUTPUT_STATIC_DIR, exist_ok=True)
 
 def main():
     # Get stats data
@@ -46,10 +48,10 @@ def main():
     with open(os.path.join(SITE_DIR, 'index.html'), 'w') as f:
         f.write(rendered)
 
-    # Copy static files (js/css)
+    # Copy static files (js/css) from site/static to output/static
     for fname in ['main.js', 'style.css']:
-        src = os.path.join(TEMPLATES_DIR, fname)
-        dst = os.path.join(STATIC_DIR, fname)
+        src = os.path.join(STATIC_DIR, fname)
+        dst = os.path.join(OUTPUT_STATIC_DIR, fname)
         if os.path.exists(src):
             shutil.copy(src, dst)
 
