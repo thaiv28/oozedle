@@ -9,5 +9,4 @@ wheels/
 # Virtual environments
 .venv
 
-site/static/
-site/index.html
+output/
