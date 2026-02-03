@@ -82,3 +82,14 @@ h1 {
     color: #555;
     text-align: center;
 }
+
+/* Arrow cell backgrounds - ensure these are last for highest specificity */
+.guess-grid td.arrow-up {
+    background: #e0edff !important; /* blue */
+}
+.guess-grid td.arrow-down {
+    background: #ffe0e0 !important; /* red */
+}
+.guess-grid td.arrow-equal {
+    background: #e3f6e3 !important; /* green */
+}
