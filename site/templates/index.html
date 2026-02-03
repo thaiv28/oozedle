@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Oozedle - Statline Guessing Game</title>
+    <link rel="stylesheet" href="static/style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Oozedle</h1>
+        <h2>Tournament of the Day: <span id="tournament">{{ tournament }}</span></h2>
+        <p>Guess the statline! You have 6 tries to match the chosen player's stats for this tournament.</p>
+        <div id="game"></div>
+        <div id="feedback"></div>
+        <div id="guesses"></div>
+    </div>
+    <script>
+        // Player data injected by Jinja2
+        const PLAYERS = {{ players|tojson }};
+        const CHOSEN = {{ chosen_statline|tojson }};
+    </script>
+    <script src="static/main.js"></script>
+</body>
+</html>
