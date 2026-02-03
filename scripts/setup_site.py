@@ -48,12 +48,15 @@ def main():
     with open(os.path.join(SITE_DIR, 'index.html'), 'w') as f:
         f.write(rendered)
 
-    # Copy static files (js/css) from site/static to output/static
+    # Copy static files (js/css) from site/static or site/templates to output/static
     for fname in ['main.js', 'style.css']:
-        src = os.path.join(STATIC_DIR, fname)
+        src_static = os.path.join(STATIC_DIR, fname)
+        src_templates = os.path.join(TEMPLATES_DIR, fname)
         dst = os.path.join(OUTPUT_STATIC_DIR, fname)
-        if os.path.exists(src):
-            shutil.copy(src, dst)
+        if os.path.exists(src_static):
+            shutil.copy(src_static, dst)
+        elif os.path.exists(src_templates):
+            shutil.copy(src_templates, dst)
 
 if __name__ == '__main__':
     main()

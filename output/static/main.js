@@ -17,8 +17,8 @@ function compareGuess(guess, answer) {
     const feedback = {};
     for (const key of Object.keys(guess)) {
         if (key === 'Name' || key === 'Tournament') continue;
-        if (guess[key] > answer[key]) feedback[key] = 'greater';
-        else if (guess[key] < answer[key]) feedback[key] = 'less';
+        if (answer[key] > guess[key]) feedback[key] = 'greater';
+        else if (answer[key] < guess[key]) feedback[key] = 'less';
         else feedback[key] = 'equal';
     }
     return feedback;
@@ -79,7 +79,7 @@ function renderGame() {
 
     // Arrow meaning comment
     html += '<div class="arrow-legend">';
-    html += '<strong>Legend:</strong> ↑ = Chosen player had MORE of the stat | ↓ = Chosen player had LESS';
+    html += '<strong>Legend:</strong> ↑ = Hidden player had MORE of the stat | ↓ = Hidden player had LESS';
     html += '</div>';
 
     // Guess grid
