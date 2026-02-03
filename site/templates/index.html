@@ -1,3 +1,15 @@
+        <table>
+                <thead>
+                        <tr>
+                            {% for stat in stat_headers %}
+                                <th class="stat-header" title="{{ stat }}">{{ stat[0] }}</th>
+                            {% endfor %}
+                        </tr>
+                </thead>
+                <tbody>
+                        <!-- Table body content -->
+                </tbody>
+        </table>
 <!DOCTYPE html>
 <html lang="en">
 <head>

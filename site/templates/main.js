@@ -32,6 +32,13 @@ function renderGame() {
     const guessedNames = guesses.map(g => g.Name);
     const playerNames = [...new Set(PLAYERS.map(p => p.Name))].filter(name => !guessedNames.includes(name)).sort();
     const statNames = ['Points Played', 'Assists', 'Goals', 'Blocks', 'Turnovers'];
+    const statShort = {
+        'Points Played': 'P',
+        'Assists': 'A',
+        'Goals': 'G',
+        'Blocks': 'B',
+        'Turnovers': 'T'
+    };
 
     let html = '';
     if (gameWon) {
@@ -86,7 +93,7 @@ function renderGame() {
     html += '<table class="guess-grid">';
     html += '<thead><tr><th>Player</th>';
     for (const stat of statNames) {
-        html += `<th>${stat}</th>`;
+        html += `<th>${statShort[stat]}</th>`;
     }
     html += '</tr></thead><tbody>';
     for (let i = 0; i < guesses.length; i++) {
