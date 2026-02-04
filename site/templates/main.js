@@ -55,7 +55,7 @@ function renderGame() {
                     <tr><th>Turnovers</th><td>${chosen['Turnovers']}</td></tr>
                 </tbody>
             </table>
-            <button id="share-results-btn">Share Results</button>
+            <div style="margin-top: 24px;"><button id="share-results-btn">Share Results</button></div>
         </div>`;
     } else {
         html += '<form id="guess-form">';
@@ -140,10 +140,9 @@ function generateShareSummary() {
             else if (feedback[stat] === 'greater') row += '🟦';
             else if (feedback[stat] === 'less') row += '🟧';
         }
-        summary += row + '\n';
-    }
-    if (gameLost) {
-        summary += `Answer: ${chosen.Name}`;
+        if (i !== guesses.length - 1) {
+            summary += row + '\n';
+        }
     }
     return summary;
 }
