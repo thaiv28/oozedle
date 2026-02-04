@@ -41,10 +41,10 @@ function renderGame() {
     };
 
     let html = '';
-    if (gameWon) {
+    if (gameWon || gameLost) {
         html += `<div class="congrats-message">
-            <h2>🎉 Congrats! 🎉</h2>
-            <p>You guessed the correct player!</p>
+            <h2>${gameWon ? '🎉 Congrats! 🎉' : "Sorry, you didn't get it in 6 guesses."}</h2>
+            <p>${gameWon ? 'You guessed the correct player!' : 'The correct player was:'}</p>
             <h3>${chosen.Name}</h3>
             <table class="statline-table congrats-message">
                 <tbody>
@@ -55,21 +55,7 @@ function renderGame() {
                     <tr><th>Turnovers</th><td>${chosen['Turnovers']}</td></tr>
                 </tbody>
             </table>
-        </div>`;
-    } else if (gameLost) {
-        html += `<div class="congrats-message">
-            <h2>Sorry, you didn't get it in 6 guesses.</h2>
-            <p>The correct player was:</p>
-            <h3>${chosen.Name}</h3>
-            <table class="statline-table congrats-message">
-                <tbody>
-                    <tr><th>Points Played</th><td>${chosen['Points Played']}</td></tr>
-                    <tr><th>Assists</th><td>${chosen['Assists']}</td></tr>
-                    <tr><th>Goals</th><td>${chosen['Goals']}</td></tr>
-                    <tr><th>Blocks</th><td>${chosen['Blocks']}</td></tr>
-                    <tr><th>Turnovers</th><td>${chosen['Turnovers']}</td></tr>
-                </tbody>
-            </table>
+            <button id="share-results-btn">Share Results</button>
         </div>`;
     } else {
         html += '<form id="guess-form">';
@@ -86,7 +72,7 @@ function renderGame() {
 
     // Arrow meaning comment
     html += '<div class="arrow-legend">';
-    html += '<strong>Legend:</strong> ↑ = Hidden player had MORE of the stat | ↓ = Hidden player had LESS';
+    html += '↑ = Hidden player had MORE of the stat <br>↓ = Hidden player had LESS of the stat';
     html += '</div>';
 
     // Guess grid
@@ -128,7 +114,39 @@ function renderGame() {
             const selectedName = document.getElementById('player-select').value;
             handleGuess(selectedName);
         });
+    } else {
+        // Add event listener for share button
+        const shareBtn = document.getElementById('share-results-btn');
+        if (shareBtn) {
+            shareBtn.addEventListener('click', function() {
+                const summary = generateShareSummary();
+                navigator.clipboard.writeText(summary).then(() => {
+                    shareBtn.textContent = 'Copied!';
+                    setTimeout(() => { shareBtn.textContent = 'Share Results'; }, 1500);
+                });
+            });
+        }
     }
+// Generate a Wordle-like summary of the results
+function generateShareSummary() {
+    const statNames = ['Points Played', 'Assists', 'Goals', 'Blocks', 'Turnovers'];
+    let summary = `Oozedle ${gameWon ? guesses.length : 'X'}/6\n`;
+    for (let i = 0; i < guesses.length; i++) {
+        const guess = guesses[i];
+        const feedback = compareGuess(guess, chosen);
+        let row = '';
+        for (const stat of statNames) {
+            if (feedback[stat] === 'equal') row += '🟩';
+            else if (feedback[stat] === 'greater') row += '🟦';
+            else if (feedback[stat] === 'less') row += '🟧';
+        }
+        summary += row + '\n';
+    }
+    if (gameLost) {
+        summary += `Answer: ${chosen.Name}`;
+    }
+    return summary;
+}
 }
 
 

@@ -1,7 +1,9 @@
 import os
 import shutil
-import pandas as pd
+import random
+
 from jinja2 import Environment, FileSystemLoader
+
 from oozedle.stats import get_combined_df
 
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -32,14 +34,8 @@ def main():
     filtered_df = df[df['Tournament'] == tournament_of_the_day]
     filtered = filtered_df.to_dict(orient='records')
 
-    # Choose the answer player deterministically by date
-    if len(filtered) > 0:
-        # Add a fixed offset to change the player selection
-        offset = 7
-        answer_idx = (today.toordinal() + offset) % len(filtered)
-        chosen_statline = filtered[answer_idx]
-    else:
-        chosen_statline = None
+    # Add a fixed offset to change the player selection
+    chosen_statline = random.choice(filtered)
 
     # Set up Jinja2 environment
     env = Environment(loader=FileSystemLoader(TEMPLATES_DIR))
