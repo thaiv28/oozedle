@@ -130,7 +130,14 @@ function renderGame() {
 // Generate a Wordle-like summary of the results
 function generateShareSummary() {
     const statNames = ['Points Played', 'Assists', 'Goals', 'Blocks', 'Turnovers'];
-    let summary = `Oozedle ${gameWon ? guesses.length : 'X'}/6\n`;
+    // Try to get the year from a global variable injected by Jinja2, fallback to blank if not found
+    let year = (typeof YEAR !== 'undefined') ? YEAR : '';
+    if (!year && typeof document !== 'undefined') {
+        // Try to extract from URL (e.g., 2024.html)
+        const match = window.location.pathname.match(/(202[4-6])\.html/);
+        if (match) year = match[1];
+    }
+    let summary = `Oozedle ${year} ${gameWon ? guesses.length : 'X'}/6\n`;
     for (let i = 0; i < guesses.length; i++) {
         const guess = guesses[i];
         const feedback = compareGuess(guess, chosen);
@@ -140,7 +147,7 @@ function generateShareSummary() {
             else if (feedback[stat] === 'greater') row += '🟦';
             else if (feedback[stat] === 'less') row += '🟧';
         }
-        summary += row
+        summary += row;
         if (i !== guesses.length - 1) {
             summary += '\n';
         }
