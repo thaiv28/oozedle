@@ -140,8 +140,9 @@ function generateShareSummary() {
             else if (feedback[stat] === 'greater') row += '🟦';
             else if (feedback[stat] === 'less') row += '🟧';
         }
+        summary += row
         if (i !== guesses.length - 1) {
-            summary += row + '\n';
+            summary += '\n';
         }
     }
     return summary;
