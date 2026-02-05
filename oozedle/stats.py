@@ -6,21 +6,33 @@ import pandas as pd
 PACKAGE_DIR = os.path.dirname(os.path.abspath(__file__))
 DATA_DIR = os.path.join(PACKAGE_DIR, '..', 'data')
 
-def get_combined_df():
-    # Find all .xlsx files in the data directory
-    xlsx_files = glob.glob(os.path.join(DATA_DIR, '*.xlsx'))
 
+def get_combined_df(year=None):
+    """
+    Load stats for a specific year (2024, 2025, 2026). If year is None, loads from the root data dir (legacy).
+    For 2024/2025, maps D's -> Blocks.
+    Returns a DataFrame with canonical columns: ['Name', 'Points Played', 'Assists', 'Goals', 'Blocks', 'Turnovers']
+    """
     COLUMNS = ['Name', 'Points Played', 'Assists', 'Goals', 'Blocks', 'Turnovers']
+    if year is not None:
+        data_dir = os.path.join(DATA_DIR, str(year))
+    else:
+        data_dir = DATA_DIR
+    xlsx_files = glob.glob(os.path.join(data_dir, '*.xlsx'))
 
-    # Read the first sheet of each file into a pandas DataFrame
     dfs = []
     for file in xlsx_files:
         df = pd.read_excel(file, sheet_name=0, skiprows=[0])
         df = df.rename(columns={'Unnamed: 0': 'Name'})
-        df = df[COLUMNS]
+        # Map columns for 2024/2025
+        if year in [2024, 2025]:
+            col_map = {"D's": 'Blocks'}
+            df = df.rename(columns=col_map)
+        # Only keep canonical columns
+        df = df[[col if col in df.columns else col for col in COLUMNS]]
         df['Tournament'] = " ".join(os.path.splitext(os.path.basename(file))[0].split(" ")[0:-1])
         dfs.append(df)
-        
+
     combined_df = pd.concat(dfs, ignore_index=True)
 
     # Cast all columns except 'Name' and 'Tournament' to int, dropping rows that can't be converted
@@ -29,7 +41,7 @@ def get_combined_df():
         combined_df[col] = pd.to_numeric(combined_df[col], errors='coerce')
     combined_df = combined_df.dropna(subset=cols_to_int)
     combined_df[cols_to_int] = combined_df[cols_to_int].astype(int)
-    
+
     return combined_df
 
 if __name__ == "__main__":

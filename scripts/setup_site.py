@@ -20,31 +20,37 @@ os.makedirs(SITE_DIR, exist_ok=True)
 os.makedirs(OUTPUT_STATIC_DIR, exist_ok=True)
 
 def main():
-    # Get stats data
-    df = get_combined_df()
 
-    # Pick a tournament for today (e.g., rotate by date)
-    tournaments = sorted(df['Tournament'].unique())
+    years = [2024, 2025, 2026]
+    stat_headers_by_year = {
+        2024: ['Points Played', 'Assists', 'Goals', "D's", 'Turnovers'],
+        2025: ['Points Played', 'Assists', 'Goals', "D's", 'Turnovers'],
+        2026: ['Points Played', 'Assists', 'Goals', 'Blocks', 'Turnovers'],
+    }
+
     import datetime
     today = datetime.date.today()
-    tournament_of_the_day = tournaments[today.toordinal() % len(tournaments)]
 
-
-    # Filter data to only this tournament
-    filtered_df = df[df['Tournament'] == tournament_of_the_day]
-    filtered = filtered_df.to_dict(orient='records')
-
-    # Add a fixed offset to change the player selection
-    chosen_statline = random.choice(filtered)
-
-    # Set up Jinja2 environment
     env = Environment(loader=FileSystemLoader(TEMPLATES_DIR))
     template = env.get_template('index.html')
-    rendered = template.render(players=filtered, tournament=tournament_of_the_day, chosen_statline=chosen_statline)
 
-    # Write the rendered HTML
+    for year in years:
+        df = get_combined_df(year)
+        tournaments = sorted(df['Tournament'].unique())
+        tournament_of_the_day = tournaments[today.toordinal() % len(tournaments)]
+        filtered_df = df[df['Tournament'] == tournament_of_the_day]
+        filtered = filtered_df.to_dict(orient='records')
+        chosen_statline = random.choice(filtered)
+        stat_headers = stat_headers_by_year[year]
+        rendered = template.render(players=filtered, tournament=tournament_of_the_day, chosen_statline=chosen_statline, stat_headers=stat_headers, year=year)
+        # Write the rendered HTML for this year
+        with open(os.path.join(SITE_DIR, f'{year}.html'), 'w') as f:
+            f.write(rendered)
+
+    # Also write index.html as a redirect to the latest year (2026)
+    index_redirect = '<!DOCTYPE html><html><head><meta http-equiv="refresh" content="0; url=2026.html"></head><body></body></html>'
     with open(os.path.join(SITE_DIR, 'index.html'), 'w') as f:
-        f.write(rendered)
+        f.write(index_redirect)
 
     # Copy static files (js/css) from site/static or site/templates to output/static
     for fname in ['main.js', 'style.css']:
