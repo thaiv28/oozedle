@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 2,
+  "stage": "hero",
+  "id": "hero",
+  "title": "First viewport",
+  "comp": {"path": ".impeccable/mocks/comp-1.png", "width": 1024, "height": 1536},
+  "components": [{
+    "id": "first-viewport",
+    "name": "First viewport",
+    "medium": "HTML / CSS",
+    "note": "Game page on the comp's fixture (#214, PDQ 2026, three guesses), rendered from templates/index.html.j2",
+    "box": {"x": 0, "y": 0, "w": 1, "h": 1},
+    "preview": {"kind": "page", "path": ".impeccable/build/hero/index.html"},
+    "dependencies": [".impeccable/build/hero/static/css/site.css", ".impeccable/build/hero/static/js/game.js", ".impeccable/build/hero/static/fonts/cossette-titre-700.woff2", ".impeccable/build/hero/static/fonts/sofia-sans-condensed-600.woff2", ".impeccable/build/hero/static/fonts/sofia-sans-condensed-700.woff2", ".impeccable/build/hero/static/fonts/sofia-sans-condensed-800.woff2"]
+  }]
+}

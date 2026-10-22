@@ -1,0 +1,551 @@
+/* Oozedle — "Field Board": the day's sheet zip-tied to the tournament fence. */
+
+@font-face {
+  font-family: "Cossette Titre";
+  src: url("../fonts/cossette-titre-700.woff2") format("woff2");
+  font-weight: 700;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Sofia Sans Condensed";
+  src: url("../fonts/sofia-sans-condensed-600.woff2") format("woff2");
+  font-weight: 600;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Sofia Sans Condensed";
+  src: url("../fonts/sofia-sans-condensed-700.woff2") format("woff2");
+  font-weight: 700;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Sofia Sans Condensed";
+  src: url("../fonts/sofia-sans-condensed-800.woff2") format("woff2");
+  font-weight: 800;
+  font-display: swap;
+}
+
+:root {
+  --board: #f7f6ee;
+  --board-raised: #fbfaf7;
+  --ink: #0a0a0a;
+  --ink-soft: #55534d;
+  --orange: #ff5a1f;
+  --orange-ink: #c2410c;
+  --rule: #cecdc6;
+  --rule-strong: #b9b7af;
+  --display: "Cossette Titre", "Sofia Sans Condensed", sans-serif;
+  --text: "Sofia Sans Condensed", "Arial Narrow", sans-serif;
+  --gutter: 12px;
+  --col-max: 640px;
+  --row-h: 42px;
+  --stat-w: 46px;
+  --num-w: 25px;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  overflow-x: clip;
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--board);
+  color: var(--ink);
+  font-family: var(--text);
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 1.35;
+  font-variant-numeric: tabular-nums;
+}
+
+::selection {
+  background: var(--ink);
+  color: var(--board);
+}
+
+a {
+  color: inherit;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 3px;
+}
+
+:focus-visible {
+  outline: 3px solid var(--orange);
+  outline-offset: 2px;
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+/* Top bar */
+
+.topbar {
+  border-bottom: 1px solid var(--rule);
+}
+
+.topbar__inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 40px;
+  max-width: var(--col-max);
+  margin: 0 auto;
+  padding: 0 var(--gutter);
+}
+
+.wordmark {
+  font-family: var(--display);
+  font-size: 30px;
+  line-height: 1;
+  letter-spacing: 0.01em;
+  text-decoration: none;
+}
+
+.topnav {
+  display: flex;
+  gap: 22px;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.topnav a {
+  text-decoration: none;
+}
+
+.topnav a:hover,
+.topnav a[aria-current="page"] {
+  text-decoration: underline;
+}
+
+main {
+  max-width: var(--col-max);
+  margin: 0 auto;
+  padding: 0 var(--gutter);
+}
+
+/* Puzzle header: the field number and the pool label */
+
+.board-head {
+  display: grid;
+  grid-template-columns: auto 1px 1fr;
+  column-gap: 14px;
+  align-items: center;
+  padding: 12px 2px 12px;
+}
+
+.field-number {
+  margin: 0;
+  font-family: var(--display);
+  font-size: 88px;
+  line-height: 0.86;
+  letter-spacing: -0.03em;
+  white-space: nowrap;
+}
+
+.board-head__rule {
+  align-self: stretch;
+  width: 1px;
+  background: #c4c3bc;
+  margin-left: 3px;
+}
+
+.board-head__meta {
+  display: grid;
+  gap: 2px;
+}
+
+.board-date {
+  font-family: var(--display);
+  font-size: 21px;
+  line-height: 1;
+}
+
+.pool-label {
+  margin: 0;
+  font-family: var(--display);
+  font-size: 38px;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+.pool-label a {
+  text-decoration: none;
+}
+
+.board-instruction {
+  margin: 4px 0 0;
+  font-size: 15px;
+  font-weight: 800;
+  white-space: nowrap;
+}
+
+/* Guess board */
+
+.guess-board {
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: fixed;
+  border: 1px solid var(--rule);
+}
+
+.guess-board col.col-num {
+  width: var(--num-w);
+}
+
+.guess-board col.col-stat {
+  width: var(--stat-w);
+}
+
+.guess-board th,
+.guess-board td {
+  height: var(--row-h);
+  padding: 0;
+  border: 1px solid var(--rule);
+  text-align: center;
+  vertical-align: middle;
+}
+
+.guess-board thead th {
+  height: 30px;
+  font-size: 18px;
+  font-weight: 800;
+}
+
+.guess-board abbr {
+  text-decoration: none;
+}
+
+.guess-board thead th.player-col {
+  padding-left: 9px;
+  text-align: left;
+}
+
+.guess-board .row-num {
+  font-family: var(--display);
+  font-size: 17px;
+}
+
+.guess-board tr.is-current .row-num {
+  color: var(--orange);
+}
+
+.guess-board .player {
+  padding-left: 9px;
+  overflow: hidden;
+  text-align: left;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  font-size: 22px;
+  font-weight: 800;
+}
+
+.guess-board .player s {
+  text-decoration-thickness: 2.5px;
+}
+
+.guess-board tr.is-answer .player {
+  color: var(--ink);
+}
+
+.mark {
+  display: inline-grid;
+  place-items: center;
+  width: 31px;
+  height: 30px;
+}
+
+.mark svg {
+  width: 18px;
+  height: 24px;
+}
+
+.mark--same {
+  background: var(--ink);
+  color: var(--board);
+}
+
+.mark--same svg {
+  width: 14px;
+  height: 10px;
+}
+
+/* Guess control */
+
+.guess-form {
+  display: grid;
+  grid-template-columns: 1fr 113px;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.combo {
+  position: relative;
+}
+
+.combo input {
+  width: 100%;
+  height: 44px;
+  padding: 0 12px;
+  border: 1.5px solid var(--rule-strong);
+  border-radius: 3px;
+  background: var(--board-raised);
+  color: var(--ink);
+  font: 600 18px/1 var(--text);
+  caret-color: var(--orange);
+}
+
+.combo input::placeholder {
+  color: #74726b;
+}
+
+.combo input:focus-visible {
+  outline: none;
+  border-color: var(--ink);
+  box-shadow: 0 0 0 2px var(--ink);
+}
+
+.combo__list {
+  position: absolute;
+  right: 0;
+  bottom: calc(100% + 4px);
+  left: 0;
+  max-height: 220px;
+  margin: 0;
+  padding: 4px 0;
+  overflow-y: auto;
+  list-style: none;
+  border: 1.5px solid var(--ink);
+  border-radius: 3px;
+  background: var(--board-raised);
+  box-shadow: 0 6px 18px rgb(20 20 20 / 0.14);
+}
+
+.combo__list[hidden] {
+  display: none;
+}
+
+.combo__option {
+  padding: 8px 12px;
+  font-size: 18px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.combo__option[aria-selected="true"] {
+  background: var(--ink);
+  color: var(--board);
+}
+
+.btn {
+  display: inline-grid;
+  place-items: center;
+  height: 44px;
+  padding: 0 16px;
+  border: 0;
+  border-radius: 3px;
+  background: var(--orange);
+  color: #fff;
+  font: 700 23px/1 var(--display);
+  letter-spacing: 0.01em;
+  cursor: pointer;
+  transition: background-color 120ms ease-out;
+}
+
+.btn:hover {
+  background: #e84c13;
+}
+
+.btn:disabled {
+  background: var(--rule-strong);
+  cursor: not-allowed;
+}
+
+.btn--ink {
+  background: var(--ink);
+}
+
+.btn--ink:hover {
+  background: #2c2c2c;
+}
+
+.form-note:empty {
+  display: none;
+}
+
+.form-note {
+  margin: 6px 2px 0;
+  color: var(--orange-ink);
+  font-size: 15px;
+}
+
+/* Result (replaces the guess control when the game ends) */
+
+.result {
+  margin-top: 12px;
+  padding: 14px 14px 16px;
+  border: 2px solid var(--ink);
+  background: var(--board-raised);
+}
+
+.result__verdict {
+  margin: 0;
+  font-family: var(--display);
+  font-size: 26px;
+  line-height: 1.05;
+}
+
+.result__answer {
+  margin: 6px 0 0;
+  font-size: 18px;
+  font-weight: 800;
+}
+
+.statline {
+  margin: 4px 0 0;
+  font-size: 16px;
+  font-weight: 700;
+  word-spacing: 0.08em;
+}
+
+.result__actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+  margin-top: 14px;
+}
+
+.result__next {
+  color: var(--ink-soft);
+  font-size: 15px;
+}
+
+/* Sections below the board */
+
+.section {
+  position: relative;
+  margin-top: 13px;
+  padding-top: 10px;
+}
+
+/* Rules between sections run the full width, like the top bar's. */
+.section::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: 100vw;
+  border-top: 1px solid var(--rule);
+  transform: translateX(-50%);
+}
+
+.section h2 {
+  margin: 0;
+  font-family: var(--display);
+  font-size: 22px;
+  font-weight: 700;
+  line-height: 1.1;
+}
+
+.yesterday__player {
+  margin: 2px 0 0;
+  font-size: 16px;
+  font-weight: 800;
+}
+
+.yesterday .statline {
+  margin-top: 2px;
+}
+
+.season-switch {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin: 8px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.season-switch a {
+  display: inline-block;
+  min-width: 52px;
+  padding: 6px 10px;
+  border: 1.5px solid var(--ink);
+  border-radius: 3px;
+  font-family: var(--display);
+  font-size: 18px;
+  text-align: center;
+  text-decoration: none;
+}
+
+.season-switch a[aria-current="true"] {
+  background: var(--ink);
+  color: var(--board);
+}
+
+.record {
+  display: flex;
+  gap: 18px;
+  margin: 8px 0 0;
+}
+
+.record div {
+  display: grid;
+}
+
+.record dt {
+  order: 2;
+  color: var(--ink-soft);
+  font-size: 14px;
+}
+
+.record dd {
+  margin: 0;
+  font-family: var(--display);
+  font-size: 28px;
+  line-height: 1;
+}
+
+.site-foot {
+  max-width: var(--col-max);
+  margin: 28px auto 0;
+  padding: 12px var(--gutter) 28px;
+  border-top: 1px solid var(--rule);
+  color: var(--ink-soft);
+  font-size: 14px;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .guess-board tr.is-new td {
+    animation: post 260ms cubic-bezier(0.16, 1, 0.3, 1) both;
+  }
+
+  .guess-board tr.is-new td:nth-child(3) { animation-delay: 40ms; }
+  .guess-board tr.is-new td:nth-child(4) { animation-delay: 80ms; }
+  .guess-board tr.is-new td:nth-child(5) { animation-delay: 120ms; }
+  .guess-board tr.is-new td:nth-child(6) { animation-delay: 160ms; }
+  .guess-board tr.is-new td:nth-child(7) { animation-delay: 200ms; }
+}
+
+@keyframes post {
+  from {
+    clip-path: inset(0 0 100% 0);
+  }
+  to {
+    clip-path: inset(0);
+  }
+}

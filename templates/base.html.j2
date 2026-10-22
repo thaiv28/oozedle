@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}Oozedle{% endblock %}</title>
+  <meta name="description" content="{% block description %}Guess the Ooze player from one tournament stat line. New puzzle every day.{% endblock %}">
+  <meta name="theme-color" content="#f6f5f0">
+  <link rel="preload" href="{{ asset('fonts/cossette-titre-700.woff2') }}" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="{{ asset('css/site.css') }}">
+  {% block head %}{% endblock %}
+</head>
+<body>
+  <header class="topbar">
+    <div class="topbar__inner">
+      <a class="wordmark" href="{{ root }}index.html">OOZEDLE</a>
+      <nav class="topnav" aria-label="Site">
+        <a href="{{ root }}players.html"{% if nav == "players" %} aria-current="page"{% endif %}>Players</a>
+        <a href="{{ root }}tournaments.html"{% if nav == "tournaments" %} aria-current="page"{% endif %}>Tournaments</a>
+      </nav>
+    </div>
+  </header>
+  <main id="main">
+    {% block main %}{% endblock %}
+  </main>
+  <footer class="site-foot">
+    {% block foot %}Stats from Ooze's tournament stat sheets.{% endblock %}
+  </footer>
+  {% block scripts %}{% endblock %}
+</body>
+</html>

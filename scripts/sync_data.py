@@ -4,13 +4,10 @@ from __future__ import annotations
 
 import argparse
 import os
-import sys
 from pathlib import Path
 
-sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
-
-from oozedle.config import RAW_DIR  # noqa: E402
-from oozedle.drive import listing_fingerprint, sync  # noqa: E402
+from oozedle.config import RAW_DIR
+from oozedle.drive import listing_fingerprint, sync
 
 
 def main() -> int:

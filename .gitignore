@@ -11,3 +11,9 @@ wheels/
 
 output/
 data/
+# Impeccable scratch: rebuilt or recaptured on demand
+.impeccable/build/hero/
+.impeccable/build/scaffold/
+.impeccable/build/font-match/
+.impeccable/review/diff/
+.impeccable/config.local.json

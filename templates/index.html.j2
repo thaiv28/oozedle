@@ -1,0 +1,70 @@
+{% extends "base.html.j2" %}
+{% set nav = "game" %}
+{% block main %}
+<section class="board" aria-labelledby="puzzle-title">
+  <div class="board-head">
+    <h1 class="field-number" id="puzzle-title"><span class="visually-hidden">Oozedle puzzle </span><span data-puzzle-number>#</span></h1>
+    <div class="board-head__rule" aria-hidden="true"></div>
+    <div class="board-head__meta">
+      <span class="board-date" data-puzzle-date></span>
+      <p class="pool-label" data-puzzle-pool></p>
+      <p class="board-instruction">Name the player. 6 guesses.</p>
+    </div>
+  </div>
+
+  <table class="guess-board">
+    <caption class="visually-hidden">Your guesses. Arrows show whether the hidden player had more or fewer of each stat.</caption>
+    <colgroup>
+      <col class="col-num"><col><col class="col-stat"><col class="col-stat"><col class="col-stat"><col class="col-stat"><col class="col-stat">
+    </colgroup>
+    <thead>
+      <tr>
+        <th scope="col"><span class="visually-hidden">Guess</span></th>
+        <th scope="col" class="player-col">Player</th>
+        <th scope="col"><abbr title="Points played">PP</abbr></th>
+        <th scope="col"><abbr title="Assists">A</abbr></th>
+        <th scope="col"><abbr title="Goals">G</abbr></th>
+        <th scope="col"><abbr title="Blocks">B</abbr></th>
+        <th scope="col"><abbr title="Turnovers">T</abbr></th>
+      </tr>
+    </thead>
+    <tbody data-guess-rows>
+      {% for n in range(1, 7) %}
+      <tr{% if n == 1 %} class="is-current"{% endif %}><td class="row-num">{{ n }}</td><td class="player"></td><td></td><td></td><td></td><td></td><td></td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
+  <form class="guess-form" data-guess-form autocomplete="off" novalidate>
+    <div class="combo">
+      <label class="visually-hidden" for="guess-input">Guess a player</label>
+      <input id="guess-input" type="text" placeholder="Guess a player" role="combobox"
+             aria-autocomplete="list" aria-expanded="false" aria-controls="guess-options" spellcheck="false">
+      <ul class="combo__list" id="guess-options" role="listbox" aria-label="Players at this tournament" hidden></ul>
+    </div>
+    <button class="btn" type="submit">Guess</button>
+  </form>
+  <p class="form-note" data-form-note role="status" aria-live="polite"></p>
+  <div data-result></div>
+</section>
+
+<section class="section yesterday" aria-labelledby="yesterday-title" data-yesterday hidden>
+  <h2 id="yesterday-title">Yesterday</h2>
+  <p class="yesterday__player" data-yesterday-player></p>
+  <p class="statline" data-yesterday-line></p>
+</section>
+
+<section class="section" aria-labelledby="seasons-title">
+  <h2 id="seasons-title">Season</h2>
+  <ul class="season-switch" data-season-switch></ul>
+</section>
+
+<section class="section" aria-labelledby="record-title" data-record hidden>
+  <h2 id="record-title">Your record</h2>
+  <dl class="record" data-record-list></dl>
+</section>
+{% endblock %}
+{% block scripts %}
+<script id="game-data" type="application/json">{{ game_json|safe }}</script>
+<script src="{{ asset('js/game.js') }}" defer></script>
+{% endblock %}
