@@ -64,7 +64,7 @@ Ratings live in `ratings/<season>.csv` (rank, team, record, rating), with source
 
 `ratings.py` joins season ratings to games. Difficulty fits log(team MA / score points) = a + b × (opponent rating − Ooze rating), using positive rates and finite gaps. Factor = exp(−b × (clamped gap − mean gap)); clamp bounds and mean include every rated game. Unrated games count ×1. Adj. MA is authoritative player-tournament Summary MA times the player's PP-weighted mean game factor. Missing player-game rows use the tournament's score-points-weighted factor; no rated games means ×1. Career/season values sum tournament Adj. MA; per-10 retains the 20 PP minimum. Missing ratings leave Adj. MA equal to MA. One tournament switch controls both games and box-score tables; Advanced sorts by Adj. MA.
 
-“Plays most like” compares career A/G/B/T per PP to other players' ≥60 PP seasons: population z-scores from eligible seasons, Euclidean distance, three nearest (zero SD becomes 1). Careers below 60 PP omit it.
+
 
 ## Testing
 

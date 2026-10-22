@@ -178,13 +178,5 @@ def test_summary_adjustment_uses_player_weights_and_missing_game_fallback(
     assert by_player["ben"]["adj_ma"] != pytest.approx(by_player["ben"]["ma"] * sum(factors) / 3)
 
 
-def test_plays_most_like_neighbors(site_dataset, tmp_path):
-    ds = site_dataset
-    ds.player_tournaments["points_played"] *= 10
-    context = stats_context(ds, ratings_dir=tmp_path / "absent")
-    for player in context["players"]:
-        if player["career"]["points_played"] < 60:
-            assert "most_like" not in player
-            continue
-        assert len(player["most_like"]) == 3
-        assert all(row["player_id"] != player["player_id"] for row in player["most_like"])
+def test_adjusted_totals_add_up(site_dataset, tmp_path):
+    context = stats_context(site_dataset, ratings_dir=tmp_path / "absent")

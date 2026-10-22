@@ -1,8 +1,8 @@
 # Work log
 
-## 2026-10-22 — Roles page removed
+## 2026-10-22 — Roles page and Plays most like removed
 
-Removed `roles.html`, `roles.js`, its CSS, links and docs at the user's request (little value). "Plays most like" on player pages stays; it never used the roles data. Checks: pytest, ruff, build; grep finds no roles references.
+Removed `roles.html`, `roles.js`, its CSS, links and docs, and the "Plays most like" line on player pages, at the user's request. Checks: pytest, ruff, build; grep finds no roles references.
 
 ## 2026-10-21 — Opponent adjustment and Roles
 

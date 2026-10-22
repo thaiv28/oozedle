@@ -314,28 +314,6 @@ def stats_context(
     best = {}
     for line in performances:
         best.setdefault(line["tournament_name"], line)
-    eligible = sorted(
-        [row for row in season_lines if row["points_played"] >= 60],
-        key=lambda row: (row["name"], row["season"], row["player_id"]),
-    )
-    features = ["assists", "goals", "blocks", "turnovers"]
-    if eligible:
-        vectors = np.array([[r[k] / r["points_played"] for k in features] for r in eligible])
-        means, sd = vectors.mean(axis=0), vectors.std(axis=0)
-        sd[sd == 0] = 1
-        standardized = (vectors - means) / sd
-        for player in players:
-            career = player["career"]
-            if career["points_played"] < 60:
-                continue
-            vector = np.array([career[k] / career["points_played"] for k in features])
-            distances = np.linalg.norm(standardized - (vector - means) / sd, axis=1)
-            nearest = sorted(range(len(eligible)), key=lambda i: distances[i])
-            player["most_like"] = [
-                {k: eligible[i][k] for k in ("player_id", "name", "season")}
-                for i in nearest
-                if eligible[i]["player_id"] != player["player_id"]
-            ][:3]
     return dict(
         model=model,
         difficulty=difficulty,

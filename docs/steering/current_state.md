@@ -10,7 +10,7 @@
 
 - Margin added (MA) on the leaderboard, player and tournament pages, and an Advanced page (branch `advanced-stats`, local only).
 
-- Opponent-adjusted Margin added (Adj. MA) and player “Plays most like” comparisons (branch `opponent-adjusted`, local only).
+- Opponent-adjusted Margin added (Adj. MA) (branch `opponent-adjusted`, local only).
 
 ## Known limits
 
