@@ -1,5 +1,9 @@
 # Work log
 
+## 2026-10-22 — Share opens the phone share sheet
+
+On touch devices with the Web Share API (iOS Safari, Android Chrome), Share calls `navigator.share({text})`, opening the system sheet (Messages, Copy, ...); closing the sheet does nothing; other failures fall back to copying. Desktops still copy. Checks: headless Chrome with a stubbed `navigator.share` on a touch profile (sheet called with the share text; cancel leaves the button alone) and a desktop profile (copies), pytest, ruff.
+
 ## 2026-10-22 — AMA/10 on player tournament rows
 
 Each tournament row on a player page shows that tournament's (shrunk) Adj. MA per 10, labelled "ADV" beside the number, after T; hover, tap or focus shows "Adjusted MA / 10 points" (CSS tooltip, `.tip`; `tips.js` keeps a tap on it from opening the row). The Advanced page's one-line description now says "Elo" instead of "USAU rating". Checks: pytest, ruff, localhost at 1280 and 390.
@@ -39,29 +43,3 @@ Added local USAU ratings joins, the log MA-per-point difficulty fit, and Summary
 Observed a=−0.542857721, b=−0.001131162; R²=0.394630409; 82 rated games, 80 fitted. Played-game factors range 0.311791–3.107335; rating gaps −1011.29–1021.30.
 
 Checks: Ruff format/check, pytest (37 passed), JS syntax, static UI review, and real build (51 players, 17 tournaments, 12 existing warnings) passed. Browser launch was denied by the sandbox, so desktop/390px visual inspection remains unverified. No network, commits, or publishing.
-
-## 2026-10-22 — Link previews
-
-Added Open Graph/Twitter tags, a canonical link and an apple-touch icon to every page, with absolute URLs; player and tournament pages describe themselves (e.g. "2024–2026 · 13 tournaments · 68 games · MA 52.8"). The 1200×630 card is a committed render of `scripts/og_card.html` (`scripts/render_og.py`). Checks: pytest (new tag test), ruff, built pages inspected; the live card verified after deploy. Limit: the card is static; it can't show the day's puzzle.
-
-## 2026-10-21 — Colored guess arrows
-
-Up arrows are blue (#2563eb, 4.8:1 on the board) and down arrows a deeper orange (#d9480f, 4.0:1), matching the share text's 🟦/🟧; the `=` block stays ink, and the glyphs still carry the meaning. Tokens `--arrow-up` / `--arrow-down`; DESIGN.md updated (exempt from the One Marker rule). Checks: contrast computed, fixture board rendered at 390, pytest and ruff pass.
-
-## 2026-10-21 — Guess list reopens on click
-
-After a guess the input keeps focus, so clicking it fired no `focus` event and the player list stayed closed. `game.js` now also opens the list on `click`. Checks: headless Chrome at 390 (tap) and 1280 (click): after a guess, a tap/click shows all 20 remaining names; typing still filters; clearing restores the full list. pytest and ruff pass.
-
-## 2026-10-21 — Advanced page trimmed to MA
-
-Removed the "What wins games" section (blocks-and-turnovers model) and the held-out-fit sentence from `advanced.html`; dropped the second model from `advanced.py`. Model details keep MA's intercept, R² and CV R². Checks: pytest, ruff, build, page rendered on localhost.
-
-## 2026-10-21 — Drop box plus/minus
-
-+/- dropped: without point-by-point lines it is only a box-score count; MA kept. Removed the derived count, columns, copy, and tests; MA and per-10 views remain. Checks: `uv run --no-sync ruff format`, `ruff check`, `pytest -q` (30 passed), real-data site build (51 players, 17 tournaments, 12 warnings), and source grep (no matches).
-
-Newest first. One entry per substantive change: what changed, checks actually run, remaining limits. At most 150 words each.
-
-## 2026-10-21 — Advanced stats (local)
-
-Added box +/-, per-10 rates, regression-weighted margin added, shared Box/Advanced column switches, player advanced totals, and the Advanced model/performance page. Summary totals remain authoritative. On 92 real games, M1 intercept −11.9013, S/B/T coefficients 1.3265/0.3516/−0.1685, CV R² 0.8402; M2 intercept 0.1674, B/T 1.1515/−0.5762, CV R² 0.6083. Both use 2,000 bootstrap resamples and shuffled 10-fold predictions. Checks: `uv run --no-sync ruff format`, `ruff check`, `pytest -q` (30 passed), real-data build (51 players, 17 tournaments), and design detector (advisories only). Plain `uv run` crashes in macOS system configuration; desktop/phone browser verification unavailable because headless Chrome aborts. Local only; no commit or deployment.
