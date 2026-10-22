@@ -1,0 +1,29 @@
+name: Pages redirect
+on:
+  workflow_dispatch:
+permissions:
+  pages: write
+  id-token: write
+jobs:
+  redirect:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Write redirects
+        run: |
+          mkdir redirect
+          for page in index 2024 2025 2026 404; do
+            target="https://oozedle.thaiv.dev/"
+            case "$page" in 2024|2025|2026) target="$target?season=$page" ;; esac
+            cat > "redirect/$page.html" <<HTML
+          <!doctype html><html lang="en"><head><meta charset="utf-8"><meta http-equiv="refresh" content="0;url=$target"><link rel="canonical" href="$target"><title>Oozedle</title></head><body><a href="$target">Oozedle has moved.</a></body></html>
+          HTML
+          done
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: redirect
+      - uses: actions/deploy-pages@v4
+        id: deployment

@@ -1,0 +1,21 @@
+{% extends "base.html.j2" %}
+{% from "ledger.html.j2" import stats, headers %}
+{% set nav = "players" %}
+{% block title %}Players · Oozedle{% endblock %}
+{% block main_class %} class="wide"{% endblock %}
+{% block main %}
+<h1 class="page-head">Players</h1>
+<div class="players-controls">
+<ul class="season-switch" aria-label="Season" data-player-seasons>
+{% for season in ['all', '2024', '2025', '2026'] %}<li><button type="button" data-season="{{ season }}" aria-pressed="{{ 'true' if season == 'all' else 'false' }}">{{ 'All' if season == 'all' else season }}</button></li>{% endfor %}
+</ul>
+<label class="visually-hidden" for="player-search">Find a player</label>
+<input type="search" id="player-search" placeholder="Find a player">
+</div>
+<div class="ledger-wrap"><table class="ledger ledger--trim" data-sortable id="players-table">
+<caption class="visually-hidden">Player totals</caption>
+{{ headers(['Player', 'Tourn.', 'GP', 'PP', 'A', 'G', 'B', 'T', 'W–L'], true) }}
+<tbody>{% for p in players %}<tr><th scope="row"><a href="{{ root }}players/{{ p.player_id }}.html">{{ p.name }}</a></th><td>{{ p.career.tournaments }}</td><td>{{ p.career.games_played }}</td>{{ stats(p.career) }}<td data-value="{{ p.career.wins }}">{{ p.career.wins }}–{{ p.career.losses }}</td></tr>{% endfor %}</tbody>
+</table></div>
+{% endblock %}
+{% block scripts %}<script type="application/json" id="players-data">{{ players_json|safe }}</script><script src="{{ asset('js/tables.js') }}" defer></script>{% endblock %}

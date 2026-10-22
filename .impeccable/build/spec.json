@@ -1,0 +1,1280 @@
+{
+  "tool": "comp-spec",
+  "version": 1,
+  "createdAt": "2026-10-22T00:18:46.920Z",
+  "comp": ".impeccable/mocks/comp-1.png",
+  "warnings": [],
+  "uncoveredInkCells": [
+    "G0",
+    "B2",
+    "C2",
+    "E2",
+    "F2",
+    "G2",
+    "H2",
+    "I2",
+    "A7",
+    "A8",
+    "B8",
+    "C8",
+    "I8",
+    "D9"
+  ],
+  "compSize": {
+    "width": 1024,
+    "height": 1536
+  },
+  "aspect": 0.6667,
+  "orientation": "portrait",
+  "palette": [
+    {
+      "hex": "#f8f8eb",
+      "coverage": 0.8482
+    },
+    {
+      "hex": "#0a0a0a",
+      "coverage": 0.0967
+    },
+    {
+      "hex": "#cecdc6",
+      "coverage": 0.0312
+    },
+    {
+      "hex": "#f86323",
+      "coverage": 0.0188
+    },
+    {
+      "hex": "#999999",
+      "coverage": 0.0051
+    }
+  ],
+  "bands": [
+    {
+      "y": 0.0156,
+      "strength": 0.3901
+    },
+    {
+      "y": 0.0521,
+      "strength": 0.621
+    },
+    {
+      "y": 0.099,
+      "strength": 0.8187
+    },
+    {
+      "y": 0.1406,
+      "strength": 0.6309
+    },
+    {
+      "y": 0.1927,
+      "strength": 0.7227
+    },
+    {
+      "y": 0.2292,
+      "strength": 0.8019
+    },
+    {
+      "y": 0.2969,
+      "strength": 0.3362
+    },
+    {
+      "y": 0.3385,
+      "strength": 0.2815
+    },
+    {
+      "y": 0.3646,
+      "strength": 0.2906
+    },
+    {
+      "y": 0.4115,
+      "strength": 0.3135
+    },
+    {
+      "y": 0.4323,
+      "strength": 0.3148
+    },
+    {
+      "y": 0.4688,
+      "strength": 0.4571
+    },
+    {
+      "y": 0.5208,
+      "strength": 0.3195
+    },
+    {
+      "y": 0.7656,
+      "strength": 0.6412
+    },
+    {
+      "y": 0.8385,
+      "strength": 0.5909
+    },
+    {
+      "y": 0.8906,
+      "strength": 0.2373
+    },
+    {
+      "y": 0.9323,
+      "strength": 0.2993
+    },
+    {
+      "y": 0.9635,
+      "strength": 0.3657
+    }
+  ],
+  "regions": [
+    {
+      "id": "wordmark",
+      "kind": "text",
+      "note": "OOZEDLE wordmark, heavy condensed caps",
+      "grid": null,
+      "box": {
+        "x": 0.0293,
+        "y": 0.0098,
+        "w": 0.2637,
+        "h": 0.0488
+      },
+      "px": {
+        "x": 30,
+        "y": 15,
+        "w": 270,
+        "h": 75
+      },
+      "aspect": 3.6,
+      "palette": [
+        {
+          "hex": "#0a0a09",
+          "coverage": 0.4848
+        },
+        {
+          "hex": "#f7f6f3",
+          "coverage": 0.4616
+        },
+        {
+          "hex": "#8d8c8b",
+          "coverage": 0.0237
+        },
+        {
+          "hex": "#3f3f3f",
+          "coverage": 0.0156
+        },
+        {
+          "hex": "#b3b3b1",
+          "coverage": 0.0143
+        }
+      ],
+      "detail": {
+        "energy": 46.563
+      },
+      "medium": "semantic",
+      "plate": null,
+      "text": null,
+      "surface": {
+        "flat": false,
+        "rules": false
+      },
+      "type": {
+        "comp": null,
+        "measuredAt": "2026-10-22T00:18:50.323Z",
+        "note": "no separable lettering in the crop; size by the region box"
+      }
+    },
+    {
+      "id": "nav",
+      "kind": "control",
+      "note": "Players and Tournaments text links",
+      "grid": null,
+      "box": {
+        "x": 0.6543,
+        "y": 0.0195,
+        "w": 0.3174,
+        "h": 0.0326
+      },
+      "px": {
+        "x": 670,
+        "y": 30,
+        "w": 325,
+        "h": 50
+      },
+      "aspect": 6.5,
+      "palette": [
+        {
+          "hex": "#f7f7f5",
+          "coverage": 0.8043
+        },
+        {
+          "hex": "#0c0c0c",
+          "coverage": 0.1198
+        },
+        {
+          "hex": "#bdbfbb",
+          "coverage": 0.0266
+        },
+        {
+          "hex": "#828180",
+          "coverage": 0.0255
+        },
+        {
+          "hex": "#4c4c4d",
+          "coverage": 0.0238
+        }
+      ],
+      "detail": {
+        "energy": 58.2395
+      },
+      "medium": "semantic",
+      "plate": null,
+      "text": null,
+      "surface": {
+        "flat": false,
+        "rules": false
+      }
+    },
+    {
+      "id": "topbar-rule",
+      "kind": "chrome",
+      "note": "thin gray rule under the top bar",
+      "grid": null,
+      "box": {
+        "x": 0,
+        "y": 0.0651,
+        "w": 1,
+        "h": 0.0078
+      },
+      "px": {
+        "x": 0,
+        "y": 100,
+        "w": 1024,
+        "h": 12
+      },
+      "aspect": 85.3333,
+      "palette": [
+        {
+          "hex": "#f3f1ef",
+          "coverage": 1
+        }
+      ],
+      "detail": {
+        "energy": 8.296
+      },
+      "medium": "semantic",
+      "plate": null,
+      "text": null,
+      "surface": {
+        "flat": false,
+        "rules": true
+      }
+    },
+    {
+      "id": "puzzle-number",
+      "kind": "text",
+      "note": "#214 puzzle number, enormous heavy condensed numerals",
+      "grid": null,
+      "box": {
+        "x": 0.0352,
+        "y": 0.0911,
+        "w": 0.3906,
+        "h": 0.1432
+      },
+      "px": {
+        "x": 36,
+        "y": 140,
+        "w": 400,
+        "h": 220
+      },
+      "aspect": 1.8182,
+      "palette": [
+        {
+          "hex": "#090909",
+          "coverage": 0.5609
+        },
+        {
+          "hex": "#f7f7ea",
+          "coverage": 0.424
+        },
+        {
+          "hex": "#4e4e4e",
+          "coverage": 0.0097
+        },
+        {
+          "hex": "#b9b9b9",
+          "coverage": 0.003
+        },
+        {
+          "hex": "#838383",
+          "coverage": 0.0023
+        }
+      ],
+      "detail": {
+        "energy": 27.8965
+      },
+      "medium": "semantic",
+      "plate": null,
+      "text": null,
+      "surface": {
+        "flat": false,
+        "rules": false
+      },
+      "type": {
+        "comp": {
+          "lines": 1,
+          "glyphs": 6,
+          "capHeightPx": 117.7,
+          "inkIsDark": false,
+          "allCaps": false,
+          "advance": 0.2507,
+          "advTall": 0.2507,
+          "advX": null,
+          "gap": 0.1869,
+          "xRatio": 0.7946,
+          "stemW": 0.1636,
+          "contrast": 0.8029,
+          "serif": null,
+          "densTall": 0.6515,
+          "densX": null,
+          "weight": 0.6515
+        },
+        "widthClass": "compressed",
+        "weightClass": "bold",
+        "chosen": {
+          "family": "Cossette Titre",
+          "weight": 700,
+          "fontSizePx": 148,
+          "source": "index",
+          "fp": {
+            "lines": 1,
+            "glyphs": 4,
+            "capHeightPx": 116.7,
+            "inkIsDark": true,
+            "allCaps": false,
+            "advance": 0.4969,
+            "advTall": 0.4969,
+            "advX": null,
+            "gap": 0.06,
+            "xRatio": 0.7365,
+            "stemW": 0.1723,
+            "contrast": 0.8299,
+            "serif": null,
+            "densTall": 0.6421,
+            "densX": null,
+            "weight": 0.6421
+          },
+          "stamp": "dbe6c061b751"
+        }
+      }
+    },
+    {
+      "id": "header-divider",
+      "kind": "chrome",
+      "note": "vertical hairline between number and labels",
+      "grid": null,
+      "box": {
+        "x": 0.4512,
+        "y": 0.0859,
+        "w": 0.0156,
+        "h": 0.1615
+      },
+      "px": {
+        "x": 462,
+        "y": 132,
+        "w": 16,
+        "h": 248
+      },
+      "aspect": 0.0645,
+      "palette": [
+        {
+          "hex": "#f8f8e8",
+          "coverage": 0.8414
+        },
+        {
+          "hex": "#c8c6b8",
+          "coverage": 0.1586
+        }
+      ],
+      "detail": {
+        "energy": 0.8093
+      },
+      "medium": "semantic",
+      "plate": null,
+      "text": null,
+      "surface": {
+        "flat": false,
+        "rules": true
+      }
+    },
+    {
+      "id": "date",
+      "kind": "text",
+      "note": "Tue Oct 21 date",
+      "grid": null,
+      "box": {
+        "x": 0.4961,
+        "y": 0.0924,
+        "w": 0.2002,
+        "h": 0.0365
+      },
+      "px": {
+        "x": 508,
+        "y": 142,
+        "w": 205,
+        "h": 56
+      },
+      "aspect": 3.6607,
+      "palette": [
+        {
+          "hex": "#f6f6ec",
+          "coverage": 0.6792
+        },
+        {
+          "hex": "#090909",
+          "coverage": 0.2527
+        },
+        {
+          "hex": "#818180",
+          "coverage": 0.0276
+        },
+        {
+          "hex": "#c4c4c1",
+          "coverage": 0.026
+        },
+        {
+          "hex": "#4d4a49",
+          "coverage": 0.0145
+        }
+      ],
+      "detail": {
+        "energy": 38.7259
+      },
+      "medium": "semantic",
+      "plate": null,
+      "text": null,
+      "surface": {
+        "flat": false,
+        "rules": false
+      },
+      "type": {
+        "comp": {
+          "lines": 1,
+          "glyphs": 8,
+          "capHeightPx": 37.5,
+          "inkIsDark": true,
+          "allCaps": false,
+          "advance": 0.5067,
+          "advTall": 0.3733,
+          "advX": 0.5067,
+          "gap": 0.16,
+          "xRatio": 0.7487,
+          "stemW": 0.2127,
+          "contrast": 1.133,
+          "serif": null,
+          "densTall": 0.7507,
+          "densX": 0.7554,
+          "weight": 0.7507
+        },
+        "widthClass": "condensed",
+        "weightClass": "black"
+      }
+    },
+    {
+      "id": "pool-label",
+      "kind": "text",
+      "note": "PDQ · 2026 tournament and season, large condensed",
+      "grid": null,
+      "box": {
+        "x": 0.4961,
+        "y": 0.1335,
+        "w": 0.4053,
+        "h": 0.0651
+      },
+      "px": {
+        "x": 508,
+        "y": 205,
+        "w": 415,
+        "h": 100
+      },
+      "aspect": 4.15,
+      "palette": [
+        {
+          "hex": "#f7f6eb",
+          "coverage": 0.4921
+        },
+        {
+          "hex": "#0a0a0a",
+          "coverage": 0.4689
+        },
+        {
+          "hex": "#757674",
+          "coverage": 0.0145
+        },
+        {
+          "hex": "#9fa19d",
+          "coverage": 0.0128
+        },
+        {
+          "hex": "#41413e",
+          "coverage": 0.0117
+        }
+      ],
+      "detail": {
+        "energy": 51.5562
+      },
+      "medium": "semantic",
+      "plate": null,
+      "text": null,
+      "surface": {
+        "flat": false,
+        "rules": false
+      },
+      "type": {
+        "comp": {
+          "lines": 1,
+          "glyphs": 8,
+          "capHeightPx": 80.9,
+          "inkIsDark": true,
+          "allCaps": true,
+          "advance": 0.5195,
+          "advTall": 0.5195,
+          "advX": null,
+          "gap": 0.0742,
+          "xRatio": null,
+          "stemW": 0.2372,
+          "contrast": 1.1561,
+          "serif": null,
+          "densTall": 0.7798,
+          "densX": null,
+          "weight": 0.7798
+        },
+        "widthClass": "condensed",
+        "weightClass": "black"
+      }
+    },
+    {
+      "id": "instruction",
+      "kind": "text",
+      "note": "Name the player. 6 guesses.",
+      "grid": null,
+      "box": {
+        "x": 0.4961,
+        "y": 0.2083,
+        "w": 0.4297,
+        "h": 0.0339
+      },
+      "px": {
+        "x": 508,
+        "y": 320,
+        "w": 440,
+        "h": 52
+      },
+      "aspect": 8.4615,
+      "palette": [
+        {
+          "hex": "#f7f6ec",
+          "coverage": 0.7589
+        },
+        {
+          "hex": "#0a0a0a",
+          "coverage": 0.1914
+        },
+        {
+          "hex": "#9e9e9c",
+          "coverage": 0.0256
+        },
+        {
+          "hex": "#4b4b4b",
+          "coverage": 0.0164
+        },
+        {
+          "hex": "#757373",
+          "coverage": 0.0076
+        }
+      ],
+      "detail": {
+        "energy": 84.1134
+      },
+      "medium": "semantic",
+      "plate": null,
+      "text": null,
+      "surface": {
+        "flat": false,
+        "rules": false
+      },
+      "type": {
+        "comp": {
+          "lines": 1,
+          "glyphs": 21,
+          "capHeightPx": 28.5,
+          "inkIsDark": true,
+          "allCaps": false,
+          "advance": 0.5263,
+          "advTall": 0.5614,
+          "advX": 0.5263,
+          "gap": 0.1053,
+          "xRatio": 0.7368,
+          "stemW": 0.1932,
+          "contrast": 1.1586,
+          "serif": null,
+          "densTall": 0.7132,
+          "densX": 0.7048,
+          "weight": 0.7132
+        },
+        "widthClass": "condensed",
+        "weightClass": "black",
+        "chosen": {
+          "family": "Francois One",
+          "weight": 400,
+          "fontSizePx": 38,
+          "source": "index",
+          "fp": {
+            "lines": 1,
+            "glyphs": 21,
+            "capHeightPx": 29,
+            "inkIsDark": true,
+            "allCaps": false,
+            "advance": 0.5519,
+            "advTall": 0.5519,
+            "advX": 0.5519,
+            "gap": 0.1035,
+            "xRatio": 0.7433,
+            "stemW": 0.1992,
+            "contrast": 1.1724,
+            "serif": 0.9582,
+            "densTall": 0.6795,
+            "densX": 0.7065,
+            "weight": 0.6795
+          },
+          "stamp": "52bb7aefb6b6"
+        }
+      }
+    },
+    {
+      "id": "table-head",
+      "kind": "text",
+      "note": "column heads Player PP A G B T in ruled cells",
+      "grid": null,
+      "box": {
+        "x": 0.0273,
+        "y": 0.2604,
+        "w": 0.9473,
+        "h": 0.0547
+      },
+      "px": {
+        "x": 28,
+        "y": 400,
+        "w": 970,
+        "h": 84
+      },
+      "aspect": 11.5476,
+      "palette": [
+        {
+          "hex": "#f8f8e9",
+          "coverage": 0.8663
+        },
+        {
+          "hex": "#ceccc1",
+          "coverage": 0.0884
+        },
+        {
+          "hex": "#090909",
+          "coverage": 0.0382
+        },
+        {
+          "hex": "#757575",
+          "coverage": 0.0037
+        },
+        {
+          "hex": "#363636",
+          "coverage": 0.0035
+        }
+      ],
+      "detail": {
+        "energy": 24.5847
+      },
+      "medium": "semantic",
+      "plate": null,
+      "text": null,
+      "surface": {
+        "flat": false,
+        "rules": false
+      },
+      "type": {
+        "comp": {
+          "lines": 1,
+          "glyphs": 12,
+          "capHeightPx": 31.6,
+          "inkIsDark": true,
+          "allCaps": false,
+          "advance": 0.5383,
+          "advTall": 0.5383,
+          "advX": 0.5383,
+          "gap": 0.0792,
+          "xRatio": 0.7459,
+          "stemW": 0.2072,
+          "contrast": 1.1504,
+          "serif": 1.1759,
+          "densTall": 0.733,
+          "densX": 0.7666,
+          "weight": 0.733
+        },
+        "widthClass": "condensed",
+        "weightClass": "black"
+      }
+    },
+    {
+      "id": "row-1",
+      "kind": "control",
+      "note": "guess 1 Rowan struck through, arrows, T equals block",
+      "grid": null,
+      "box": {
+        "x": 0.0273,
+        "y": 0.3138,
+        "w": 0.9473,
+        "h": 0.0716
+      },
+      "px": {
+        "x": 28,
+        "y": 482,
+        "w": 970,
+        "h": 110
+      },
+      "aspect": 8.8182,
+      "palette": [
+        {
+          "hex": "#f8f7e9",
+          "coverage": 0.7848
+        },
+        {
+          "hex": "#0d0d0c",
+          "coverage": 0.1349
+        },
+        {
+          "hex": "#cccbc7",
+          "coverage": 0.0753
+        },
+        {
+          "hex": "#565656",
+          "coverage": 0.0031
+        },
+        {
+          "hex": "#838383",
+          "coverage": 0.0019
+        }
+      ],
+      "detail": {
+        "energy": 42.7638
+      },
+      "medium": "semantic",
+      "plate": null,
+      "text": null,
+      "surface": {
+        "flat": false,
+        "rules": false
+      }
+    },
+    {
+      "id": "row-2",
+      "kind": "control",
+      "note": "guess 2 Farmer struck through, A equals block",
+      "grid": null,
+      "box": {
+        "x": 0.0273,
+        "y": 0.3841,
+        "w": 0.9473,
+        "h": 0.0729
+      },
+      "px": {
+        "x": 28,
+        "y": 590,
+        "w": 970,
+        "h": 112
+      },
+      "aspect": 8.6607,
+      "palette": [
+        {
+          "hex": "#f8f7e9",
+          "coverage": 0.7853
+        },
+        {
+          "hex": "#0c0c0c",
+          "coverage": 0.1378
+        },
+        {
+          "hex": "#cfccc6",
+          "coverage": 0.0726
+        },
+        {
+          "hex": "#888888",
+          "coverage": 0.0028
+        },
+        {
+          "hex": "#404040",
+          "coverage": 0.0015
+        }
+      ],
+      "detail": {
+        "energy": 42.4202
+      },
+      "medium": "semantic",
+      "plate": null,
+      "text": null,
+      "surface": {
+        "flat": false,
+        "rules": false
+      }
+    },
+    {
+      "id": "row-3",
+      "kind": "control",
+      "note": "guess 3 Colin struck through, G and B equals blocks",
+      "grid": null,
+      "box": {
+        "x": 0.0273,
+        "y": 0.4557,
+        "w": 0.9473,
+        "h": 0.0742
+      },
+      "px": {
+        "x": 28,
+        "y": 700,
+        "w": 970,
+        "h": 114
+      },
+      "aspect": 8.5088,
+      "palette": [
+        {
+          "hex": "#f7f7e9",
+          "coverage": 0.7977
+        },
+        {
+          "hex": "#0a0a0a",
+          "coverage": 0.1644
+        },
+        {
+          "hex": "#cbcac5",
+          "coverage": 0.0216
+        },
+        {
+          "hex": "#818180",
+          "coverage": 0.0098
+        },
+        {
+          "hex": "#494949",
+          "coverage": 0.0064
+        }
+      ],
+      "detail": {
+        "energy": 44.4186
+      },
+      "medium": "semantic",
+      "plate": null,
+      "text": null,
+      "surface": {
+        "flat": false,
+        "rules": false
+      }
+    },
+    {
+      "id": "empty-rows",
+      "kind": "chrome",
+      "note": "empty ruled rows 4 (orange number), 5, 6",
+      "grid": null,
+      "box": {
+        "x": 0.0273,
+        "y": 0.5286,
+        "w": 0.9473,
+        "h": 0.2174
+      },
+      "px": {
+        "x": 28,
+        "y": 812,
+        "w": 970,
+        "h": 334
+      },
+      "aspect": 2.9042,
+      "palette": [
+        {
+          "hex": "#f8f8e8",
+          "coverage": 0.963
+        },
+        {
+          "hex": "#cfcbc6",
+          "coverage": 0.0334
+        },
+        {
+          "hex": "#080808",
+          "coverage": 0.0026
+        },
+        {
+          "hex": "#f85808",
+          "coverage": 0.001
+        }
+      ],
+      "detail": {
+        "energy": 5.4998
+      },
+      "medium": "semantic",
+      "plate": null,
+      "text": null,
+      "surface": {
+        "flat": false,
+        "rules": true
+      }
+    },
+    {
+      "id": "guess-input",
+      "kind": "control",
+      "note": "text input with placeholder Guess a player",
+      "grid": null,
+      "box": {
+        "x": 0.0273,
+        "y": 0.763,
+        "w": 0.6396,
+        "h": 0.0755
+      },
+      "px": {
+        "x": 28,
+        "y": 1172,
+        "w": 655,
+        "h": 116
+      },
+      "aspect": 5.6466,
+      "palette": [
+        {
+          "hex": "#f8f8f7",
+          "coverage": 0.9058
+        },
+        {
+          "hex": "#c6c6c3",
+          "coverage": 0.0648
+        },
+        {
+          "hex": "#6c6c6d",
+          "coverage": 0.0263
+        },
+        {
+          "hex": "#939393",
+          "coverage": 0.0032
+        }
+      ],
+      "detail": {
+        "energy": 18.1858
+      },
+      "medium": "semantic",
+      "plate": null,
+      "text": null,
+      "surface": {
+        "flat": false,
+        "rules": true
+      }
+    },
+    {
+      "id": "guess-button",
+      "kind": "control",
+      "note": "orange Guess button with white condensed label",
+      "grid": null,
+      "box": {
+        "x": 0.6777,
+        "y": 0.763,
+        "w": 0.2969,
+        "h": 0.0755
+      },
+      "px": {
+        "x": 694,
+        "y": 1172,
+        "w": 304,
+        "h": 116
+      },
+      "aspect": 2.6207,
+      "palette": [
+        {
+          "hex": "#f86423",
+          "coverage": 0.8084
+        },
+        {
+          "hex": "#f8f8ef",
+          "coverage": 0.1529
+        },
+        {
+          "hex": "#f8a87b",
+          "coverage": 0.031
+        },
+        {
+          "hex": "#f8ccb0",
+          "coverage": 0.0043
+        },
+        {
+          "hex": "#f88a51",
+          "coverage": 0.0035
+        }
+      ],
+      "detail": {
+        "energy": 14.6525
+      },
+      "medium": "semantic",
+      "plate": null,
+      "text": null,
+      "surface": {
+        "flat": false,
+        "rules": false
+      }
+    },
+    {
+      "id": "section-rule",
+      "kind": "chrome",
+      "note": "rule above the Yesterday section",
+      "grid": null,
+      "box": {
+        "x": 0,
+        "y": 0.8568,
+        "w": 1,
+        "h": 0.0078
+      },
+      "px": {
+        "x": 0,
+        "y": 1316,
+        "w": 1024,
+        "h": 12
+      },
+      "aspect": 85.3333,
+      "palette": [
+        {
+          "hex": "#f4f4e4",
+          "coverage": 1
+        }
+      ],
+      "detail": {
+        "energy": 8.6628
+      },
+      "medium": "semantic",
+      "plate": null,
+      "text": null,
+      "surface": {
+        "flat": false,
+        "rules": true
+      }
+    },
+    {
+      "id": "yesterday-heading",
+      "kind": "text",
+      "note": "Yesterday heading",
+      "grid": null,
+      "box": {
+        "x": 0.0313,
+        "y": 0.8789,
+        "w": 0.2246,
+        "h": 0.0443
+      },
+      "px": {
+        "x": 32,
+        "y": 1350,
+        "w": 230,
+        "h": 68
+      },
+      "aspect": 3.3824,
+      "palette": [
+        {
+          "hex": "#f7f7f1",
+          "coverage": 0.6435
+        },
+        {
+          "hex": "#090909",
+          "coverage": 0.2988
+        },
+        {
+          "hex": "#c0c0bf",
+          "coverage": 0.0255
+        },
+        {
+          "hex": "#707070",
+          "coverage": 0.0164
+        },
+        {
+          "hex": "#393938",
+          "coverage": 0.0158
+        }
+      ],
+      "detail": {
+        "energy": 42.9963
+      },
+      "medium": "semantic",
+      "plate": null,
+      "text": null,
+      "surface": {
+        "flat": false,
+        "rules": false
+      },
+      "type": {
+        "comp": {
+          "lines": 1,
+          "glyphs": 8,
+          "capHeightPx": 42.9,
+          "inkIsDark": true,
+          "allCaps": false,
+          "advance": 0.5358,
+          "advTall": 0.5591,
+          "advX": 0.5358,
+          "gap": 0.0466,
+          "xRatio": 0.7567,
+          "stemW": 0.2109,
+          "contrast": 1.1883,
+          "serif": 1.3853,
+          "densTall": 0.6238,
+          "densX": 0.7639,
+          "weight": 0.6238
+        },
+        "widthClass": "condensed",
+        "weightClass": "bold"
+      }
+    },
+    {
+      "id": "yesterday-player",
+      "kind": "text",
+      "note": "Hugo · SVR 2026",
+      "grid": null,
+      "box": {
+        "x": 0.0313,
+        "y": 0.9245,
+        "w": 0.249,
+        "h": 0.0326
+      },
+      "px": {
+        "x": 32,
+        "y": 1420,
+        "w": 255,
+        "h": 50
+      },
+      "aspect": 5.1,
+      "palette": [
+        {
+          "hex": "#f7f7f0",
+          "coverage": 0.6843
+        },
+        {
+          "hex": "#090909",
+          "coverage": 0.2258
+        },
+        {
+          "hex": "#b3b3b1",
+          "coverage": 0.0467
+        },
+        {
+          "hex": "#5f5f5f",
+          "coverage": 0.0376
+        },
+        {
+          "hex": "#423a3e",
+          "coverage": 0.0056
+        }
+      ],
+      "detail": {
+        "energy": 57.1083
+      },
+      "medium": "semantic",
+      "plate": null,
+      "text": null,
+      "surface": {
+        "flat": false,
+        "rules": false
+      },
+      "type": {
+        "comp": {
+          "lines": 1,
+          "glyphs": 12,
+          "capHeightPx": 28,
+          "inkIsDark": true,
+          "allCaps": false,
+          "advance": 0.5713,
+          "advTall": 0.5535,
+          "advX": 0.5713,
+          "gap": 0.1071,
+          "xRatio": 0.7969,
+          "stemW": 0.2144,
+          "contrast": 1.1601,
+          "serif": 1.235,
+          "densTall": 0.718,
+          "densX": 0.7631,
+          "weight": 0.718
+        },
+        "widthClass": "condensed",
+        "weightClass": "black"
+      }
+    },
+    {
+      "id": "yesterday-line",
+      "kind": "text",
+      "note": "12 PP · 3 A · 2 G · 1 B · 2 T",
+      "grid": null,
+      "box": {
+        "x": 0.0313,
+        "y": 0.957,
+        "w": 0.4053,
+        "h": 0.0326
+      },
+      "px": {
+        "x": 32,
+        "y": 1470,
+        "w": 415,
+        "h": 50
+      },
+      "aspect": 8.3,
+      "palette": [
+        {
+          "hex": "#f8f7ec",
+          "coverage": 0.8679
+        },
+        {
+          "hex": "#0b0b0b",
+          "coverage": 0.1036
+        },
+        {
+          "hex": "#8e8e8d",
+          "coverage": 0.0132
+        },
+        {
+          "hex": "#545454",
+          "coverage": 0.0107
+        },
+        {
+          "hex": "#c5c2c2",
+          "coverage": 0.0047
+        }
+      ],
+      "detail": {
+        "energy": 54.4322
+      },
+      "medium": "semantic",
+      "plate": null,
+      "text": null,
+      "surface": {
+        "flat": false,
+        "rules": false
+      },
+      "type": {
+        "comp": {
+          "lines": 1,
+          "glyphs": 16,
+          "capHeightPx": 28.5,
+          "inkIsDark": true,
+          "allCaps": false,
+          "advance": 0.4737,
+          "advTall": 0.4737,
+          "advX": null,
+          "gap": 0.386,
+          "xRatio": 0.5634,
+          "stemW": 0.1729,
+          "contrast": 1.1106,
+          "serif": null,
+          "densTall": 0.6288,
+          "densX": null,
+          "weight": 0.6288
+        },
+        "widthClass": "condensed",
+        "weightClass": "bold"
+      }
+    }
+  ],
+  "compSha256": "8cd2f8105ca62255b6bbd4fba2fd6f4bfbcf46bb0d8925000e26486fb78eb6aa",
+  "regionsSource": {
+    "path": ".impeccable/build/regions.json",
+    "sha256": "9c96ca75dc7520dc4cf3aeb83796b9803e8a9a3053736d83273b99a2c1fb1885"
+  }
+}

@@ -1,0 +1,214 @@
+{
+ "regions": [
+  {
+   "id": "wordmark",
+   "kind": "text",
+   "pixelBox": {
+    "x": 30,
+    "y": 15,
+    "w": 270,
+    "h": 75
+   },
+   "note": "OOZEDLE wordmark, heavy condensed caps"
+  },
+  {
+   "id": "nav",
+   "kind": "control",
+   "pixelBox": {
+    "x": 670,
+    "y": 30,
+    "w": 325,
+    "h": 50
+   },
+   "note": "Players and Tournaments text links"
+  },
+  {
+   "id": "topbar-rule",
+   "kind": "chrome",
+   "pixelBox": {
+    "x": 0,
+    "y": 100,
+    "w": 1024,
+    "h": 12
+   },
+   "note": "thin gray rule under the top bar"
+  },
+  {
+   "id": "puzzle-number",
+   "kind": "text",
+   "pixelBox": {
+    "x": 36,
+    "y": 140,
+    "w": 400,
+    "h": 220
+   },
+   "note": "#214 puzzle number, enormous heavy condensed numerals"
+  },
+  {
+   "id": "header-divider",
+   "kind": "chrome",
+   "pixelBox": {
+    "x": 462,
+    "y": 132,
+    "w": 16,
+    "h": 248
+   },
+   "note": "vertical hairline between number and labels"
+  },
+  {
+   "id": "date",
+   "kind": "text",
+   "pixelBox": {
+    "x": 508,
+    "y": 142,
+    "w": 205,
+    "h": 56
+   },
+   "note": "Tue Oct 21 date"
+  },
+  {
+   "id": "pool-label",
+   "kind": "text",
+   "pixelBox": {
+    "x": 508,
+    "y": 205,
+    "w": 415,
+    "h": 100
+   },
+   "note": "PDQ \u00b7 2026 tournament and season, large condensed"
+  },
+  {
+   "id": "instruction",
+   "kind": "text",
+   "pixelBox": {
+    "x": 508,
+    "y": 320,
+    "w": 440,
+    "h": 52
+   },
+   "note": "Name the player. 6 guesses."
+  },
+  {
+   "id": "table-head",
+   "kind": "text",
+   "pixelBox": {
+    "x": 28,
+    "y": 400,
+    "w": 970,
+    "h": 84
+   },
+   "note": "column heads Player PP A G B T in ruled cells"
+  },
+  {
+   "id": "row-1",
+   "kind": "control",
+   "pixelBox": {
+    "x": 28,
+    "y": 482,
+    "w": 970,
+    "h": 110
+   },
+   "note": "guess 1 Rowan struck through, arrows, T equals block"
+  },
+  {
+   "id": "row-2",
+   "kind": "control",
+   "pixelBox": {
+    "x": 28,
+    "y": 590,
+    "w": 970,
+    "h": 112
+   },
+   "note": "guess 2 Farmer struck through, A equals block"
+  },
+  {
+   "id": "row-3",
+   "kind": "control",
+   "pixelBox": {
+    "x": 28,
+    "y": 700,
+    "w": 970,
+    "h": 114
+   },
+   "note": "guess 3 Colin struck through, G and B equals blocks"
+  },
+  {
+   "id": "empty-rows",
+   "kind": "chrome",
+   "pixelBox": {
+    "x": 28,
+    "y": 812,
+    "w": 970,
+    "h": 334
+   },
+   "note": "empty ruled rows 4 (orange number), 5, 6"
+  },
+  {
+   "id": "guess-input",
+   "kind": "control",
+   "pixelBox": {
+    "x": 28,
+    "y": 1172,
+    "w": 655,
+    "h": 116
+   },
+   "note": "text input with placeholder Guess a player"
+  },
+  {
+   "id": "guess-button",
+   "kind": "control",
+   "pixelBox": {
+    "x": 694,
+    "y": 1172,
+    "w": 304,
+    "h": 116
+   },
+   "note": "orange Guess button with white condensed label"
+  },
+  {
+   "id": "section-rule",
+   "kind": "chrome",
+   "pixelBox": {
+    "x": 0,
+    "y": 1316,
+    "w": 1024,
+    "h": 12
+   },
+   "note": "rule above the Yesterday section"
+  },
+  {
+   "id": "yesterday-heading",
+   "kind": "text",
+   "pixelBox": {
+    "x": 32,
+    "y": 1350,
+    "w": 230,
+    "h": 68
+   },
+   "note": "Yesterday heading"
+  },
+  {
+   "id": "yesterday-player",
+   "kind": "text",
+   "pixelBox": {
+    "x": 32,
+    "y": 1420,
+    "w": 255,
+    "h": 50
+   },
+   "note": "Hugo \u00b7 SVR 2026"
+  },
+  {
+   "id": "yesterday-line",
+   "kind": "text",
+   "pixelBox": {
+    "x": 32,
+    "y": 1470,
+    "w": 415,
+    "h": 50
+   },
+   "note": "12 PP \u00b7 3 A \u00b7 2 G \u00b7 1 B \u00b7 2 T"
+  }
+ ],
+ "allowUncovered": true
+}
