@@ -1078,7 +1078,10 @@ main {
   }
 }
 
-/* AMA/10 reads as one unit, label beside the number, at every width. */
+/* ADV (Adj. MA per 10) reads as one unit, label beside the number, at every width. */
+.tournament-row abbr {
+  text-decoration: none;
+}
 .tournament-row .row-rate {
   padding-left: 4px;
   white-space: nowrap;
