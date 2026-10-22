@@ -26,7 +26,6 @@ dev = ["pytest", "ruff"]
 
 [tool.ruff]
 line-length = 100
-extend-exclude = ["oozedle/stats.py", "scripts/setup_site.py"]
 
 [tool.ruff.lint]
 select = ["E", "F", "I", "W"]

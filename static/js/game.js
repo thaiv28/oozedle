@@ -204,7 +204,7 @@
         .join(""),
     );
     return [
-      `Oozedle #${puzzle.number} · ${poolLabel(puzzle.answer)} · ${score}/${MAX_GUESSES}`,
+      `Oozedle #${puzzle.number} · ${tournament(puzzle.answer).name} ${tournament(puzzle.answer).season} · ${score}/${MAX_GUESSES}`,
       ...rows,
       "oozedle.thaiv.dev",
     ].join("\n");

@@ -44,7 +44,8 @@ Names map through `players.yml` aliases. Validation warns when per-game sums dif
 ## Site (`oozedle/site.py`, `scripts/build_site.py`)
 
 - `build()` wipes `output/`, copies `static/`, and renders templates. `asset()` appends a content hash to static URLs. Pages at depth use the `root` prefix for links.
-- **Game:** `game_data()` inlines tournaments, players and every stat line with points played > 0 as `#game-data` JSON. `game.js` picks the day's answer in the browser: the Pacific date and season filter (`all` or a year) are hashed (FNV-1a) into the pool of lines with at least `MIN_POINTS` (5) points played. Puzzle #1 is `EPOCH` (2026-10-22). Guesses are limited to that tournament's roster; feedback is up/down/same per stat. Progress and the win record live in `localStorage` (the game works without it).
+- **Game:** `game_data()` inlines tournaments, players and every stat line with points played > 0 as `#game-data` JSON. `game.js` picks the day's answer in the browser: the Pacific date and season filter (`all` or a year) are hashed (FNV-1a) into the pool of lines with at least `MIN_POINTS` (5) points played. Puzzle #1 is `EPOCH` (2026-10-21). Guesses are limited to that tournament's roster; feedback is up/down/same per stat. Progress and the win record live in `localStorage` (the game works without it).
+- **Stats:** `players.html`, `players/<player_id>.html`, `tournaments.html`, `tournaments/<tournament_id>.html`, and `404.html` use the shared base. Page context (totals, joins, ordering) is precomputed in `site.py`. `tables.js` sorts ledger tables and filters/reaggregates the players leaderboard by season and search; server-rendered totals work without JavaScript. The 404 uses root-relative links.
 - **Hero fixture:** `build_site.py --hero DIR` renders the game on synthetic data reproducing the approved design comp (#214, PDQ 2026, Rowan/Farmer/Colin). Used only for impeccable's comp diff.
 
 ## Testing

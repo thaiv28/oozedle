@@ -1,0 +1,83 @@
+name: Publish
+on:
+  push:
+    branches: [main]
+  pull_request:
+  schedule:
+    - cron: "17 */6 * * *"
+  workflow_dispatch:
+permissions:
+  contents: read
+  id-token: write
+  actions: write
+concurrency:
+  group: publish-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v6
+      - run: uv sync --frozen
+      - run: uv run ruff format --check
+      - run: uv run ruff check
+      - run: uv run pytest -q
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v6
+      - run: uv sync --frozen --no-dev
+      - uses: actions/cache/restore@v4
+        with:
+          path: data/raw
+          key: raw-${{ github.run_id }}
+          restore-keys: raw-
+      - run: uv run python scripts/sync_data.py
+      - uses: actions/cache/save@v4
+        if: github.ref == 'refs/heads/main'
+        with:
+          path: data/raw
+          key: raw-${{ github.run_id }}
+      - run: uv run python scripts/check_data.py | tail -n 25
+      - run: uv run python scripts/build_site.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: site
+          path: output
+  deploy:
+    needs: [check, build]
+    if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request' && vars.DEPLOYMENT_BUCKET != '' && vars.CLOUDFRONT_DISTRIBUTION_ID != ''
+    runs-on: ubuntu-latest
+    env:
+      BUCKET: ${{ vars.DEPLOYMENT_BUCKET }}
+      DISTRIBUTION_ID: ${{ vars.CLOUDFRONT_DISTRIBUTION_ID }}
+      HEALTH_URL: https://oozedle.thaiv.dev/
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: site
+          path: output
+      - uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ secrets.AWS_ROLE_ARN }}
+          aws-region: us-west-2
+          role-session-name: oozedle-${{ github.run_id }}
+      - run: aws s3 sync output/static "s3://$BUCKET/current/static" --delete --cache-control "public, max-age=31536000, immutable"
+      - run: aws s3 sync output "s3://$BUCKET/current" --delete --exclude "static/*"
+      - run: aws cloudfront create-invalidation --distribution-id "$DISTRIBUTION_ID" --paths "/*"
+      - name: Health check
+        run: |
+          for attempt in 1 2 3 4 5; do
+            if curl -fsS "$HEALTH_URL"; then exit 0; fi
+            if [ "$attempt" -lt 5 ]; then sleep 10; fi
+          done
+          exit 1
+  keepalive:
+    if: github.event_name == 'schedule'
+    runs-on: ubuntu-latest
+    steps:
+      - run: gh api -X PUT "repos/${{ github.repository }}/actions/workflows/publish.yml/enable"
+        env:
+          GH_TOKEN: ${{ github.token }}

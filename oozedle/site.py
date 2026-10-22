@@ -7,6 +7,7 @@ import json
 import shutil
 from pathlib import Path
 
+import pandas as pd
 from jinja2 import Environment, FileSystemLoader, select_autoescape
 
 from oozedle.config import OUTPUT_DIR, ROOT
@@ -14,7 +15,7 @@ from oozedle.dataset import Dataset
 
 TEMPLATES_DIR = ROOT / "templates"
 STATIC_DIR = ROOT / "static"
-EPOCH = "2026-10-22"  # puzzle #1
+EPOCH = "2026-10-21"  # puzzle #1
 MIN_POINTS = 5  # lines with fewer points played are too thin to guess
 
 
@@ -97,9 +98,9 @@ class Site:
             self._hashes[path] = digest
         return f"{root}static/{path}?v={self._hashes[path]}"
 
-    def render(self, template: str, dest: str, **context) -> None:
+    def render(self, template: str, dest: str, root: str | None = None, **context) -> None:
         depth = dest.count("/")
-        root = "../" * depth
+        root = "../" * depth if root is None else root
         html = self.env.get_template(template).render(
             root=root, asset=lambda p: self.asset_url(p, root), **context
         )
@@ -111,7 +112,7 @@ class Site:
         shutil.copytree(STATIC_DIR, self.out / "static", dirs_exist_ok=True)
 
 
-def to_json(data: dict) -> str:
+def to_json(data: dict | list) -> str:
     """JSON safe to inline in a <script> element."""
     return json.dumps(data, separators=(",", ":"), ensure_ascii=False).replace("</", "<\\/")
 
@@ -122,6 +123,18 @@ def build(ds: Dataset, out: Path = OUTPUT_DIR) -> None:
     site = Site(out)
     site.copy_static()
     site.render("index.html.j2", "index.html", game_json=to_json(game_data(ds)))
+    context = stats_context(ds)
+    site.render("players.html.j2", "players.html", **context)
+    site.render("tournaments.html.j2", "tournaments.html", **context)
+    for player in context["players"]:
+        site.render("player.html.j2", f"players/{player['player_id']}.html", player=player)
+    for tournament in context["tournaments"]:
+        site.render(
+            "tournament.html.j2",
+            f"tournaments/{tournament['tournament_id']}.html",
+            tournament=tournament,
+        )
+    site.render("404.html.j2", "404.html", root="/")
 
 
 def build_hero(out: Path) -> None:
@@ -131,3 +144,100 @@ def build_hero(out: Path) -> None:
     site = Site(out)
     site.copy_static()
     site.render("index.html.j2", "index.html", game_json=to_json(hero_game_data()))
+
+
+STAT_COLUMNS = ["points_played", "assists", "goals", "blocks", "turnovers"]
+TOTAL_COLUMNS = [*STAT_COLUMNS, "games_played", "wins", "losses"]
+
+
+def number(value):
+    """Keep fractional source values and emit whole numbers as ints."""
+    if pd.isna(value):
+        return None
+    return int(value) if float(value).is_integer() else float(value)
+
+
+def totals(frame) -> dict:
+    values = {key: number(frame[key].sum()) for key in TOTAL_COLUMNS}
+    values["tournaments"] = int(frame.tournament_id.nunique())
+    return values
+
+
+def stats_context(ds: Dataset) -> dict:
+    """Precompute page joins, ordering, and totals; templates only present values."""
+
+    def records(frame):
+        return [
+            {
+                key: number(value) if isinstance(value, (int, float)) else value
+                for key, value in row.items()
+            }
+            for row in frame.to_dict("records")
+        ]
+
+    people = {p["player_id"]: p for p in records(ds.players)}
+    tournaments = records(ds.tournaments.sort_values(["season", "order"]))
+    by_id = {t["tournament_id"]: t for t in tournaments}
+    games = {}
+    for game in records(ds.games.sort_values("index")):
+        games[game["game_id"]] = game
+    for t in tournaments:
+        tid = t["tournament_id"]
+        t["games_list"] = [g for g in games.values() if g["tournament_id"] == tid]
+        t["has_clean_holds"] = any(g["clean_holds"] is not None for g in t["games_list"])
+        box = records(ds.player_tournaments[ds.player_tournaments.tournament_id == tid])
+        for line in box:
+            line["name"] = people[line["player_id"]]["name"]
+        t["box"] = sorted(box, key=lambda r: (-r["points_played"], r["name"]))
+    season_rows = []
+    for season, frame in ds.tournaments.groupby("season", sort=True):
+        ts = [t for t in tournaments if t["season"] == season]
+        for i, t in enumerate(ts):
+            t["previous"] = ts[i - 1] if i else None
+            t["next"] = ts[i + 1] if i + 1 < len(ts) else None
+        season_rows.append(
+            dict(
+                season=int(season),
+                count=len(ts),
+                tournaments=ts,
+                wins=int(frame.wins.sum()),
+                losses=int(frame.losses.sum()),
+            )
+        )
+    players = []
+    season_lines = []
+    for pid, frame in ds.player_tournaments.groupby("player_id"):
+        player = dict(people[pid], career=totals(frame))
+        seasons = []
+        for season, lines in frame.groupby("season", sort=True):
+            row = dict(season=int(season), **totals(lines))
+            seasons.append(row)
+            season_lines.append(dict(player_id=pid, name=player["name"], **row))
+        years = [s["season"] for s in seasons]
+        player["year_range"] = str(years[0]) if len(years) == 1 else f"{years[0]}–{years[-1]}"
+        player["season_rows"] = list(reversed(seasons))
+        entries = []
+        for row in records(frame):
+            t = by_id[row["tournament_id"]]
+            entry = dict(row, name=t["name"], order=t["order"])
+            lines = ds.player_games[
+                (ds.player_games.player_id == pid)
+                & (ds.player_games.tournament_id == t["tournament_id"])
+            ]
+            entry["games_list"] = [
+                dict(games[line["game_id"]], **{s: line[s] for s in STAT_COLUMNS})
+                for line in records(lines)
+            ]
+            entry["games_list"].sort(key=lambda g: g["index"])
+            entries.append(entry)
+        player["tournament_rows"] = sorted(
+            entries, key=lambda r: (r["season"], r["order"]), reverse=True
+        )
+        players.append(player)
+    players.sort(key=lambda p: (-p["career"]["points_played"], p["name"]))
+    return dict(
+        players=players,
+        tournaments=tournaments,
+        season_rows=list(reversed(season_rows)),
+        players_json=to_json(season_lines),
+    )

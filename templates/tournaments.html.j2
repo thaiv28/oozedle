@@ -1,0 +1,11 @@
+{% extends "base.html.j2" %}
+{% from "ledger.html.j2" import headers %}
+{% set nav = "tournaments" %}
+{% block title %}Tournaments · Oozedle{% endblock %}
+{% block main_class %} class="wide"{% endblock %}
+{% block main %}
+<h1 class="page-head">Tournaments</h1>
+<nav class="season-rail" aria-label="Seasons">{% for s in season_rows %}<a href="#season-{{ s.season }}" style="flex-grow: {{ s.count }}">{{ s.season }}</a>{% endfor %}</nav>
+{% for s in season_rows %}<h2 class="ledger-title" id="season-{{ s.season }}">{{ s.season }} <span>{{ s.wins }}–{{ s.losses }}</span></h2>
+<div class="ledger-wrap"><table class="ledger ledger--numbered"><caption class="visually-hidden">{{ s.season }} tournaments</caption>{{ headers(['#', 'Tournament', 'Games', 'W–L', 'Goals']) }}<tbody>{% for t in s.tournaments %}<tr><td>{{ t.order }}</td><th scope="row"><a href="{{ root }}tournaments/{{ t.tournament_id }}.html">{{ t.name }}</a></th><td>{{ t.games }}</td><td>{{ t.wins }}–{{ t.losses }}</td><td>{{ t.goals_for }}–{{ t.goals_against }}</td></tr>{% endfor %}</tbody></table></div>{% endfor %}
+{% endblock %}

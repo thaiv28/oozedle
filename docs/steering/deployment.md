@@ -19,8 +19,14 @@ Repository settings (set 2026-10-21):
 
 ## Publishing
 
-`.github/workflows/publish.yml` (to be added with the site): check (ruff, pytest), sync and build, then on `main` deploy to `s3://$DEPLOYMENT_BUCKET/current/`, invalidate CloudFront and health-check.
+`.github/workflows/publish.yml` runs on pushes to `main`, pull requests, manual dispatch, and every six hours at minute 17. Its `check` job installs frozen dependencies and runs ruff format/check and pytest. The independent `build` job installs frozen runtime dependencies, restores cached `data/raw` (falling back to `raw-`), syncs workbooks, saves the cache only on `main`, prints the last 25 data-check lines, builds, and uploads the `site` artifact.
+
+`deploy` needs both jobs and runs only on non-PR `main` with bucket and distribution variables set. It downloads the artifact, assumes `AWS_ROLE_ARN` in us-west-2, syncs static assets with immutable one-year caching, syncs other output to `s3://$DEPLOYMENT_BUCKET/current/`, invalidates CloudFront, and checks https://oozedle.thaiv.dev/ up to five times, ten seconds apart. Concurrency is per ref; only PR runs cancel earlier runs. Permissions are contents read, id-token write, actions write.
+
+The scheduled `keepalive` job re-enables this workflow through `gh api` using the workflow token, preventing GitHub's inactivity shutdown after 60 days.
+
+`pages-redirect.yml` is manual-only. It writes canonical/meta-refresh/link redirects for the index, 404 and 2024–2026 pages (years retain `?season=YYYY`), then configures Pages, uploads and deploys the redirect artifact in the `github-pages` environment. Run once after merge, then turn off Pages in repository settings.
 
 ## Old site
 
-The site used to be on GitHub Pages at `thaiv28.github.io/oozedle` (workflow `static.yml`, daily cron, disabled by GitHub on 2026-04-07 after 60 days without commits). It is being retired behind a redirect to oozedle.thaiv.dev.
+The site used to be on GitHub Pages at `thaiv28.github.io/oozedle` (former workflow `static.yml`, removed; its daily cron was disabled by GitHub on 2026-04-07 after 60 days without commits). It is being retired behind a redirect to oozedle.thaiv.dev.
