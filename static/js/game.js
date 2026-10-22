@@ -206,7 +206,7 @@
     return [
       `Oozedle #${puzzle.number} · ${tournament(puzzle.answer).name} ${tournament(puzzle.answer).season} · ${score}/${MAX_GUESSES}`,
       ...rows,
-      "https://oozedle.thaiv.dev",
+      "oozedle.thaiv.dev",
     ].join("\n");
   }
 
