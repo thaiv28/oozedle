@@ -1,6 +1,26 @@
 # Work log
 
+## 2026-10-21 — Colored guess arrows
+
+Up arrows are blue (#2563eb, 4.8:1 on the board) and down arrows a deeper orange (#d9480f, 4.0:1), matching the share text's 🟦/🟧; the `=` block stays ink, and the glyphs still carry the meaning. Tokens `--arrow-up` / `--arrow-down`; DESIGN.md updated (exempt from the One Marker rule). Checks: contrast computed, fixture board rendered at 390, pytest and ruff pass.
+
+## 2026-10-21 — Guess list reopens on click
+
+After a guess the input keeps focus, so clicking it fired no `focus` event and the player list stayed closed. `game.js` now also opens the list on `click`. Checks: headless Chrome at 390 (tap) and 1280 (click): after a guess, a tap/click shows all 20 remaining names; typing still filters; clearing restores the full list. pytest and ruff pass.
+
+## 2026-10-21 — Advanced page trimmed to MA
+
+Removed the "What wins games" section (blocks-and-turnovers model) and the held-out-fit sentence from `advanced.html`; dropped the second model from `advanced.py`. Model details keep MA's intercept, R² and CV R². Checks: pytest, ruff, build, page rendered on localhost.
+
+## 2026-10-21 — Drop box plus/minus
+
++/- dropped: without point-by-point lines it is only a box-score count; MA kept. Removed the derived count, columns, copy, and tests; MA and per-10 views remain. Checks: `uv run --no-sync ruff format`, `ruff check`, `pytest -q` (30 passed), real-data site build (51 players, 17 tournaments, 12 warnings), and source grep (no matches).
+
 Newest first. One entry per substantive change: what changed, checks actually run, remaining limits. At most 150 words each.
+
+## 2026-10-21 — Advanced stats (local)
+
+Added box +/-, per-10 rates, regression-weighted margin added, shared Box/Advanced column switches, player advanced totals, and the Advanced model/performance page. Summary totals remain authoritative. On 92 real games, M1 intercept −11.9013, S/B/T coefficients 1.3265/0.3516/−0.1685, CV R² 0.8402; M2 intercept 0.1674, B/T 1.1515/−0.5762, CV R² 0.6083. Both use 2,000 bootstrap resamples and shuffled 10-fold predictions. Checks: `uv run --no-sync ruff format`, `ruff check`, `pytest -q` (30 passed), real-data build (51 players, 17 tournaments), and design detector (advisories only). Plain `uv run` crashes in macOS system configuration; desktop/phone browser verification unavailable because headless Chrome aborts. Local only; no commit or deployment.
 
 ## 2026-10-21 — Live on oozedle.thaiv.dev
 

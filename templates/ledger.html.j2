@@ -1,7 +1,24 @@
 {% macro stats(row) -%}
-{% for key in ['points_played', 'assists', 'goals', 'blocks', 'turnovers'] %}<td>{{ row[key] }}</td>{% endfor %}
+{% for key in ['points_played', 'assists', 'goals', 'blocks', 'turnovers'] %}<td>{{ row[key]|statnum }}</td>{% endfor %}
 {%- endmacro %}
 {% macro headers(labels, sortable=false, numeric_first=false) -%}
 <thead><tr>{% for label in labels %}<th scope="col"{% if sortable %} data-type="{{ 'text' if loop.first and not numeric_first else 'number' }}" aria-sort="{{ 'descending' if label == 'PP' else 'none' }}"{% endif %}>{% if sortable %}<button type="button">{{ label }}</button>{% else %}{{ label }}{% endif %}</th>{% endfor %}</tr></thead>
 {%- endmacro %}
 {% macro score(game) -%}<strong>{{ game.result }}</strong> {{ game.goals_for }}–{{ game.goals_against }}{%- endmacro %}
+{% macro view_switch(target) -%}
+<div class="view-switch" role="group" aria-label="Columns" data-table="{{ target }}"><button type="button" data-view="box" aria-pressed="true">Box score</button><button type="button" data-view="advanced" aria-pressed="false">Advanced</button></div>
+{%- endmacro %}
+{% macro advanced_cells(row, rates=true) -%}
+<td class="v-adv" data-value="{{ row.ma }}">{{ row.ma|statnum(1) }}</td><td class="v-adv" data-value="{{ row.ma_per10 if row.ma_per10 is not none else '' }}">{{ row.ma_per10|statnum(1) }}</td>
+{%- endmacro %}
+{% macro view_headers(leaderboard=false) -%}
+<thead><tr>
+{% for key,label,view in [('name','Player',''), ('tournaments','Tourn.','v-box')] if leaderboard or key != 'tournaments' %}<th scope="col" data-key="{{ key }}" class="{{ view }}" data-type="{{ 'text' if key == 'name' else 'number' }}" aria-sort="none"><button type="button">{{ label }}</button></th>{% endfor %}
+{% for key,label,view in [('games_played','GP','phone-gp'), ('points_played','PP',''), ('assists','A','v-box'), ('goals','G','v-box'), ('blocks','B','v-box'), ('turnovers','T','v-box'), ('wins','W–L','v-box'), ('ma','MA','v-adv'), ('ma_per10','MA per 10','v-adv')] if (leaderboard or key != 'wins') %}<th scope="col" data-key="{{ key }}" class="{{ view }}" data-type="number" aria-sort="{{ 'descending' if key == 'points_played' else 'none' }}"><button type="button">{{ label }}</button></th>{% endfor %}
+</tr></thead>
+{%- endmacro %}
+{% macro view_cells(row, leaderboard=false) -%}
+{% if leaderboard %}<td class="v-box">{{ row.tournaments }}</td>{% endif %}<td class="phone-gp">{{ row.games_played }}</td><td data-value="{{ row.points_played }}">{{ row.points_played|statnum }}</td>
+{% for key in ['assists','goals','blocks','turnovers'] %}<td class="v-box" data-value="{{ row[key] }}">{{ row[key]|statnum }}</td>{% endfor %}
+{% if leaderboard %}<td class="v-box" data-value="{{ row.wins }}">{{ row.wins }}–{{ row.losses }}</td>{% endif %}{{ advanced_cells(row, leaderboard) }}
+{%- endmacro %}

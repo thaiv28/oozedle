@@ -12,8 +12,6 @@ def _summary(book, labels, shifted=False, single=False):
     sheet = book.active
     sheet.title = "Summary"
     headers = ["Name", "Points Played", "Assists", "Goals", "D's", "Turnovers"]
-    if shifted:
-        headers.insert(4, "+/-")
     for col, value in enumerate(headers, 1):
         sheet.cell(2, col, value)
     for row, name, values in [

@@ -10,6 +10,7 @@ from pathlib import Path
 import pandas as pd
 from jinja2 import Environment, FileSystemLoader, select_autoescape
 
+from oozedle.advanced import MarginModel, fit_margin_model, margin_added, per10
 from oozedle.config import OUTPUT_DIR, ROOT
 from oozedle.dataset import Dataset
 
@@ -90,6 +91,7 @@ class Site:
             lstrip_blocks=True,
         )
         self._hashes: dict[str, str] = {}
+        self.env.filters["statnum"] = statnum
 
     def asset_url(self, path: str, root: str) -> str:
         """Static URL with a content hash so browsers pick up changes."""
@@ -123,8 +125,10 @@ def build(ds: Dataset, out: Path = OUTPUT_DIR) -> None:
     site = Site(out)
     site.copy_static()
     site.render("index.html.j2", "index.html", game_json=to_json(game_data(ds)))
-    context = stats_context(ds)
+    model = fit_margin_model(ds)
+    context = stats_context(ds, model)
     site.render("players.html.j2", "players.html", **context)
+    site.render("advanced.html.j2", "advanced.html", **context)
     site.render("tournaments.html.j2", "tournaments.html", **context)
     for player in context["players"]:
         site.render("player.html.j2", f"players/{player['player_id']}.html", player=player)
@@ -163,8 +167,25 @@ def totals(frame) -> dict:
     return values
 
 
-def stats_context(ds: Dataset) -> dict:
+def statnum(value, decimals=None):
+    """Display missing values and use the mathematical minus glyph."""
+    if value is None:
+        return "—"
+    text = f"{value:.{decimals}f}" if decimals is not None else str(value)
+    if float(text) == 0:
+        text = text.lstrip("-")  # no "−0.0" from rounding a small negative
+    return text.replace("-", "−")
+
+
+def stats_context(ds: Dataset, model: MarginModel | None = None) -> dict:
     """Precompute page joins, ordering, and totals; templates only present values."""
+
+    model = model or fit_margin_model(ds)
+
+    def advanced(row):
+        row["ma"] = margin_added(row, model.weights)
+        row["ma_per10"] = per10(row["ma"], row["points_played"])
+        return row
 
     def records(frame):
         return [
@@ -188,6 +209,7 @@ def stats_context(ds: Dataset) -> dict:
         box = records(ds.player_tournaments[ds.player_tournaments.tournament_id == tid])
         for line in box:
             line["name"] = people[line["player_id"]]["name"]
+            advanced(line)
         t["box"] = sorted(box, key=lambda r: (-r["points_played"], r["name"]))
     season_rows = []
     for season, frame in ds.tournaments.groupby("season", sort=True):
@@ -207,10 +229,10 @@ def stats_context(ds: Dataset) -> dict:
     players = []
     season_lines = []
     for pid, frame in ds.player_tournaments.groupby("player_id"):
-        player = dict(people[pid], career=totals(frame))
+        player = dict(people[pid], career=advanced(totals(frame)))
         seasons = []
         for season, lines in frame.groupby("season", sort=True):
-            row = dict(season=int(season), **totals(lines))
+            row = advanced(dict(season=int(season), **totals(lines)))
             seasons.append(row)
             season_lines.append(dict(player_id=pid, name=player["name"], **row))
         years = [s["season"] for s in seasons]
@@ -219,13 +241,13 @@ def stats_context(ds: Dataset) -> dict:
         entries = []
         for row in records(frame):
             t = by_id[row["tournament_id"]]
-            entry = dict(row, name=t["name"], order=t["order"])
+            entry = advanced(dict(row, name=t["name"], order=t["order"]))
             lines = ds.player_games[
                 (ds.player_games.player_id == pid)
                 & (ds.player_games.tournament_id == t["tournament_id"])
             ]
             entry["games_list"] = [
-                dict(games[line["game_id"]], **{s: line[s] for s in STAT_COLUMNS})
+                advanced(dict(games[line["game_id"]], **{s: line[s] for s in STAT_COLUMNS}))
                 for line in records(lines)
             ]
             entry["games_list"].sort(key=lambda g: g["index"])
@@ -235,9 +257,21 @@ def stats_context(ds: Dataset) -> dict:
         )
         players.append(player)
     players.sort(key=lambda p: (-p["career"]["points_played"], p["name"]))
+    performances = [
+        dict(line, tournament_name=t["name"], season=t["season"])
+        for t in tournaments
+        for line in t["box"]
+    ]
+    performances.sort(key=lambda r: (-r["ma"], r["name"], r["tournament_id"]))
+    best = {}
+    for line in performances:
+        best.setdefault(line["tournament_name"], line)
     return dict(
+        model=model,
+        best_performances=performances[:10],
+        best_tournaments=[best[name] for name in sorted(best)],
         players=players,
         tournaments=tournaments,
         season_rows=list(reversed(season_rows)),
-        players_json=to_json(season_lines),
+        players_json=to_json(dict(weights=model.weights, lines=season_lines)),
     )

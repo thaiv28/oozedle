@@ -48,6 +48,16 @@ Names map through `players.yml` aliases. Validation warns when per-game sums dif
 - **Stats:** `players.html`, `players/<player_id>.html`, `tournaments.html`, `tournaments/<tournament_id>.html`, and `404.html` use the shared base. Page context (totals, joins, ordering) is precomputed in `site.py`. `tables.js` sorts ledger tables and filters/reaggregates the players leaderboard by season and search; server-rendered totals work without JavaScript. The 404 uses root-relative links.
 - **Hero fixture:** `build_site.py --hero DIR` renders the game on synthetic data reproducing the approved design comp (#214, PDQ 2026, Rowan/Farmer/Colin). Used only for impeccable's comp diff.
 
+## Advanced stats
+
+`oozedle/advanced.py` fits once per build; stats contexts keep full precision until display. Margin added (MA) = wA·A + wG·G + wB·B + wT·T, displayed to one decimal. Totals use authoritative Summary totals, including the Alumni Game.
+
+Training uses one row per game with `player_games`: sum player A, G, B, T; target is float goals_for − goals_against. M1 fits margin = c0 + c1·S + c2·B + c3·T, S=(A+G)/2, with numpy ordinary least squares and an intercept. MA weights are wA=wG=c1/2, wB=c2, wT=c3; the intercept is excluded.
+
+The fit reports coefficients, in-sample R², n, pooled out-of-fold R² from 10 shuffled folds (`default_rng(0)`), and 95% coefficient intervals from 2,000 game resamples (a separate `default_rng(0)`, 2.5/97.5 percentiles). Tiny test datasets use at most n folds. Per 10 = 10 × stat / points played; display one decimal, or “—” below 20 points played and sort missing values last.
+
+The leaderboard and tournament box score share Box/Advanced switches, persisted as `?view=advanced` alongside `?season=`. Leaderboard JSON contains weights and season totals; filtering recomputes advanced values. Player pages show career/season advanced ledgers. `advanced.html` shows the MA weights with their intervals, a collapsed model-fit table, and lists best tournament performances and the best line per tournament name across seasons.
+
 ## Testing
 
 `tests/conftest.py` writes synthetic workbooks in both layouts (plus the Alumni case) with openpyxl; no test touches the network. `test_real_data.py` runs only when `data/raw/manifest.json` exists. `test_steering.py` guards the docs.

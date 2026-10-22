@@ -52,7 +52,7 @@ def test_build(site_dataset, tmp_path):
     ds = site_dataset
     out = tmp_path / "output"
     build(ds, out)
-    for name in ["index", "players", "tournaments", "404"]:
+    for name in ["index", "players", "tournaments", "advanced", "404"]:
         assert (out / f"{name}.html").is_file()
     assert len(list((out / "players").glob("*.html"))) == len(ds.players)
     assert len(list((out / "tournaments").glob("*.html"))) == len(ds.tournaments)
@@ -91,7 +91,7 @@ def test_build(site_dataset, tmp_path):
 
 def test_season_totals(site_dataset):
     context = stats_context(site_dataset)
-    lines = json.loads(context["players_json"])
+    lines = json.loads(context["players_json"])["lines"]
     for player in context["players"]:
         seasons = [line for line in lines if line["player_id"] == player["player_id"]]
         assert sum(line["points_played"] for line in seasons) == player["career"]["points_played"]
