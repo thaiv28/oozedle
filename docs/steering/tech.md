@@ -67,7 +67,7 @@ Ratings live in `ratings/<season>.csv` (rank, team, record, rating), with source
 
 
 
-**Rankings:** `advanced.html` ranks tournament performances and seasons by (shrunk) Adj. MA per 10, since points played vary a lot, and greatest careers and best-at-each-tournament by total Adj. MA; `advanced/{performances,seasons,careers}.html` list every row (sortable, default Adj. MA). Import the `ranking_rows.html.j2` macro `with context` so it sees `root`.
+**Rankings:** `advanced.html` ranks tournament performances and seasons by (shrunk) Adj. MA per 10, since points played vary a lot, and greatest careers and best-at-each-tournament by total Adj. MA; `advanced/tournaments.html` lists every tournament played with its top line; `advanced/{performances,seasons,careers}.html` list every row (sortable, default Adj. MA). Import the `ranking_rows.html.j2` macro `with context` so it sees `root`.
 
 **Shrunk per-10:** Adj. MA per 10 = 10 × (Adj. MA + k·m) ÷ (PP + k), where m is the team's Adj. MA per point and k ("prior points") = per-point noise variance ÷ true-skill variance, fit by method of moments on per-game adjusted lines (`fit_shrinkage`; about 49 on current data). It replaces the 20-point cutoff for that column; `tables.js` applies the same formula after season filtering. Plain MA per 10 keeps the cutoff.
 ## Testing

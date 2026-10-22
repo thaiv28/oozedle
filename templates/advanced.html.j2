@@ -28,4 +28,5 @@
 <p class="quiet-link"><a href="{{ root }}advanced/careers.html">All careers</a></p>
 <h2 class="ledger-title">Best at each tournament</h2>
 <div class="ledger-wrap"><table class="ledger ledger--performances"><caption class="visually-hidden">Best adjusted margin added at each tournament across seasons</caption>{{ headers(['Tournament','Player','Season','Adj. MA']) }}<tbody>{% for p in best_tournaments %}<tr><th scope="row">{{ p.tournament_name }}</th><td><a href="{{ root }}players/{{ p.player_id }}.html">{{ p.name }}</a></td><td>{{ p.season }}</td><td>{{ p.adj_ma|statnum(1) }}</td></tr>{% endfor %}</tbody></table></div>
+<p class="quiet-link"><a href="{{ root }}advanced/tournaments.html">All tournaments</a></p>
 {% endblock %}

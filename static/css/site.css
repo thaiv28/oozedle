@@ -1050,3 +1050,9 @@ body:has(main.wide) .site-foot {
     display: none;
   }
 }
+
+@media (max-width: 519px) {
+  .ledger--bests tr > :nth-child(4) {
+    display: none;
+  }
+}
