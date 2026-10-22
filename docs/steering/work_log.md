@@ -2,6 +2,10 @@
 
 Newest first. One entry per substantive change: what changed, checks actually run, remaining limits. At most 150 words each.
 
+## 2026-10-21 — Live on oozedle.thaiv.dev
+
+Merged the revamp; the first `publish.yml` run on main deployed (check, build, deploy green). Verified live: home, players, a player page, a tournament page and the favicon return 200, and a missing page returns 404. Ran `pages-redirect.yml`: thaiv28.github.io/oozedle and the year pages redirect (checked with curl). Pages stays on to serve the redirect; docs corrected. Set the repo homepage. Recorded that "Juice" is not an alias. Updated impeccable to 4.7.0; `impeccable doctor` reports only an unset `buildPath`.
+
 ## 2026-10-21 — Finish review fixes
 
 Impeccable finish review (two rounds, fresh reviewer): fix, then fix with all eight items resolved or disclosed. Changes: phone tables drop Tourn./GP and "#" under 520px and use auto layout (no table or page overflow at 390, measured); board scales again at ≥1100px; season rail styled as chips; text column heads left, narrow "#" column; current-row number 19px. Bug found while capturing: an ended game left the guess form visible (`display: grid` beat `[hidden]`); fixed globally. Checks: pytest, ruff, headless loss and win play-throughs, share text, focus capture, PR CI (check and build green, live Drive sync 17/17). Limit: the responsive gate stays open by decision (it compares desktop to the phone comp); recorded with `build-phase note`.

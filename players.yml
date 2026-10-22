@@ -1,2 +1,3 @@
 # Raw sheet name → canonical name; merges nicknames/misspellings across seasons.
+# Checked 2026-10-21: "Juice" (2024 SVR only) is a separate player, not an alias.
 aliases: {}

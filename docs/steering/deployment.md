@@ -25,8 +25,8 @@ Repository settings (set 2026-10-21):
 
 The scheduled `keepalive` job re-enables this workflow through `gh api` using the workflow token, preventing GitHub's inactivity shutdown after 60 days.
 
-`pages-redirect.yml` is manual-only. It writes canonical/meta-refresh/link redirects for the index, 404 and 2024–2026 pages (years retain `?season=YYYY`), then configures Pages, uploads and deploys the redirect artifact in the `github-pages` environment. Run once after merge, then turn off Pages in repository settings.
+`pages-redirect.yml` is manual-only. It writes canonical/meta-refresh/link redirects for the index, 404 and 2024–2026 pages (years retain `?season=YYYY`), then configures Pages, uploads and deploys the redirect artifact in the `github-pages` environment. Ran 2026-10-21; rerun only if the redirect pages change. Keep Pages enabled: it serves the redirect, and turning it off would make the old links 404.
 
 ## Old site
 
-The site used to be on GitHub Pages at `thaiv28.github.io/oozedle` (former workflow `static.yml`, removed; its daily cron was disabled by GitHub on 2026-04-07 after 60 days without commits). It is being retired behind a redirect to oozedle.thaiv.dev.
+The site used to be on GitHub Pages at `thaiv28.github.io/oozedle` (former workflow `static.yml`, removed; its daily cron was disabled by GitHub on 2026-04-07 after 60 days without commits). Since 2026-10-21 every old page redirects to oozedle.thaiv.dev (year pages to `?season=YYYY`), and the repo's homepage link points there.
