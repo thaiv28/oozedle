@@ -369,14 +369,14 @@ def stats_context(
         ],
         best_performances=performances[:10],
         best_tournaments=[best[name] for name in sorted(best)],
-        # Every tournament played, in the order they happened, with its top line by Adj. MA.
+        # Every tournament played, most recent first, with its top line by Adj. MA.
         tournament_bests=[
             dict(
                 max(t["box"], key=lambda r: r["adj_ma"]),
                 tournament_name=t["name"],
                 season=t["season"],
             )
-            for t in sorted(tournaments, key=lambda t: (t["season"], t["order"]))
+            for t in sorted(tournaments, key=lambda t: (t["season"], t["order"]), reverse=True)
             if t["box"]
         ],
         players=players,
