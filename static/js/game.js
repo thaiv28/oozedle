@@ -419,6 +419,7 @@
 
   input.addEventListener("input", openList);
   input.addEventListener("focus", openList);
+  input.addEventListener("click", openList); // already focused after a guess, so focus alone would not reopen it
   input.addEventListener("blur", () => setTimeout(closeList, 100));
   input.addEventListener("keydown", (e) => {
     if (e.key === "ArrowDown" || e.key === "ArrowUp") {

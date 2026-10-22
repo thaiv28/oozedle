@@ -1,5 +1,9 @@
 # Work log
 
+## 2026-10-21 — Guess list reopens on click
+
+After a guess the input keeps focus, so clicking it fired no `focus` event and the player list stayed closed. `game.js` now also opens the list on `click`. Checks: headless Chrome at 390 (tap) and 1280 (click): after a guess, a tap/click shows all 20 remaining names; typing still filters; clearing restores the full list. pytest and ruff pass.
+
 ## 2026-10-21 — Advanced page trimmed to MA
 
 Removed the "What wins games" section (blocks-and-turnovers model) and the held-out-fit sentence from `advanced.html`; dropped the second model from `advanced.py`. Model details keep MA's intercept, R² and CV R². Checks: pytest, ruff, build, page rendered on localhost.
