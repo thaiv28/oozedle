@@ -2,6 +2,10 @@
 
 Newest first. One entry per substantive change: what changed, checks actually run, remaining limits. At most 150 words each.
 
+## 2026-10-21 — Visual pass on the whole site
+
+Batched desktop (1440) and phone (390) review of every page type. Fixed: stats pages' top bar and footer now share the 960px measure; career row fits phones; lighter link underlines in tables; game board scales up at ≥720px; share header reads "SVR 2026"; SVG favicon; puzzle #1 is 2026-10-21; disclosure marker redrawn. Played a full game headless (autocomplete, unknown-name error, loss, share text, reload restores progress, record, season switch) and exercised leaderboard season/search/sort. Checks: pytest, ruff, impeccable detect (clean). Limit: impeccable's responsive gate compares the desktop capture to the phone comp and fails by construction (51%); not chased.
+
 ## 2026-10-21 — Stats pages and publishing workflows
 
 Added Field Board player and tournament pages, leaderboard season/search controls, sortable ledgers, and a root-relative 404. Page contexts are computed in `site.py`; fractional source values are preserved. Added offline build/link tests, publish checks/build/deploy/keepalive and a manual Pages redirect workflow. Removed the old site and scripts. Checks: `uv run --no-sync ruff format`, `ruff check`, `pytest -q` (27 passed), and the real-data site build (51 players, 17 tournaments, 12 data warnings); JS syntax and diff whitespace checks passed. Plain `uv run` crashed in macOS system configuration; headless Chrome/Firefox aborted, so desktop/phone visuals and browser interactions remain unverified. Publishing remains in progress until the workflow runs on main; no deployment or redirect run was attempted.

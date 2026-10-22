@@ -718,10 +718,12 @@ main.wide {
 .tournament-detail summary::before {
   content: "";
   position: absolute;
+  top: calc(50% - 4px);
   left: 8px;
-  border-top: 4px solid transparent;
-  border-bottom: 4px solid transparent;
-  border-left: 6px solid var(--ink);
+  width: 7px;
+  height: 8px;
+  background: var(--ink);
+  clip-path: polygon(0 0, 100% 50%, 0 100%);
 }
 .tournament-detail[open] summary::before {
   transform: rotate(90deg);

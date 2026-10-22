@@ -6,7 +6,7 @@
   "direction": "84bd94cf",
   "breakpoint": "1024x1536",
   "artifact": "templates/index.html.j2",
-  "phase": "sections",
+  "phase": "responsive",
   "phases": {
     "comps": {
       "status": "closed",
@@ -383,30 +383,128 @@
       ]
     },
     "sections": {
-      "status": "open",
+      "status": "closed",
       "openedAt": "2026-10-22T00:33:52.981Z",
-      "closedAt": null,
-      "attempts": 0,
+      "closedAt": "2026-10-22T00:42:39.295Z",
+      "attempts": 1,
       "notes": [],
-      "gate": null,
+      "gate": {
+        "ok": true,
+        "reasons": [],
+        "summary": "no mechanical gate",
+        "at": "2026-10-22T00:42:39.294Z"
+      },
       "forced": null
     },
     "motion": {
-      "status": "pending",
-      "openedAt": null,
-      "closedAt": null,
-      "attempts": 0,
+      "status": "closed",
+      "openedAt": "2026-10-22T00:42:39.295Z",
+      "closedAt": "2026-10-22T00:42:43.325Z",
+      "attempts": 1,
       "notes": [],
-      "gate": null,
+      "gate": {
+        "ok": true,
+        "reasons": [],
+        "summary": "no mechanical gate",
+        "at": "2026-10-22T00:42:43.325Z"
+      },
       "forced": null
     },
     "responsive": {
-      "status": "pending",
-      "openedAt": null,
+      "status": "open",
+      "openedAt": "2026-10-22T00:42:43.325Z",
       "closedAt": null,
-      "attempts": 0,
+      "attempts": 1,
       "notes": [],
-      "gate": null,
+      "gate": {
+        "ok": false,
+        "reasons": [
+          "the desktop capture (1440x900; the top 1024x1536 rows scaled to the comp's width are compared, a full-page capture is fine) scores 51% against the comp, under 65%: the first viewport does not survive a common desktop width. The hero passed at 1024x1536; the layout must hold from ~1280 up, not only at the comp's exact width (grid columns in fr / minmax, not fixed px that overflow and wrap).",
+          "at desktop width, region wordmark is missing",
+          "at desktop width, region nav is missing",
+          "at desktop width, region topbar-rule is missing",
+          "at desktop width, region puzzle-number is missing",
+          "at desktop width, region header-divider is missing",
+          "at desktop width, region instruction is missing",
+          "at desktop width, region table-head is missing",
+          "at desktop width, region row-1 is missing",
+          "at desktop width, region row-2 is missing",
+          "at desktop width, region row-3 is missing",
+          "at desktop width, region empty-rows is missing",
+          "at desktop width, region guess-input is missing",
+          "at desktop width, region guess-button is missing",
+          "at desktop width, region section-rule is missing",
+          "at desktop width, region yesterday-heading is missing",
+          "at desktop width, region yesterday-player is missing",
+          "at desktop width, region yesterday-line is missing",
+          "at desktop width, region date (text) is contradicted (structure 22%)",
+          "at desktop width, region pool-label (text) is contradicted (structure 13%)"
+        ],
+        "regionReasons": {
+          "wordmark": [
+            "at desktop width, region wordmark is missing"
+          ],
+          "nav": [
+            "at desktop width, region nav is missing"
+          ],
+          "topbar-rule": [
+            "at desktop width, region topbar-rule is missing"
+          ],
+          "puzzle-number": [
+            "at desktop width, region puzzle-number is missing"
+          ],
+          "header-divider": [
+            "at desktop width, region header-divider is missing"
+          ],
+          "instruction": [
+            "at desktop width, region instruction is missing"
+          ],
+          "table-head": [
+            "at desktop width, region table-head is missing"
+          ],
+          "row-1": [
+            "at desktop width, region row-1 is missing"
+          ],
+          "row-2": [
+            "at desktop width, region row-2 is missing"
+          ],
+          "row-3": [
+            "at desktop width, region row-3 is missing"
+          ],
+          "empty-rows": [
+            "at desktop width, region empty-rows is missing"
+          ],
+          "guess-input": [
+            "at desktop width, region guess-input is missing"
+          ],
+          "guess-button": [
+            "at desktop width, region guess-button is missing"
+          ],
+          "section-rule": [
+            "at desktop width, region section-rule is missing"
+          ],
+          "yesterday-heading": [
+            "at desktop width, region yesterday-heading is missing"
+          ],
+          "yesterday-player": [
+            "at desktop width, region yesterday-player is missing"
+          ],
+          "yesterday-line": [
+            "at desktop width, region yesterday-line is missing"
+          ],
+          "date": [
+            "at desktop width, region date (text) is contradicted (structure 22%)"
+          ],
+          "pool-label": [
+            "at desktop width, region pool-label (text) is contradicted (structure 13%)"
+          ]
+        },
+        "summary": "desktop 51% (missing)",
+        "score": 0.5106,
+        "report": ".impeccable/review/diff/desktop/report.json",
+        "sideBySide": "/Users/tvillalu/repos/oozedle-revamp/.impeccable/review/diff/desktop/side-by-side.png",
+        "at": "2026-10-22T00:42:51.955Z"
+      },
       "forced": null
     },
     "review": {
