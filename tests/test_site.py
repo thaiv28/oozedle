@@ -176,7 +176,3 @@ def test_summary_adjustment_uses_player_weights_and_missing_game_fallback(
         by_player["ben"]["ma"] * sum(p * f for p, f in zip(points, factors)) / sum(points)
     )
     assert by_player["ben"]["adj_ma"] != pytest.approx(by_player["ben"]["ma"] * sum(factors) / 3)
-
-
-def test_adjusted_totals_add_up(site_dataset, tmp_path):
-    context = stats_context(site_dataset, ratings_dir=tmp_path / "absent")
