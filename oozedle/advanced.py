@@ -22,7 +22,6 @@ class LinearFit:
 class MarginModel:
     weights: dict[str, float]
     scoring: LinearFit
-    possession: LinearFit
 
 
 def game_totals(ds) -> pd.DataFrame:
@@ -80,7 +79,6 @@ def fit_margin_model(ds) -> MarginModel:
     frame = game_totals(ds)
     frame["S"] = (frame.assists + frame.goals) / 2
     scoring = fit(frame, ("S", "blocks", "turnovers"))
-    possession = fit(frame, ("blocks", "turnovers"))
     return MarginModel(
         dict(
             assists=scoring.coef[0] / 2,
@@ -89,7 +87,6 @@ def fit_margin_model(ds) -> MarginModel:
             turnovers=scoring.coef[2],
         ),
         scoring,
-        possession,
     )
 
 
