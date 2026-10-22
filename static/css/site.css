@@ -941,3 +941,83 @@ body:has(main.wide) .site-foot {
     font-size: 28px;
   }
 }
+
+/* Box/Advanced controls share the season-chip treatment. */
+.view-controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+.view-switch {
+  display: flex;
+  gap: 6px;
+}
+.view-switch button {
+  min-width: 52px;
+  padding: 6px 10px;
+  border: 1px solid var(--ink);
+  background: var(--board);
+  color: var(--ink);
+  font: 700 18px/1.35 var(--display);
+  cursor: pointer;
+}
+.view-switch button[aria-pressed="true"] {
+  background: var(--ink);
+  color: var(--board);
+}
+.quiet-link {
+  font-size: 16px;
+  color: var(--ink-soft);
+}
+.ledger[data-view="box"] .v-adv,
+.ledger[data-view="advanced"] .v-box {
+  display: none;
+}
+.ledger--advanced th,
+.ledger--advanced td {
+  min-width: 0;
+}
+.model-details summary {
+  cursor: pointer;
+  margin-bottom: 12px;
+}
+@media (max-width: 519px) {
+  .ledger--players .phone-gp,
+  .ledger--players [data-key="tournaments"],
+  .ledger--players tbody .v-box:first-of-type,
+  .ledger--tournament[data-view="advanced"] .phone-gp {
+    display: none;
+  }
+  .ledger--players th,
+  .ledger--players td,
+  .ledger--advanced th,
+  .ledger--advanced td,
+  .ledger--tournament th,
+  .ledger--tournament td {
+    padding: 6px 3px;
+    min-width: 0;
+  }
+  .ledger--players thead th,
+  .ledger--advanced thead th {
+    font-size: 14px;
+    white-space: normal;
+  }
+  .ledger--advanced th[scope="row"] {
+    font-size: 16px;
+  }
+  .ledger--performances th,
+  .ledger--performances td {
+    min-width: 0;
+    white-space: normal;
+    overflow-wrap: anywhere;
+    padding: 6px 4px;
+  }
+}
+
+@media (max-width: 519px) {
+  .ledger--top tr > :nth-child(3) {
+    display: none;
+  }
+}

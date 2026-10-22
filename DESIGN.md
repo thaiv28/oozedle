@@ -198,6 +198,8 @@ Square and ruled. Controls (inputs, button, season chips, rail chips) take a 3px
 - **Style:** Board Stock fill, 1.5px ink border (1px on stats-page buttons), 3px corners on links, display face 18px, min-width 52px.
 - **State:** the selected season is inverted (ink fill, board text; `aria-current` or `aria-pressed`). The rail on the tournaments page sizes each chip by its share of the season's tournaments; hover inverts.
 
+The Box/Advanced view switch reuses the season chip style: ink borders, inverted selected state via `aria-pressed`, and the same display face. A shared button group changes ledger columns and preserves its choice in the URL; switching to Advanced sorts by MA.
+
 ### Inputs / Fields
 - **Guess input:** Raised Board fill, 1.5px Strong Rule border, 3px corners, 18px Sofia 600, orange caret. Focus swaps the border to ink and doubles it with a 2px ink box-shadow ring (no browser outline).
 - **Combobox list:** opens above the input, Raised Board, 1.5px ink border, max 220px tall, scrolling. Options are 18px/700; the highlighted option inverts to ink.

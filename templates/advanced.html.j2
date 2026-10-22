@@ -1,0 +1,27 @@
+{% extends "base.html.j2" %}
+{% from "ledger.html.j2" import headers %}
+{% set nav = "players" %}
+{% block title %}Advanced · Oozedle{% endblock %}
+{% block main_class %} class="wide"{% endblock %}
+{% block main %}
+<h1 class="page-head">Advanced</h1>
+<h2 class="ledger-title">+/-</h2>
+<p>Assists + goals + blocks − turnovers.</p>
+<h2 class="ledger-title">Margin added</h2>
+<p>Each stat weighted by how much it moved the score, from a linear regression of game margin on team totals over {{ model.scoring.n }} games.</p>
+<div class="ledger-wrap"><table class="ledger"><caption class="visually-hidden">Margin added weights</caption>{{ headers(['Stat', 'Goals of margin', '95% interval']) }}<tbody>
+{% for label,index,scale in [('Assist',0,0.5),('Goal',0,0.5),('Block',1,1),('Turnover',2,1)] %}<tr><th scope="row">{{ label }}</th><td>{{ (model.scoring.coef[index] * scale)|statnum(2) }}</td><td>{{ (model.scoring.low[index] * scale)|statnum(2) }} to {{ (model.scoring.high[index] * scale)|statnum(2) }}</td></tr>{% endfor %}
+</tbody></table></div>
+<p class="fact-line">Explains {{ (model.scoring.cv_r2 * 100)|statnum(0) }}% of margin in held-out games (10-fold).</p>
+<h2 class="ledger-title">What wins games</h2>
+<p>Blocks and turnovers alone, per game:</p>
+<div class="ledger-wrap"><table class="ledger"><caption class="visually-hidden">Blocks and turnovers model</caption>{{ headers(['Stat', 'Goals of margin', '95% interval']) }}<tbody>
+{% for label in ['Block','Turnover'] %}<tr><th scope="row">{{ label }}</th><td>{{ model.possession.coef[loop.index0]|statnum(2) }}</td><td>{{ model.possession.low[loop.index0]|statnum(2) }} to {{ model.possession.high[loop.index0]|statnum(2) }}</td></tr>{% endfor %}
+</tbody></table></div>
+<p class="fact-line">Explains {{ (model.possession.cv_r2 * 100)|statnum(0) }}% of margin in held-out games (10-fold).</p>
+<details class="model-details"><summary>Model details</summary><div class="ledger-wrap"><table class="ledger ledger--performances"><caption class="visually-hidden">Model fit statistics</caption>{{ headers(['Model','Intercept','R²','CV R²']) }}<tbody>{% for label,fit in [('Margin added',model.scoring),('Blocks and turnovers',model.possession)] %}<tr><th scope="row">{{ label }}</th><td>{{ fit.intercept|statnum(2) }}</td><td>{{ fit.r2|statnum(3) }}</td><td>{{ fit.cv_r2|statnum(3) }}</td></tr>{% endfor %}</tbody></table></div></details>
+<h2 class="ledger-title">Best performances</h2>
+<div class="ledger-wrap"><table class="ledger ledger--performances ledger--top"><caption class="visually-hidden">Ten best tournament performances by margin added</caption>{{ headers(['Player','Tournament','PP','+/-','MA']) }}<tbody>{% for p in best_performances %}<tr><th scope="row"><a href="{{ root }}players/{{ p.player_id }}.html">{{ p.name }}</a></th><td><a href="{{ root }}tournaments/{{ p.tournament_id }}.html">{{ p.tournament_name }} · {{ p.season }}</a></td><td>{{ p.points_played|statnum }}</td><td>{{ p.plus_minus|statnum }}</td><td>{{ p.ma|statnum(1) }}</td></tr>{% endfor %}</tbody></table></div>
+<h2 class="ledger-title">Best at each tournament</h2>
+<div class="ledger-wrap"><table class="ledger ledger--performances"><caption class="visually-hidden">Best margin added at each tournament across seasons</caption>{{ headers(['Tournament','Player','Season','MA']) }}<tbody>{% for p in best_tournaments %}<tr><th scope="row">{{ p.tournament_name }}</th><td><a href="{{ root }}players/{{ p.player_id }}.html">{{ p.name }}</a></td><td>{{ p.season }}</td><td>{{ p.ma|statnum(1) }}</td></tr>{% endfor %}</tbody></table></div>
+{% endblock %}

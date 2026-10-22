@@ -21,8 +21,15 @@
     const rows = [...table.tBodies[0].rows];
     const value = (row) => row.cells[state.column].dataset.value ?? row.cells[state.column].textContent.trim();
     rows.sort((a, b) => {
-      const cmp = headers[state.column].dataset.type === "number"
-        ? Number(value(a)) - Number(value(b)) : value(a).localeCompare(value(b));
+      const numeric = headers[state.column].dataset.type === "number";
+      const aValue = value(a), bValue = value(b);
+      if (numeric) {
+        const aMissing = aValue === "" || !Number.isFinite(Number(aValue));
+        const bMissing = bValue === "" || !Number.isFinite(Number(bValue));
+        if (aMissing !== bMissing) return aMissing ? 1 : -1;
+        if (aMissing) return a.cells[0].textContent.localeCompare(b.cells[0].textContent);
+      }
+      const cmp = numeric ? Number(aValue) - Number(bValue) : aValue.localeCompare(bValue);
       return (state.direction === "descending" ? -cmp : cmp) || a.cells[0].textContent.localeCompare(b.cells[0].textContent);
     });
     table.tBodies[0].append(...rows);
@@ -40,9 +47,36 @@
     }));
     sort(table);
   });
+  document.querySelectorAll(".view-switch").forEach(control => {
+    const table = document.getElementById(control.dataset.table);
+    const setView = view => {
+      table.dataset.view = view;
+      control.querySelectorAll("button").forEach(button =>
+        button.setAttribute("aria-pressed", String(button.dataset.view === view)));
+      const key = view === "advanced" ? "ma" : "points_played";
+      const column = [...table.tHead.rows[0].cells].findIndex(th => th.dataset.key === key);
+      states.set(table, {column, direction: "descending"});
+      sort(table);
+    };
+    const view = new URL(location.href).searchParams.get("view");
+    setView(view === "advanced" ? "advanced" : "box");
+    control.querySelectorAll("button").forEach(button => button.addEventListener("click", () => {
+      setView(button.dataset.view);
+      const next = new URL(location.href);
+      if (button.dataset.view === "advanced") next.searchParams.set("view", "advanced");
+      else next.searchParams.delete("view");
+      history.replaceState(null, "", next);
+    }));
+  });
+  const format = (value, decimals) => {
+    if (value === null) return "—";
+    let text = decimals === undefined ? String(value) : value.toFixed(decimals);
+    if (Number(text) === 0) text = text.replace("-", "");  // no "−0.0" from rounding
+    return text.replace(/-/g, "−");
+  };
   const data = document.getElementById("players-data");
   if (!data) return;
-  const lines = JSON.parse(data.textContent);
+  const {lines, weights} = JSON.parse(data.textContent);
   const table = document.getElementById("players-table");
   const input = document.getElementById("player-search");
   const buttons = [...document.querySelectorAll("[data-player-seasons] button")];
@@ -69,15 +103,19 @@
       link.textContent = p.name;
       name.append(link);
       row.append(name);
-      keys.slice(0, 7).forEach(k => {
+      p.plus_minus = Math.trunc(p.assists + p.goals + p.blocks - p.turnovers);
+      p.ma = Object.entries(weights).reduce((sum, [key, weight]) => sum + p[key] * weight, 0);
+      p.plus_minus_per10 = p.points_played < 20 ? null : 10 * p.plus_minus / p.points_played;
+      p.ma_per10 = p.points_played < 20 ? null : 10 * p.ma / p.points_played;
+      [...table.tHead.rows[0].cells].slice(1).forEach(header => {
+        const key = header.dataset.key;
         const cell = document.createElement("td");
-        cell.textContent = p[k];
+        cell.className = header.className;
+        cell.dataset.value = p[key] === null ? "" : p[key];
+        cell.textContent = key === "wins" ? `${p.wins}–${p.losses}`
+          : format(p[key], ["ma", "ma_per10", "plus_minus_per10"].includes(key) ? 1 : undefined);
         row.append(cell);
       });
-      const record = document.createElement("td");
-      record.textContent = `${p.wins}–${p.losses}`;
-      record.dataset.value = p.wins;
-      row.append(record);
       rows.push(row);
     });
     table.tBodies[0].replaceChildren(...rows);

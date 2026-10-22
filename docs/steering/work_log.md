@@ -2,6 +2,10 @@
 
 Newest first. One entry per substantive change: what changed, checks actually run, remaining limits. At most 150 words each.
 
+## 2026-10-21 — Advanced stats (local)
+
+Added box +/-, per-10 rates, regression-weighted margin added, shared Box/Advanced column switches, player advanced totals, and the Advanced model/performance page. Summary totals remain authoritative. On 92 real games, M1 intercept −11.9013, S/B/T coefficients 1.3265/0.3516/−0.1685, CV R² 0.8402; M2 intercept 0.1674, B/T 1.1515/−0.5762, CV R² 0.6083. Both use 2,000 bootstrap resamples and shuffled 10-fold predictions. Checks: `uv run --no-sync ruff format`, `ruff check`, `pytest -q` (30 passed), real-data build (51 players, 17 tournaments), and design detector (advisories only). Plain `uv run` crashes in macOS system configuration; desktop/phone browser verification unavailable because headless Chrome aborts. Local only; no commit or deployment.
+
 ## 2026-10-21 — Live on oozedle.thaiv.dev
 
 Merged the revamp; the first `publish.yml` run on main deployed (check, build, deploy green). Verified live: home, players, a player page, a tournament page and the favicon return 200, and a missing page returns 404. Ran `pages-redirect.yml`: thaiv28.github.io/oozedle and the year pages redirect (checked with curl). Pages stays on to serve the redirect; docs corrected. Set the repo homepage. Recorded that "Juice" is not an alias. Updated impeccable to 4.7.0; `impeccable doctor` reports only an unset `buildPath`.
