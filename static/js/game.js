@@ -239,6 +239,15 @@
     const share = el("button", { class: "btn btn--ink", type: "button", text: "Share" });
     share.addEventListener("click", async () => {
       const text = shareText();
+      // Phones get the system share sheet (Messages, Copy, ...); desktops copy.
+      if (typeof navigator.share === "function" && matchMedia("(pointer: coarse)").matches) {
+        try {
+          await navigator.share({ text });
+          return;
+        } catch (error) {
+          if (error.name === "AbortError") return; // closed the sheet
+        }
+      }
       try {
         await navigator.clipboard.writeText(text);
         share.textContent = "Copied";
