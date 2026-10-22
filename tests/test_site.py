@@ -1,6 +1,7 @@
 """Offline site builds and link integrity across both workbook layouts."""
 
 import json
+import re
 from html.parser import HTMLParser
 from urllib.parse import unquote, urlsplit
 
@@ -95,3 +96,18 @@ def test_season_totals(site_dataset):
     for player in context["players"]:
         seasons = [line for line in lines if line["player_id"] == player["player_id"]]
         assert sum(line["points_played"] for line in seasons) == player["career"]["points_played"]
+
+
+def test_link_preview_tags(site_dataset, tmp_path):
+    ds = site_dataset
+    out = tmp_path / "preview"
+    build(ds, out)
+    html = (out / "index.html").read_text()
+    image = re.search(r'<meta property="og:image" content="([^"]+)"', html).group(1)
+    assert image.startswith("https://oozedle.thaiv.dev/static/og/card.png?v=")
+    assert (out / "static/og/card.png").is_file()
+    assert (out / "static/apple-touch-icon.png").is_file()
+    assert '<meta property="og:url" content="https://oozedle.thaiv.dev/">' in html
+    assert '<meta name="twitter:card" content="summary_large_image">' in html
+    player = next((out / "players").glob("*.html")).read_text()
+    assert re.search(r'<meta property="og:description" content="[^"]* tournaments · ', player)

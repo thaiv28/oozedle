@@ -48,6 +48,8 @@ Names map through `players.yml` aliases. Validation warns when per-game sums dif
 - **Stats:** `players.html`, `players/<player_id>.html`, `tournaments.html`, `tournaments/<tournament_id>.html`, and `404.html` use the shared base. Page context (totals, joins, ordering) is precomputed in `site.py`. `tables.js` sorts ledger tables and filters/reaggregates the players leaderboard by season and search; server-rendered totals work without JavaScript. The 404 uses root-relative links.
 - **Hero fixture:** `build_site.py --hero DIR` renders the game on synthetic data reproducing the approved design comp (#214, PDQ 2026, Rowan/Farmer/Colin). Used only for impeccable's comp diff.
 
+**Link previews:** `base.html.j2` emits canonical, Open Graph and `twitter:card` tags with absolute URLs (`SITE_URL` in `site.py`); player and tournament pages set their own description. The card (`static/og/card.png`, 1200×630) and `static/apple-touch-icon.png` are committed renders of `scripts/og_card.html` and the favicon: rerun `uv run --with playwright python scripts/render_og.py` when the design changes (kept out of CI to avoid a browser install).
+
 ## Advanced stats
 
 `oozedle/advanced.py` fits once per build; stats contexts keep full precision until display. Margin added (MA) = wA·A + wG·G + wB·B + wT·T, displayed to one decimal. Totals use authoritative Summary totals, including the Alumni Game.

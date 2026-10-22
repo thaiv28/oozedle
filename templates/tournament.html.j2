@@ -1,7 +1,8 @@
 {% extends "base.html.j2" %}
 {% from "ledger.html.j2" import stats, headers, score, view_switch, view_headers, view_cells %}
 {% set nav = "tournaments" %}
-{% block title %}{{ tournament.name }} · Oozedle{% endblock %}
+{% block title %}{{ tournament.name }} {{ tournament.season }} · Oozedle{% endblock %}
+{% block description %}{{ tournament.season }} · {{ tournament.games }} games · {{ tournament.wins }}–{{ tournament.losses }}{% endblock %}
 {% block main_class %} class="wide"{% endblock %}
 {% block main %}
 <h1 class="page-head">{{ tournament.name }}</h1>
