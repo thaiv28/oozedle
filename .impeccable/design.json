@@ -1,0 +1,344 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-10-22T00:49:44.905567+00:00",
+  "title": "Design System: Oozedle",
+  "extensions": {
+    "colorMeta": {
+      "board": {
+        "role": "neutral",
+        "displayName": "Board Stock",
+        "canonical": "#f7f6ee",
+        "oklch": "oklch(97.2% 0.011 100.8)",
+        "tonalRamp": [
+          "#0c0b07",
+          "#2a2923",
+          "#494841",
+          "#6a6962",
+          "#8d8c85",
+          "#b2b1aa",
+          "#d5d4cd",
+          "#f0efe7"
+        ]
+      },
+      "board-raised": {
+        "role": "neutral",
+        "displayName": "Raised Board",
+        "canonical": "#fbfaf7",
+        "oklch": "oklch(98.5% 0.004 91.4)",
+        "tonalRamp": [
+          "#0c0b09",
+          "#2a2927",
+          "#484845",
+          "#6a6966",
+          "#8d8c89",
+          "#b2b1ae",
+          "#d5d4d1",
+          "#efeeeb"
+        ]
+      },
+      "ink": {
+        "role": "neutral",
+        "displayName": "Marker Ink",
+        "canonical": "#0a0a0a",
+        "oklch": "oklch(14.5% 0.000 89.9)",
+        "tonalRamp": [
+          "#0b0b0b",
+          "#292929",
+          "#484848",
+          "#696969",
+          "#8c8c8c",
+          "#b1b1b1",
+          "#d4d4d4",
+          "#eeeeee"
+        ]
+      },
+      "ink-soft": {
+        "role": "neutral",
+        "displayName": "Soft Ink",
+        "canonical": "#55534d",
+        "oklch": "oklch(44.2% 0.010 91.6)",
+        "tonalRamp": [
+          "#0d0b07",
+          "#2b2923",
+          "#4a4842",
+          "#6b6963",
+          "#8e8c85",
+          "#b3b1aa",
+          "#d6d4cd",
+          "#f1eee7"
+        ]
+      },
+      "marker-orange": {
+        "role": "primary",
+        "displayName": "Marker Orange",
+        "canonical": "#ff5a1f",
+        "oklch": "oklch(68.2% 0.211 37.7)",
+        "tonalRamp": [
+          "#410000",
+          "#6f0000",
+          "#990000",
+          "#c41600",
+          "#f04b00",
+          "#ff753f",
+          "#ff9a65",
+          "#ffb580"
+        ]
+      },
+      "marker-orange-pressed": {
+        "role": "primary",
+        "displayName": "Pressed Marker",
+        "canonical": "#e84c13",
+        "oklch": "oklch(62.9% 0.201 37.3)",
+        "tonalRamp": [
+          "#3f0000",
+          "#6d0000",
+          "#960000",
+          "#c12100",
+          "#ec5019",
+          "#ff7948",
+          "#ff9d6d",
+          "#ffb887"
+        ]
+      },
+      "orange-ink": {
+        "role": "primary",
+        "displayName": "Orange Ink",
+        "canonical": "#c2410c",
+        "oklch": "oklch(55.3% 0.174 38.4)",
+        "tonalRamp": [
+          "#390000",
+          "#650000",
+          "#8d0000",
+          "#b63600",
+          "#e05d31",
+          "#ff8458",
+          "#ffa87b",
+          "#ffc295"
+        ]
+      },
+      "rule": {
+        "role": "neutral",
+        "displayName": "Hairline Rule",
+        "canonical": "#cecdc6",
+        "oklch": "oklch(84.7% 0.010 100.0)",
+        "tonalRamp": [
+          "#0c0b07",
+          "#2a2924",
+          "#494842",
+          "#6a6963",
+          "#8d8c86",
+          "#b2b1aa",
+          "#d5d4cd",
+          "#f0efe7"
+        ]
+      },
+      "rule-strong": {
+        "role": "neutral",
+        "displayName": "Strong Rule",
+        "canonical": "#b9b7af",
+        "oklch": "oklch(77.9% 0.011 95.2)",
+        "tonalRamp": [
+          "#0d0b06",
+          "#2a2923",
+          "#494841",
+          "#6b6962",
+          "#8e8c85",
+          "#b3b1a9",
+          "#d6d4cc",
+          "#f1efe6"
+        ]
+      }
+    },
+    "typographyMeta": {
+      "display": {
+        "displayName": "Field Number",
+        "purpose": "The puzzle number, 88px to 156px."
+      },
+      "page-head": {
+        "displayName": "Page Head",
+        "purpose": "Player and tournament page titles."
+      },
+      "headline": {
+        "displayName": "Pool Label",
+        "purpose": "Tournament and year on the game header."
+      },
+      "title": {
+        "displayName": "Title",
+        "purpose": "Section heads, verdict, Guess button, chips."
+      },
+      "body": {
+        "displayName": "Body",
+        "purpose": "Default reading text, tabular figures."
+      },
+      "player-name": {
+        "displayName": "Player Name",
+        "purpose": "Guessed names in the board, one line with ellipsis."
+      },
+      "label": {
+        "displayName": "Label",
+        "purpose": "Column headers, nav, footnotes."
+      }
+    },
+    "shadows": [
+      {
+        "name": "combobox-list",
+        "value": "0 6px 18px rgb(20 20 20 / 0.14)",
+        "purpose": "The only shadow: lifts the upward-opening player suggestion list."
+      },
+      {
+        "name": "input-focus-ring",
+        "value": "0 0 0 2px #0a0a0a",
+        "purpose": "Hard ink doubling of the guess input border on focus; not depth."
+      }
+    ],
+    "motion": [
+      {
+        "name": "post-row",
+        "value": "260ms cubic-bezier(0.16, 1, 0.3, 1) clip-path wipe, 40ms stagger per stat cell",
+        "purpose": "A new guess row posts onto the board. Only under prefers-reduced-motion: no-preference."
+      },
+      {
+        "name": "button-hover",
+        "value": "120ms ease-out background-color",
+        "purpose": "Guess button hover."
+      }
+    ],
+    "breakpoints": [
+      {
+        "name": "tournament-rows",
+        "value": "519px"
+      },
+      {
+        "name": "table-trim",
+        "value": "520px"
+      },
+      {
+        "name": "board-md",
+        "value": "720px"
+      },
+      {
+        "name": "board-lg",
+        "value": "1100px"
+      }
+    ]
+  },
+  "components": [
+    {
+      "name": "Guess Button",
+      "kind": "button",
+      "refersTo": "button-guess",
+      "description": "The one orange control; submits a guess.",
+      "html": "<button class=\"ds-btn\">Guess</button>",
+      "css": ":root{--board:#f7f6ee;--board-raised:#fbfaf7;--ink:#0a0a0a;--ink-soft:#55534d;--orange:#ff5a1f;--rule:#cecdc6;--rule-strong:#b9b7af;--display:\"Cossette Titre\",\"Sofia Sans Condensed\",sans-serif;--text:\"Sofia Sans Condensed\",\"Arial Narrow\",sans-serif}.ds-btn{height:44px;padding:0 16px;border:0;border-radius:3px;background:var(--orange);color:#fff;font:700 23px/1 var(--display);cursor:pointer;transition:background-color 120ms ease-out}.ds-btn:hover{background:#e84c13}.ds-btn:focus-visible{outline:3px solid var(--orange);outline-offset:2px}.ds-btn:disabled{background:var(--rule-strong);cursor:not-allowed}"
+    },
+    {
+      "name": "Share Button",
+      "kind": "button",
+      "refersTo": "button-guess",
+      "description": "Ink variant used for secondary actions in the result panel.",
+      "html": "<button class=\"ds-btn-ink\">Share</button>",
+      "css": ":root{--board:#f7f6ee;--board-raised:#fbfaf7;--ink:#0a0a0a;--ink-soft:#55534d;--orange:#ff5a1f;--rule:#cecdc6;--rule-strong:#b9b7af;--display:\"Cossette Titre\",\"Sofia Sans Condensed\",sans-serif;--text:\"Sofia Sans Condensed\",\"Arial Narrow\",sans-serif}.ds-btn-ink{height:44px;padding:0 16px;border:0;border-radius:3px;background:var(--ink);color:#fff;font:700 23px/1 var(--display);cursor:pointer}.ds-btn-ink:hover{background:#2c2c2c}.ds-btn-ink:focus-visible{outline:3px solid var(--orange);outline-offset:2px}"
+    },
+    {
+      "name": "Guess Input",
+      "kind": "input",
+      "refersTo": "input-guess",
+      "description": "Player combobox input; focus doubles the border in ink.",
+      "html": "<input class=\"ds-input\" placeholder=\"Guess a player\">",
+      "css": ":root{--board:#f7f6ee;--board-raised:#fbfaf7;--ink:#0a0a0a;--ink-soft:#55534d;--orange:#ff5a1f;--rule:#cecdc6;--rule-strong:#b9b7af;--display:\"Cossette Titre\",\"Sofia Sans Condensed\",sans-serif;--text:\"Sofia Sans Condensed\",\"Arial Narrow\",sans-serif}.ds-input{width:220px;height:44px;padding:0 12px;border:1.5px solid var(--rule-strong);border-radius:3px;background:var(--board-raised);color:var(--ink);font:600 18px/1 var(--text);caret-color:var(--orange)}.ds-input:focus-visible{outline:none;border-color:var(--ink);box-shadow:0 0 0 2px var(--ink)}"
+    },
+    {
+      "name": "Season Chip",
+      "kind": "chip",
+      "refersTo": "chip-season",
+      "description": "Season filter; selected state is inverted ink.",
+      "html": "<span style=\"display:flex;gap:6px\"><a class=\"ds-chip\" href=\"#\">2025</a><a class=\"ds-chip\" aria-current=\"true\" href=\"#\">2026</a></span>",
+      "css": ":root{--board:#f7f6ee;--board-raised:#fbfaf7;--ink:#0a0a0a;--ink-soft:#55534d;--orange:#ff5a1f;--rule:#cecdc6;--rule-strong:#b9b7af;--display:\"Cossette Titre\",\"Sofia Sans Condensed\",sans-serif;--text:\"Sofia Sans Condensed\",\"Arial Narrow\",sans-serif}.ds-chip{display:inline-block;min-width:52px;padding:6px 10px;border:1.5px solid var(--ink);border-radius:3px;font:700 18px/1.35 var(--display);text-align:center;text-decoration:none;color:var(--ink)}.ds-chip[aria-current=true],.ds-chip:hover{background:var(--ink);color:var(--board)}.ds-chip:focus-visible{outline:3px solid var(--orange);outline-offset:2px}"
+    },
+    {
+      "name": "Guess Marks",
+      "kind": "custom",
+      "refersTo": "mark-same",
+      "description": "Stroked line arrows for more/fewer, solid ink block with white equals for same.",
+      "html": "<span style=\"display:flex;gap:6px\"><span class=\"ds-mark\"><svg viewBox=\"0 0 18 24\" width=\"18\" height=\"24\"><path d=\"M9 22.5V3M2 9.5 9 2.5l7 7\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"3\" stroke-linecap=\"square\"/></svg></span><span class=\"ds-mark\"><svg viewBox=\"0 0 18 24\" width=\"18\" height=\"24\"><path d=\"M9 1.5V21M2 14.5l7 7 7-7\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"3\" stroke-linecap=\"square\"/></svg></span><span class=\"ds-mark ds-same\"><svg viewBox=\"0 0 14 10\" width=\"14\" height=\"10\"><path d=\"M0 0h14v3.5H0zM0 6.5h14V10H0z\" fill=\"currentColor\"/></svg></span></span>",
+      "css": ":root{--board:#f7f6ee;--board-raised:#fbfaf7;--ink:#0a0a0a;--ink-soft:#55534d;--orange:#ff5a1f;--rule:#cecdc6;--rule-strong:#b9b7af;--display:\"Cossette Titre\",\"Sofia Sans Condensed\",sans-serif;--text:\"Sofia Sans Condensed\",\"Arial Narrow\",sans-serif}.ds-mark{display:inline-grid;place-items:center;width:31px;height:30px;color:var(--ink)}.ds-same{background:var(--ink);color:var(--board)}"
+    },
+    {
+      "name": "Guess Board Rows",
+      "kind": "custom",
+      "refersTo": "mark-same",
+      "description": "Ruled guess rows: orange current row number, struck-through wrong name.",
+      "html": "<table class=\"ds-board\"><thead><tr><th></th><th style=\"text-align:left;padding-left:9px\">Player</th><th>PP</th><th>A</th></tr></thead><tbody><tr><td class=\"ds-n\">1</td><td class=\"ds-p\"><s>Marlow</s></td><td>12</td><td>3</td></tr><tr><td class=\"ds-n ds-cur\">2</td><td class=\"ds-p\"></td><td></td><td></td></tr></tbody></table>",
+      "css": ":root{--board:#f7f6ee;--board-raised:#fbfaf7;--ink:#0a0a0a;--ink-soft:#55534d;--orange:#ff5a1f;--rule:#cecdc6;--rule-strong:#b9b7af;--display:\"Cossette Titre\",\"Sofia Sans Condensed\",sans-serif;--text:\"Sofia Sans Condensed\",\"Arial Narrow\",sans-serif}.ds-board{width:320px;border-collapse:collapse;table-layout:fixed;border:1px solid var(--rule);font-family:var(--text);color:var(--ink)}.ds-board th,.ds-board td{height:42px;padding:0;border:1px solid var(--rule);text-align:center;font-weight:800}.ds-board th{height:30px;font-size:18px}.ds-n{width:25px;font:700 19px var(--display)}.ds-cur{color:var(--orange)}.ds-p{text-align:left!important;padding-left:9px!important;font-size:22px}.ds-p s{text-decoration-thickness:2.5px}"
+    },
+    {
+      "name": "Topbar",
+      "kind": "nav",
+      "refersTo": "button-guess",
+      "description": "Slim rule-bottomed bar: wordmark left, two text links right.",
+      "html": "<div class=\"ds-top\"><a class=\"ds-wm\" href=\"#\">OOZEDLE</a><nav><a href=\"#\">Players</a><a href=\"#\" aria-current=\"page\">Tournaments</a></nav></div>",
+      "css": ":root{--board:#f7f6ee;--board-raised:#fbfaf7;--ink:#0a0a0a;--ink-soft:#55534d;--orange:#ff5a1f;--rule:#cecdc6;--rule-strong:#b9b7af;--display:\"Cossette Titre\",\"Sofia Sans Condensed\",sans-serif;--text:\"Sofia Sans Condensed\",\"Arial Narrow\",sans-serif}.ds-top{display:flex;align-items:center;justify-content:space-between;height:40px;padding:0 12px;border-bottom:1px solid var(--rule);color:var(--ink)}.ds-wm{font:700 30px/1 var(--display);text-decoration:none;color:inherit}.ds-top nav{display:flex;gap:22px;font:700 14px var(--text)}.ds-top nav a{color:inherit;text-decoration:none}.ds-top nav a:hover,.ds-top nav a[aria-current=page]{text-decoration:underline}.ds-top a:focus-visible{outline:3px solid var(--orange);outline-offset:2px}"
+    },
+    {
+      "name": "Result Panel",
+      "kind": "card",
+      "refersTo": "result-panel",
+      "description": "End-of-game panel with verdict, answer, stat line, and Share.",
+      "html": "<div class=\"ds-res\"><p class=\"ds-v\">Got it in 4</p><p class=\"ds-a\">Marlow</p><p class=\"ds-s\">PP 14 \u00b7 A 3 \u00b7 G 2 \u00b7 B 1 \u00b7 T 0</p></div>",
+      "css": ":root{--board:#f7f6ee;--board-raised:#fbfaf7;--ink:#0a0a0a;--ink-soft:#55534d;--orange:#ff5a1f;--rule:#cecdc6;--rule-strong:#b9b7af;--display:\"Cossette Titre\",\"Sofia Sans Condensed\",sans-serif;--text:\"Sofia Sans Condensed\",\"Arial Narrow\",sans-serif}.ds-res{width:320px;padding:14px 14px 16px;border:2px solid var(--ink);background:var(--board-raised);color:var(--ink);font-family:var(--text)}.ds-res p{margin:0}.ds-v{font:700 26px/1.05 var(--display)}.ds-a{margin-top:6px!important;font-size:18px;font-weight:800}.ds-s{margin-top:4px!important;font-size:16px;font-weight:700}"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Field Board",
+    "overview": "Oozedle looks like the laminated schedule and bracket sheet zip-tied to the fence at a college ultimate tournament: white board stock, black marker type, ruled boxes, and one orange marker used to circle the thing that is happening now. Every page is a sheet someone posted for teammates who already know the names. Nothing is decorated; information is the decoration.\n\nThe first screen is a posting, not an app. A huge field number (\"#214\") sits left of a vertical rule, with the date, the pool label (tournament and year) and the instruction at its right; a six-row ruled table fills the middle; the guess control sits directly under it. Stats pages are the same sheet at a wider measure: big title, ruled ledgers, a row of season chips. The system explicitly refuses the Wordle tile grid and the stats-dashboard card stack.\n\nDense, flat, legible one-handed on a phone. Copy is minimal and never shames a player: no worst lists, no bottom-of-leaderboard callouts.",
+    "keyCharacteristics": [
+      "One heavy display face for every number and head, one condensed text face for everything else.",
+      "Hairline rules do the work of boxes, cards, and shadows.",
+      "A single orange marker, once per view.",
+      "Feedback is carried by shape (arrows, solid blocks, strike-through), never by color.",
+      "Mobile-first, one narrow column, scaling up in steps."
+    ],
+    "rules": [
+      {
+        "name": "The One Marker Rule",
+        "body": "Orange marks exactly one current or active thing per view: the Guess button, the current row number, or the active sort triangle. If a second thing wants orange, it is wrong; make it ink.",
+        "section": "colors"
+      },
+      {
+        "name": "The Never-Color-Alone Rule",
+        "body": "No state is communicated by color. Higher/lower is an arrow, equal is a solid block, wrong is struck through, selected is inverted ink. Color may reinforce, never carry.",
+        "section": "colors"
+      },
+      {
+        "name": "The Two-Voice Rule",
+        "body": "Display face for numbers and heads, condensed face for words. Never set a sentence in the display face, never a headline number in the condensed one.",
+        "section": "typography"
+      },
+      {
+        "name": "The Flat Sheet Rule",
+        "body": "Nothing floats except the open combobox list. A new surface gets a rule, not a shadow.",
+        "section": "elevation"
+      }
+    ],
+    "dos": [
+      "**Do** separate content with 1px rules in #cecdc6 and give it hierarchy with type size and weight.",
+      "**Do** use Marker Orange (#ff5a1f) for one current/active thing per view.",
+      "**Do** encode every state in shape or text as well as color: arrows, solid equals block, strikethrough, inversion, a labeled `role=\"img\"` on each mark.",
+      "**Do** center numbers and left-align text, with tabular figures, in every table.",
+      "**Do** drop low-value columns under 520px rather than scroll a table sideways.",
+      "**Do** build new game surfaces mobile-first inside the 640px column and scale at 720px and 1100px; stats surfaces use the 960px column.",
+      "**Do** keep copy short and neutral, and celebrate performances.",
+      "**Do** keep every control keyboard reachable with the visible orange focus outline."
+    ],
+    "donts": [
+      "**Don't** add shadows (except the combobox list), gradients, textures, or cards.",
+      "**Don't** return to a Wordle-style tile grid or a dashboard card stack.",
+      "**Don't** use color alone for any state, and don't add green/red correctness colors.",
+      "**Don't** use orange for decoration, links, or a second item in the same view.",
+      "**Don't** shame players: no \"worst\" lists, no bottom-of-table callouts, no mocking loss copy.",
+      "**Don't** set sentences in the display face or numbers in the condensed face.",
+      "**Don't** use pills, circles, or radii above 3px.",
+      "**Don't** invent photos, logos, or bios; none exist."
+    ]
+  }
+}

@@ -756,16 +756,17 @@ main.wide {
 .tournament-nav span:last-child {
   text-align: right;
 }
-@media (max-width: 480px) {
+@media (max-width: 519px) {
   .tournament-row {
-  grid-template-columns: minmax(0, 1fr) repeat(5, 32px);
-  font-size: 16px;
-  gap: 2px;
-}
+    grid-template-columns: minmax(0, 1fr) repeat(5, 32px);
+    gap: 2px;
+    font-size: 16px;
+  }
+
   .tournament-row small {
-  display: block;
-  font-size: 12px;
-}
+    display: block;
+    font-size: 12px;
+  }
 }
 
 .ledger--numbered tr > :first-child {
@@ -901,8 +902,12 @@ body:has(main.wide) .site-foot {
     display: none;
   }
 
+  .ledger--numbered {
+    table-layout: auto;
+  }
+
   .ledger--numbered tr > :nth-child(2) {
-    width: 32%;
+    width: auto;
   }
 
   .ledger th,
