@@ -684,7 +684,7 @@ main.wide {
 }
 .tournament-row {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) repeat(5, 48px) 60px;
+  grid-template-columns: minmax(0, 1fr) repeat(5, 48px) max-content;
   align-items: center;
   gap: 4px;
   min-height: 48px;
@@ -753,7 +753,7 @@ main.wide {
 }
 @media (max-width: 519px) {
   .tournament-row {
-    grid-template-columns: minmax(0, 1fr) repeat(5, 32px) 46px;
+    grid-template-columns: minmax(0, 1fr) repeat(5, 32px) max-content;
     gap: 2px;
     font-size: 16px;
   }
@@ -1076,4 +1076,13 @@ main {
   .topnav {
     gap: 12px;
   }
+}
+
+/* AMA/10 reads as one unit, label beside the number, at every width. */
+.tournament-row .row-rate {
+  padding-left: 4px;
+  white-space: nowrap;
+}
+.tournament-row .row-rate small {
+  display: inline;
 }
