@@ -99,6 +99,44 @@ def per10(value, points_played) -> float | None:
 
 
 @dataclass(frozen=True)
+class Shrinkage:
+    """Per-10 rates pulled toward the team rate, as if each player also played
+    `prior_points` more points at `mean_rate` (empirical Bayes)."""
+
+    prior_points: float
+    mean_rate: float
+
+    def per10(self, value: float, points_played: float) -> float | None:
+        if points_played <= 0:
+            return None
+        if np.isinf(self.prior_points):
+            return 10 * self.mean_rate
+        return (
+            10 * (value + self.prior_points * self.mean_rate) / (points_played + self.prior_points)
+        )
+
+
+def fit_shrinkage(games: pd.DataFrame, mean_rate: float) -> Shrinkage:
+    """Method of moments on per-game lines (player_id, points_played, value).
+
+    Per-point noise comes from each player's games around their own rate; the true
+    spread between players is what remains of the observed spread after that noise.
+    prior_points = noise variance / true-skill variance.
+    """
+    lines = games[games.points_played > 0]
+    totals = lines.groupby("player_id")[["value", "points_played"]].sum()
+    if len(totals) < 2 or len(lines) <= len(totals):
+        return Shrinkage(0.0, mean_rate)
+    own = lines.player_id.map(totals.value / totals.points_played)
+    residual = lines.value / lines.points_played - own
+    noise = float((lines.points_played * residual**2).sum() / (len(lines) - len(totals)))
+    rates = totals.value / totals.points_played
+    observed = float(np.average((rates - mean_rate) ** 2, weights=totals.points_played))
+    skill = observed - noise * len(totals) / float(totals.points_played.sum())
+    return Shrinkage(noise / skill if skill > 0 else float("inf"), mean_rate)
+
+
+@dataclass(frozen=True)
 class Difficulty:
     a: float
     b: float

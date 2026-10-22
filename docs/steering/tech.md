@@ -66,6 +66,8 @@ Ratings live in `ratings/<season>.csv` (rank, team, record, rating), with source
 
 
 
+
+**Shrunk per-10:** Adj. MA per 10 = 10 × (Adj. MA + k·m) ÷ (PP + k), where m is the team's Adj. MA per point and k ("prior points") = per-point noise variance ÷ true-skill variance, fit by method of moments on per-game adjusted lines (`fit_shrinkage`; about 49 on current data). It replaces the 20-point cutoff for that column; `tables.js` applies the same formula after season filtering. Plain MA per 10 keeps the cutoff.
 ## Testing
 
 `tests/conftest.py` writes synthetic workbooks in both layouts (plus the Alumni case) with openpyxl; no test touches the network. `test_real_data.py` runs only when `data/raw/manifest.json` exists. `test_steering.py` guards the docs.

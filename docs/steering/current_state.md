@@ -10,7 +10,7 @@
 
 - Margin added (MA) on the leaderboard, player and tournament pages, and an Advanced page (branch `advanced-stats`, local only).
 
-- Opponent-adjusted Margin added (Adj. MA) (branch `opponent-adjusted`, local only).
+- Opponent-adjusted Margin added (Adj. MA) with shrunk per-10 rates (branch `opponent-adjusted`, local only).
 
 ## Known limits
 
@@ -23,4 +23,3 @@
 
 - Wire the parent Drive folder so new seasons are discovered automatically.
 - Advanced stats: usage and best single-game performances.
-- Shrunk per-10 rates for small samples.

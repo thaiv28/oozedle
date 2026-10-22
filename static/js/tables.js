@@ -77,7 +77,7 @@
   };
   const data = document.getElementById("players-data");
   if (!data) return;
-  const {lines, weights} = JSON.parse(data.textContent);
+  const {lines, weights, shrink} = JSON.parse(data.textContent);
   const table = document.getElementById("players-table");
   const input = document.getElementById("player-search");
   const buttons = [...document.querySelectorAll("[data-player-seasons] button")];
@@ -105,7 +105,9 @@
       name.append(link);
       row.append(name);
       p.ma = Object.entries(weights).reduce((sum, [key, weight]) => sum + p[key] * weight, 0);
-      p.adj_ma_per10 = p.points_played < 20 ? null : 10 * p.adj_ma / p.points_played;
+      // Shrunk toward the team rate, as on the server (see fit_shrinkage).
+      p.adj_ma_per10 = p.points_played <= 0 ? null
+        : 10 * (p.adj_ma + shrink.prior_points * shrink.mean_rate) / (p.points_played + shrink.prior_points);
       [...table.tHead.rows[0].cells].slice(1).forEach(header => {
         const key = header.dataset.key;
         const cell = document.createElement("td");

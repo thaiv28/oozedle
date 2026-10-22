@@ -1,5 +1,9 @@
 # Work log
 
+## 2026-10-22 — Shrunk Adj. MA per 10
+
+Adj. MA per 10 is now shrunk toward the team rate (empirical Bayes): k ≈ 49 prior points, team rate 0.97 per 10, fit each build from per-game adjusted lines. Replaces the 20-point cutoff for that column; leaderboard JS uses the same k and rate after season filtering. Career leaders: Rowan 1.72, Hugo 1.67, Peter 1.60. Checks: new unit tests (formula, recovery of k on synthetic data), pytest, ruff, server vs browser values compared on localhost.
+
 ## 2026-10-22 — Roles page and Plays most like removed
 
 Removed `roles.html`, `roles.js`, its CSS, links and docs, and the "Plays most like" line on player pages, at the user's request. Checks: pytest, ruff, build; grep finds no roles references.
