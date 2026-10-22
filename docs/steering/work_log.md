@@ -1,5 +1,9 @@
 # Work log
 
+## 2026-10-22 — Win% on the Players table
+
+Box score view adds Win% (wins ÷ decided games played, ties excluded; "—" with none) after W–L, rendered server-side and recomputed by `tables.js` after season filtering; sortable. Checks: pytest, ruff, localhost at 1280 and 390 (no overflow), season filter and sort.
+
 ## 2026-10-22 — Advanced page method folded
 
 One line under the heading says how MA and Adj. MA are computed; the Margin added and Opponent adjustment tables (and the ratings source) sit in a closed "How MA is calculated" disclosure. "Advanced" joins the header nav (current on the Advanced and ranking pages); the Players page link to it is gone. Removed the site footer ("Stats from Ooze's tournament stat sheets.") and the game's "Name the player. 6 guesses." line. Checks: pytest, ruff, build, localhost at 390 and 1280 (closed and opened).
