@@ -2,7 +2,7 @@
 
 ## 2026-10-22 — AMA/10 on player tournament rows
 
-Each tournament row on a player page shows that tournament's (shrunk) Adj. MA per 10, labelled "AMA/10", after T. Checks: pytest, ruff, localhost at 1280 and 390.
+Each tournament row on a player page shows that tournament's (shrunk) Adj. MA per 10, labelled "AMA/10", after T. The Advanced page's one-line description now says "Elo" instead of "USAU rating". Checks: pytest, ruff, localhost at 1280 and 390.
 
 ## 2026-10-22 — Win% on the Players table
 
