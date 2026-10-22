@@ -2,7 +2,7 @@
 
 ## 2026-10-22 — AMA/10 on player tournament rows
 
-Each tournament row on a player page shows that tournament's (shrunk) Adj. MA per 10, labelled "ADV" (abbr for Adj. MA per 10) beside the number, after T. The Advanced page's one-line description now says "Elo" instead of "USAU rating". Checks: pytest, ruff, localhost at 1280 and 390.
+Each tournament row on a player page shows that tournament's (shrunk) Adj. MA per 10, labelled "ADV" beside the number, after T; hover, tap or focus shows "Adjusted MA / 10 points" (CSS tooltip, `.tip`; `tips.js` keeps a tap on it from opening the row). The Advanced page's one-line description now says "Elo" instead of "USAU rating". Checks: pytest, ruff, localhost at 1280 and 390.
 
 ## 2026-10-22 — Win% on the Players table
 

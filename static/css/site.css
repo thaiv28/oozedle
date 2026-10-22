@@ -1089,3 +1089,34 @@ main {
 .tournament-row .row-rate small {
   display: inline;
 }
+
+/* Instant tooltip for abbreviations: hover, tap (focus) or keyboard. */
+.tip {
+  position: relative;
+  cursor: help;
+  outline: none;
+}
+.tip::after {
+  content: attr(data-tip);
+  position: absolute;
+  z-index: 3;
+  right: 0;
+  bottom: calc(100% + 6px);
+  padding: 6px 8px;
+  border: 1px solid var(--ink);
+  background: var(--board);
+  color: var(--ink);
+  font: 700 14px/1.2 var(--text);
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 80ms ease-out;
+}
+.tip:hover::after,
+.tip:focus-visible::after,
+.tip:focus::after {
+  opacity: 1;
+}
+.tip:focus-visible {
+  box-shadow: 0 0 0 2px var(--orange);
+}
