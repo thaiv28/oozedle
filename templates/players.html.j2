@@ -12,7 +12,7 @@
 <label class="visually-hidden" for="player-search">Find a player</label>
 <input type="search" id="player-search" placeholder="Find a player">
 </div>
-<div class="ledger-wrap"><table class="ledger" data-sortable id="players-table">
+<div class="ledger-wrap"><table class="ledger ledger--trim" data-sortable id="players-table">
 <caption class="visually-hidden">Player totals</caption>
 {{ headers(['Player', 'Tourn.', 'GP', 'PP', 'A', 'G', 'B', 'T', 'W–L'], true) }}
 <tbody>{% for p in players %}<tr><th scope="row"><a href="{{ root }}players/{{ p.player_id }}.html">{{ p.name }}</a></th><td>{{ p.career.tournaments }}</td><td>{{ p.career.games_played }}</td>{{ stats(p.career) }}<td data-value="{{ p.career.wins }}">{{ p.career.wins }}–{{ p.career.losses }}</td></tr>{% endfor %}</tbody>

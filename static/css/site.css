@@ -82,6 +82,10 @@ a {
   outline-offset: 2px;
 }
 
+[hidden] {
+  display: none !important;
+}
+
 .visually-hidden {
   position: absolute;
   width: 1px;
@@ -236,7 +240,7 @@ main {
 
 .guess-board .row-num {
   font-family: var(--display);
-  font-size: 17px;
+  font-size: 19px;
 }
 
 .guess-board tr.is-current .row-num {
@@ -666,18 +670,22 @@ main.wide {
 }
 .season-rail {
   display: flex;
-  border: 1px solid var(--rule);
-  margin: 24px 0;
+  gap: 6px;
+  margin: 20px 0 8px;
 }
+/* Each season's chip is as wide as its share of tournaments. */
 .season-rail a {
   flex-basis: 0;
-  padding: 10px 4px;
-  border-right: 1px solid var(--rule);
+  padding: 8px 4px;
+  border: 1.5px solid var(--ink);
+  border-radius: 3px;
   text-align: center;
-  font: 700 28px/1 var(--display);
+  text-decoration: none;
+  font: 700 22px/1 var(--display);
 }
-.season-rail a:last-child {
-  border-right: 0;
+.season-rail a:hover {
+  background: var(--ink);
+  color: var(--board);
 }
 .tournament-row {
   display: grid;
@@ -865,5 +873,66 @@ body:has(main.wide) .site-foot {
   .combo input,
   .btn {
     height: 52px;
+  }
+}
+
+/* Text columns read left; the "#" column stays narrow and tables line up. */
+.ledger:not(.ledger--numbered):not(.career) thead th:first-child,
+.ledger--numbered thead th:nth-child(2) {
+  text-align: left;
+}
+.ledger--numbered {
+  table-layout: fixed;
+}
+.ledger--numbered tr > :first-child {
+  position: static;
+  width: 44px;
+  min-width: 0;
+}
+.ledger--numbered tr > :nth-child(2) {
+  width: 38%;
+}
+
+/* Phones: drop the columns that matter least so tables fit without scrolling. */
+@media (max-width: 519px) {
+  .ledger--trim tr > :nth-child(2),
+  .ledger--trim tr > :nth-child(3),
+  .ledger--numbered tr > :first-child {
+    display: none;
+  }
+
+  .ledger--numbered tr > :nth-child(2) {
+    width: 32%;
+  }
+
+  .ledger th,
+  .ledger td {
+    padding: 6px 6px;
+  }
+}
+
+/* Wide screens: the board takes more room. */
+@media (min-width: 1100px) {
+  :root {
+    --col-max: 760px;
+    --row-h: 58px;
+    --stat-w: 80px;
+    --num-w: 40px;
+  }
+
+  .field-number {
+    font-size: 156px;
+  }
+
+  .pool-label {
+    font-size: 64px;
+  }
+
+  .board-date {
+    font-size: 30px;
+  }
+
+  .guess-board .player {
+    font-size: 28px;
   }
 }

@@ -415,7 +415,12 @@
       "openedAt": "2026-10-22T00:42:43.325Z",
       "closedAt": null,
       "attempts": 1,
-      "notes": [],
+      "notes": [
+        {
+          "at": "2026-10-22T00:46:29.022Z",
+          "text": "Responsive gate left open by decision: it diffs the 1440 desktop capture against the portrait phone comp; the surface is mobile-first, so desktop is a centered column scaled up at >=720px and >=1100px. Phone capture matches the comp (hero 89%). No page overflow at 390."
+        }
+      ],
       "gate": {
         "ok": false,
         "reasons": [
