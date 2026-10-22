@@ -1,9 +1,9 @@
 {# Rows for the Adj. MA rankings, shared by the Advanced page and the full ranking pages. #}
 {% macro table(kind, rows, caption, sortable=false) -%}
-{% set sort_by = 'Adj. MA per 10' if kind == 'seasons' else 'Adj. MA' %}
+{% set sort_by = 'Adj. MA' if kind == 'careers' else 'Adj. MA per 10' %}
 {% from "ledger.html.j2" import headers %}
 {% set labels = {
-  'performances': ['Player', 'Tournament', 'PP', 'MA', 'Adj. MA'],
+  'performances': ['Player', 'Tournament', 'PP', 'MA', 'Adj. MA', 'Adj. MA per 10'],
   'seasons': ['Player', 'Season', 'PP', 'MA', 'Adj. MA', 'Adj. MA per 10'],
   'careers': ['Player', 'Seasons', 'PP', 'MA', 'Adj. MA', 'Adj. MA per 10'],
 }[kind] %}
@@ -13,6 +13,6 @@
 {%- elif kind == 'seasons' %}<td>{{ r.season }}</td>
 {%- else %}<td>{{ r.seasons }}</td>{% endif -%}
 <td data-value="{{ r.points_played }}">{{ r.points_played|statnum }}</td><td data-value="{{ r.ma }}">{{ r.ma|statnum(1) }}</td><td data-value="{{ r.adj_ma }}">{{ r.adj_ma|statnum(1) }}</td>
-{%- if kind != 'performances' %}<td data-value="{{ r.adj_ma_per10 if r.adj_ma_per10 is not none else '' }}">{{ r.adj_ma_per10|statnum(1) }}</td>{% endif %}</tr>
+<td data-value="{{ r.adj_ma_per10 if r.adj_ma_per10 is not none else '' }}">{{ r.adj_ma_per10|statnum(1) }}</td></tr>
 {% endfor %}</tbody></table></div>
 {%- endmacro %}

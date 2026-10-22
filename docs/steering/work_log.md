@@ -1,8 +1,8 @@
 # Work log
 
-## 2026-10-22 — Best seasons ranked per 10
+## 2026-10-22 — Rankings per 10
 
-Best seasons (Advanced top 10 and `advanced/seasons.html`) now rank by shrunk Adj. MA per 10 instead of total Adj. MA: 2026 had 44 games and 824 team points against 25/412 (2024) and 23/397 (2025), so totals favoured it (8 of the top 10). Careers still rank by total. Checks: pytest, ruff, build, localhost.
+Best tournament performances (now with a per-10 column) and best seasons (Advanced top 10 and full pages) now rank by shrunk Adj. MA per 10 instead of total Adj. MA: 2026 had 44 games and 824 team points against 25/412 (2024) and 23/397 (2025), so totals favoured it (8 of the top 10). Greatest careers (renamed) and best-at-each-tournament still rank by total. Checks: pytest, ruff, build, localhost.
 
 ## 2026-10-22 — Advanced pages trimmed
 
