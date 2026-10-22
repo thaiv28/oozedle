@@ -13,7 +13,7 @@ from pathlib import Path
 import pandas as pd
 import yaml
 
-from oozedle.config import MANIFEST, PLAYERS_FILE, RAW_DIR
+from oozedle.config import MANIFEST, PLAYERS_FILE, RAW_DIR, TOURNAMENTS_FILE
 from oozedle.parse import STATS, PlayerLine, parse_workbook
 
 COLUMNS = {
@@ -70,6 +70,19 @@ def slugify(s: str) -> str:
     return re.sub(r"[^a-z0-9]+", "-", ascii_name.lower()).strip("-")
 
 
+def load_order(path: Path = TOURNAMENTS_FILE) -> dict[int, list[str]]:
+    """Per-season tournament order overrides: {season: [tournament name, ...]}."""
+    if not path.exists():
+        return {}
+    data = yaml.safe_load(path.read_text()) or {}
+    return {int(season): list(names) for season, names in (data.get("order") or {}).items()}
+
+
+def tournament_name(entry: dict) -> str:
+    name = Path(entry["name"]).stem if entry["name"].endswith(".xlsx") else entry["name"]
+    return name.removesuffix(" Stats")
+
+
 def _created_key(entry: dict) -> tuple:
     value = entry.get("created")
     stamp = datetime.fromisoformat(value.replace("Z", "+00:00")) if value else None
@@ -88,6 +101,7 @@ def build_dataset(
     raw_dir: Path = RAW_DIR,
     manifest: list[dict] | None = None,
     aliases: dict[str, str] | None = None,
+    order: dict[int, list[str]] | None = None,
 ) -> Dataset:
     """Parse local inputs, merge aliases, and report consistency problems."""
     manifest = list(load_manifest() if manifest is None else manifest)
@@ -111,7 +125,17 @@ def build_dataset(
     tables: dict[str, list[dict]] = {name: [] for name in COLUMNS}
     people: dict[str, dict] = {}
     orders: dict[int, int] = defaultdict(int)
-    for entry in sorted(manifest, key=_created_key):
+    order = load_order() if order is None else order
+
+    def chronological(entry: dict) -> tuple:
+        # Listed tournaments first, in the listed order; the rest by Drive creation time.
+        listed = order.get(int(entry["season"]), [])
+        name = tournament_name(entry)
+        position = listed.index(name) if name in listed else len(listed)
+        season, *rest = _created_key(entry)
+        return (season, position, *rest)
+
+    for entry in sorted(manifest, key=chronological):
         season = int(entry["season"])
         path = raw_dir / entry["path"]
         if not path.exists():
@@ -119,8 +143,7 @@ def build_dataset(
             continue
         workbook = parse_workbook(path)
         warnings.extend(f"{entry['path']}: {warning}" for warning in workbook.warnings)
-        name = Path(entry["name"]).stem if entry["name"].endswith(".xlsx") else entry["name"]
-        name = name.removesuffix(" Stats")
+        name = tournament_name(entry)
         slug = slugify(name)
         tid = f"{season}-{slug}"
         orders[season] += 1

@@ -1,0 +1,12 @@
+{% extends "base.html.j2" %}
+{% from "ledger.html.j2" import headers %}
+{% set nav = "advanced" %}
+{% block title %}Best at each tournament · Oozedle{% endblock %}
+{% block description %}The top Ooze player by opponent-adjusted margin added at every tournament.{% endblock %}
+{% block main_class %} class="wide"{% endblock %}
+{% block main %}
+<h1 class="page-head">Best at each tournament</h1>
+<div class="ledger-wrap"><table class="ledger ledger--performances ledger--bests"><caption class="visually-hidden">Top player by adjusted margin added at every tournament</caption>{{ headers(['Tournament', 'Season', 'Player', 'PP', 'Adj. MA']) }}<tbody>
+{% for p in tournament_bests %}<tr><th scope="row"><a href="{{ root }}tournaments/{{ p.tournament_id }}.html">{{ p.tournament_name }}</a></th><td>{{ p.season }}</td><td><a href="{{ root }}players/{{ p.player_id }}.html">{{ p.name }}</a></td><td>{{ p.points_played|statnum }}</td><td>{{ p.adj_ma|statnum(1) }}</td></tr>
+{% endfor %}</tbody></table></div>
+{% endblock %}

@@ -154,6 +154,7 @@ def build(ds: Dataset, out: Path = OUTPUT_DIR, ratings_dir: Path = ROOT / "ratin
         )
     for kind in ("performances", "seasons", "careers"):
         site.render("ranking.html.j2", f"advanced/{kind}.html", kind=kind, **context)
+    site.render("tournament_bests.html.j2", "advanced/tournaments.html", **context)
     site.render("404.html.j2", "404.html", root="/")
 
 
@@ -327,12 +328,15 @@ def stats_context(
         for t in tournaments
         for line in t["box"]
     ]
-    performances.sort(key=lambda r: (-r["adj_ma"], r["name"], r["tournament_id"]))
+    # "Best at each tournament" and careers use total Adj. MA; every other ranking uses the
+    # shrunk rate, because points played vary so much between lines.
+    per10_key = lambda r: (r["adj_ma_per10"] is None, -(r["adj_ma_per10"] or 0), r["name"])  # noqa: E731
     best = {}
-    for line in performances:
+    for line in sorted(performances, key=lambda r: (-r["adj_ma"], r["name"], r["tournament_id"])):
         best.setdefault(line["tournament_name"], line)
+    performances.sort(key=per10_key)
     by_adj = lambda r: (-r["adj_ma"], r["name"])  # noqa: E731
-    best_seasons = sorted(season_lines, key=by_adj)
+    best_seasons = sorted(season_lines, key=per10_key)
     best_careers = sorted(
         (
             dict(p["career"], player_id=p["player_id"], name=p["name"], seasons=p["year_range"])
@@ -365,6 +369,16 @@ def stats_context(
         ],
         best_performances=performances[:10],
         best_tournaments=[best[name] for name in sorted(best)],
+        # Every tournament played, most recent first, with its top line by Adj. MA.
+        tournament_bests=[
+            dict(
+                max(t["box"], key=lambda r: r["adj_ma"]),
+                tournament_name=t["name"],
+                season=t["season"],
+            )
+            for t in sorted(tournaments, key=lambda t: (t["season"], t["order"]), reverse=True)
+            if t["box"]
+        ],
         players=players,
         tournaments=tournaments,
         season_rows=list(reversed(season_rows)),

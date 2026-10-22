@@ -1,17 +1,18 @@
 {# Rows for the Adj. MA rankings, shared by the Advanced page and the full ranking pages. #}
 {% macro table(kind, rows, caption, sortable=false) -%}
+{% set sort_by = 'Adj. MA' if kind == 'careers' else 'Adj. MA per 10' %}
 {% from "ledger.html.j2" import headers %}
 {% set labels = {
-  'performances': ['Player', 'Tournament', 'PP', 'MA', 'Adj. MA'],
+  'performances': ['Player', 'Tournament', 'PP', 'MA', 'Adj. MA', 'Adj. MA per 10'],
   'seasons': ['Player', 'Season', 'PP', 'MA', 'Adj. MA', 'Adj. MA per 10'],
   'careers': ['Player', 'Seasons', 'PP', 'MA', 'Adj. MA', 'Adj. MA per 10'],
 }[kind] %}
-<div class="ledger-wrap"><table class="ledger ledger--performances ledger--rank"{% if sortable %} data-sortable data-sort="Adj. MA"{% endif %}><caption class="visually-hidden">{{ caption }}</caption>{{ headers(labels, sortable, default='Adj. MA') }}<tbody>
+<div class="ledger-wrap"><table class="ledger ledger--performances ledger--rank"{% if sortable %} data-sortable data-sort="{{ sort_by }}"{% endif %}><caption class="visually-hidden">{{ caption }}</caption>{{ headers(labels, sortable, default=sort_by) }}<tbody>
 {% for r in rows %}<tr><th scope="row"><a href="{{ root }}players/{{ r.player_id }}.html">{{ r.name }}</a></th>
 {%- if kind == 'performances' %}<td><a href="{{ root }}tournaments/{{ r.tournament_id }}.html">{{ r.tournament_name }} · {{ r.season }}</a></td>
 {%- elif kind == 'seasons' %}<td>{{ r.season }}</td>
 {%- else %}<td>{{ r.seasons }}</td>{% endif -%}
 <td data-value="{{ r.points_played }}">{{ r.points_played|statnum }}</td><td data-value="{{ r.ma }}">{{ r.ma|statnum(1) }}</td><td data-value="{{ r.adj_ma }}">{{ r.adj_ma|statnum(1) }}</td>
-{%- if kind != 'performances' %}<td data-value="{{ r.adj_ma_per10 if r.adj_ma_per10 is not none else '' }}">{{ r.adj_ma_per10|statnum(1) }}</td>{% endif %}</tr>
+<td data-value="{{ r.adj_ma_per10 if r.adj_ma_per10 is not none else '' }}">{{ r.adj_ma_per10|statnum(1) }}</td></tr>
 {% endfor %}</tbody></table></div>
 {%- endmacro %}

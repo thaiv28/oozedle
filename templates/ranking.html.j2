@@ -1,10 +1,10 @@
 {% extends "base.html.j2" %}
 {% from "ranking_rows.html.j2" import table with context %}
-{% set nav = "players" %}
-{% set titles = {'performances': 'Tournament performances', 'seasons': 'Seasons', 'careers': 'Careers'} %}
+{% set nav = "advanced" %}
+{% set titles = {'performances': 'Tournament performances', 'seasons': 'Seasons', 'careers': 'Greatest careers'} %}
 {% set rows = {'performances': all_performances, 'seasons': all_seasons, 'careers': all_careers}[kind] %}
 {% block title %}{{ titles[kind] }} by Adj. MA · Oozedle{% endblock %}
-{% block description %}Every Ooze {{ titles[kind]|lower }} ranked by opponent-adjusted margin added.{% endblock %}
+{% block description %}Every Ooze {{ titles[kind]|lower }} ranked by opponent-adjusted margin added{{ '' if kind == 'careers' else ' per 10 points' }}.{% endblock %}
 {% block main_class %} class="wide"{% endblock %}
 {% block main %}
 <h1 class="page-head">{{ titles[kind] }}</h1>

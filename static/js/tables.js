@@ -106,6 +106,7 @@
       name.append(link);
       row.append(name);
       p.ma = Object.entries(weights).reduce((sum, [key, weight]) => sum + p[key] * weight, 0);
+      p.win_pct = p.wins + p.losses ? p.wins / (p.wins + p.losses) : null;
       // Shrunk toward the team rate, as on the server (see fit_shrinkage).
       p.adj_ma_per10 = p.points_played <= 0 ? null
         : 10 * (p.adj_ma + shrink.prior_points * shrink.mean_rate) / (p.points_played + shrink.prior_points);
@@ -115,6 +116,7 @@
         cell.className = header.className;
         cell.dataset.value = p[key] === null ? "" : p[key];
         cell.textContent = key === "wins" ? `${p.wins}–${p.losses}`
+          : key === "win_pct" ? (p.win_pct === null ? "—" : `${Math.round(100 * p.win_pct)}%`)
           : format(p[key], ["ma", "adj_ma", "adj_ma_per10"].includes(key) ? 1 : undefined);
         row.append(cell);
       });
