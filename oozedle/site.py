@@ -7,12 +7,21 @@ import json
 import shutil
 from pathlib import Path
 
+import numpy as np
 import pandas as pd
 from jinja2 import Environment, FileSystemLoader, select_autoescape
 
-from oozedle.advanced import MarginModel, fit_margin_model, margin_added, per10
+from oozedle.advanced import (
+    MarginModel,
+    fit_difficulty,
+    fit_margin_model,
+    fit_shrinkage,
+    margin_added,
+    per10,
+)
 from oozedle.config import OUTPUT_DIR, ROOT
 from oozedle.dataset import Dataset
+from oozedle.ratings import game_ratings, load_aliases, load_ratings
 
 TEMPLATES_DIR = ROOT / "templates"
 STATIC_DIR = ROOT / "static"
@@ -124,14 +133,14 @@ def to_json(data: dict | list) -> str:
     return json.dumps(data, separators=(",", ":"), ensure_ascii=False).replace("</", "<\\/")
 
 
-def build(ds: Dataset, out: Path = OUTPUT_DIR) -> None:
+def build(ds: Dataset, out: Path = OUTPUT_DIR, ratings_dir: Path = ROOT / "ratings") -> None:
     if out.exists():
         shutil.rmtree(out)
     site = Site(out)
     site.copy_static()
     site.render("index.html.j2", "index.html", game_json=to_json(game_data(ds)))
     model = fit_margin_model(ds)
-    context = stats_context(ds, model)
+    context = stats_context(ds, model, ratings_dir)
     site.render("players.html.j2", "players.html", **context)
     site.render("advanced.html.j2", "advanced.html", **context)
     site.render("tournaments.html.j2", "tournaments.html", **context)
@@ -143,6 +152,8 @@ def build(ds: Dataset, out: Path = OUTPUT_DIR) -> None:
             f"tournaments/{tournament['tournament_id']}.html",
             tournament=tournament,
         )
+    for kind in ("performances", "seasons", "careers"):
+        site.render("ranking.html.j2", f"advanced/{kind}.html", kind=kind, **context)
     site.render("404.html.j2", "404.html", root="/")
 
 
@@ -182,14 +193,60 @@ def statnum(value, decimals=None):
     return text.replace("-", "−")
 
 
-def stats_context(ds: Dataset, model: MarginModel | None = None) -> dict:
+def stats_context(
+    ds: Dataset, model: MarginModel | None = None, ratings_dir: Path = ROOT / "ratings"
+) -> dict:
     """Precompute page joins, ordering, and totals; templates only present values."""
 
     model = model or fit_margin_model(ds)
 
+    ratings = load_ratings(ratings_dir)
+    aliases = load_aliases(Path(ratings_dir) / "aliases.yml")
+    rated_games = game_ratings(ds, ratings, aliases)
+    difficulty = fit_difficulty(ds, model.weights, rated_games)
+    factors = rated_games.gap.map(difficulty.factor)
+    player_tournaments = ds.player_tournaments.copy()
+    player_games = ds.player_games.copy()
+    player_games["factor"] = player_games.game_id.map(factors)
+    tournament_factors = {}
+    for tid, frame in ds.games.groupby("tournament_id"):
+        points = frame.goals_for + frame.goals_against
+        tournament_factors[tid] = (
+            float(np.average(frame.game_id.map(factors), weights=points))
+            if points.sum() > 0
+            else 1.0
+        )
+    player_factors = {}
+    for key, frame in player_games.groupby(["player_id", "tournament_id"]):
+        player_factors[key] = (
+            float(np.average(frame.factor, weights=frame.points_played))
+            if frame.points_played.sum() > 0
+            else tournament_factors.get(key[1], 1.0)
+        )
+    player_tournaments["adj_ma"] = [
+        margin_added(row._asdict(), model.weights)
+        * player_factors.get(
+            (row.player_id, row.tournament_id), tournament_factors.get(row.tournament_id, 1.0)
+        )
+        for row in player_tournaments.itertuples()
+    ]
+
+    game_lines = player_games.assign(
+        value=sum(player_games[key] * weight for key, weight in model.weights.items())
+        * player_games.factor.fillna(1.0)
+    )
+    points = float(player_tournaments.points_played.sum())
+    mean_rate = float(player_tournaments.adj_ma.sum()) / points if points else 0.0
+    shrinkage = fit_shrinkage(game_lines, mean_rate)
+
+    def aggregate(frame):
+        return dict(totals(frame), adj_ma=float(frame.adj_ma.sum()))
+
     def advanced(row):
         row["ma"] = margin_added(row, model.weights)
         row["ma_per10"] = per10(row["ma"], row["points_played"])
+        row.setdefault("adj_ma", row["ma"])
+        row["adj_ma_per10"] = shrinkage.per10(row["adj_ma"], row["points_played"])
         return row
 
     def records(frame):
@@ -206,12 +263,15 @@ def stats_context(ds: Dataset, model: MarginModel | None = None) -> dict:
     by_id = {t["tournament_id"]: t for t in tournaments}
     games = {}
     for game in records(ds.games.sort_values("index")):
+        rating = rated_games.loc[game["game_id"]]
+        game["opponent_rating"] = number(rating.opponent_rating)
+        game["factor"] = difficulty.factor(rating.gap) if np.isfinite(rating.gap) else None
         games[game["game_id"]] = game
     for t in tournaments:
         tid = t["tournament_id"]
         t["games_list"] = [g for g in games.values() if g["tournament_id"] == tid]
         t["has_clean_holds"] = any(g["clean_holds"] is not None for g in t["games_list"])
-        box = records(ds.player_tournaments[ds.player_tournaments.tournament_id == tid])
+        box = records(player_tournaments[player_tournaments.tournament_id == tid])
         for line in box:
             line["name"] = people[line["player_id"]]["name"]
             advanced(line)
@@ -233,11 +293,11 @@ def stats_context(ds: Dataset, model: MarginModel | None = None) -> dict:
         )
     players = []
     season_lines = []
-    for pid, frame in ds.player_tournaments.groupby("player_id"):
-        player = dict(people[pid], career=advanced(totals(frame)))
+    for pid, frame in player_tournaments.groupby("player_id"):
+        player = dict(people[pid], career=advanced(aggregate(frame)))
         seasons = []
         for season, lines in frame.groupby("season", sort=True):
-            row = advanced(dict(season=int(season), **totals(lines)))
+            row = advanced(dict(season=int(season), **aggregate(lines)))
             seasons.append(row)
             season_lines.append(dict(player_id=pid, name=player["name"], **row))
         years = [s["season"] for s in seasons]
@@ -267,16 +327,57 @@ def stats_context(ds: Dataset, model: MarginModel | None = None) -> dict:
         for t in tournaments
         for line in t["box"]
     ]
-    performances.sort(key=lambda r: (-r["ma"], r["name"], r["tournament_id"]))
+    performances.sort(key=lambda r: (-r["adj_ma"], r["name"], r["tournament_id"]))
     best = {}
     for line in performances:
         best.setdefault(line["tournament_name"], line)
+    by_adj = lambda r: (-r["adj_ma"], r["name"])  # noqa: E731
+    best_seasons = sorted(season_lines, key=by_adj)
+    best_careers = sorted(
+        (
+            dict(p["career"], player_id=p["player_id"], name=p["name"], seasons=p["year_range"])
+            for p in players
+        ),
+        key=by_adj,
+    )
     return dict(
+        all_performances=performances,
+        all_seasons=best_seasons,
+        all_careers=best_careers,
+        best_seasons=best_seasons[:10],
+        best_careers=best_careers[:10],
         model=model,
+        difficulty=difficulty,
+        ratings_available=bool(ratings),
+        adjustment_pct=100 * (1 - np.exp(100 * difficulty.b)),
+        gap_factors=[
+            dict(gap=gap, factor=difficulty.factor(gap)) for gap in (-1000, -500, 0, 500, 1000)
+        ],
+        season_ratings=[
+            dict(
+                season=year,
+                rating=number(r.teams[aliases[0]]),
+                rank=r.ranks[aliases[0]],
+                as_of=r.as_of,
+            )
+            for year, r in sorted(ratings.items())
+            if aliases[0] in r.teams
+        ],
         best_performances=performances[:10],
         best_tournaments=[best[name] for name in sorted(best)],
         players=players,
         tournaments=tournaments,
         season_rows=list(reversed(season_rows)),
-        players_json=to_json(dict(weights=model.weights, lines=season_lines)),
+        players_json=to_json(
+            dict(
+                weights=model.weights,
+                shrink=dict(
+                    # JSON has no infinity; a huge prior is the same in practice
+                    prior_points=min(shrinkage.prior_points, 1e9),
+                    mean_rate=shrinkage.mean_rate,
+                ),
+                lines=season_lines,
+            )
+        ),
+        shrinkage=shrinkage,
     )

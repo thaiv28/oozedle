@@ -111,3 +111,68 @@ def test_link_preview_tags(site_dataset, tmp_path):
     assert '<meta name="twitter:card" content="summary_large_image">' in html
     player = next((out / "players").glob("*.html")).read_text()
     assert re.search(r'<meta property="og:description" content="[^"]* tournaments · ', player)
+
+
+def test_adjusted_build_and_neutral_fallback(site_dataset, tmp_path):
+    ratings = tmp_path / "ratings"
+    ratings.mkdir()
+    (ratings / "2024.csv").write_text(
+        "# college; data through May 4; source https://example.test\n"
+        "rank,team,record,rating\n1,Ooze,2-0,1000\n2,Chico State,1-1,700\n"
+        "3,San Jose State,0-2,1200\n"
+    )
+    (ratings / "aliases.yml").write_text(
+        "ooze: Ooze\nopponents:\n  Chico: Chico State\n  SJSU: San Jose State\n"
+    )
+    context = stats_context(site_dataset, ratings_dir=ratings)
+    assert context["ratings_available"]
+    assert context["difficulty"].n_rated == 3
+    lines = json.loads(context["players_json"])["lines"]
+    assert all("adj_ma" in row for row in lines)
+    for player in context["players"]:
+        assert player["career"]["adj_ma"] == pytest.approx(
+            sum(row["adj_ma"] for row in player["season_rows"])
+        )
+    build(site_dataset, tmp_path / "adjusted", ratings_dir=ratings)
+    assert not (tmp_path / "adjusted" / "roles.html").exists()
+    neutral = stats_context(site_dataset, ratings_dir=tmp_path / "absent")
+    assert not neutral["ratings_available"]
+    for player in neutral["players"]:
+        assert player["career"]["adj_ma"] == pytest.approx(player["career"]["ma"])
+    build(site_dataset, tmp_path / "neutral", ratings_dir=tmp_path / "absent")
+    assert "ratings are unavailable" in (tmp_path / "neutral" / "advanced.html").read_text().lower()
+
+
+def test_summary_adjustment_uses_player_weights_and_missing_game_fallback(
+    site_dataset, tmp_path, monkeypatch
+):
+    from oozedle.advanced import Difficulty
+
+    ratings = tmp_path / "ratings"
+    ratings.mkdir()
+    for year in (2024, 2025, 2026):
+        (ratings / f"{year}.csv").write_text(
+            "# data through May 4; source fixture\n"
+            "rank,team,record,rating\n1,Ooze,1-1,1000\n2,SJSU,1-1,1500\n"
+            "3,Chico,1-1,500\n"
+        )
+    (ratings / "aliases.yml").write_text("ooze: Ooze\nopponents:\n  SJSU: SJSU\n  Chico: Chico\n")
+    # Preserve Ben's authoritative Summary totals but remove all per-game records.
+    ds = site_dataset
+    ds.player_games = ds.player_games[ds.player_games.player_id != "ben"].copy()
+    ada_2024 = (ds.player_games.player_id == "ada") & (ds.player_games.season == 2024)
+    ds.player_games.loc[ada_2024, "points_played"] = [1, 3, 8]
+    fit = Difficulty(0, -0.001, 6, 6, 1, -500, 500, 0)
+    monkeypatch.setattr("oozedle.site.fit_difficulty", lambda *_: fit)
+    context = stats_context(ds, ratings_dir=ratings)
+    tournament = next(t for t in context["tournaments"] if t["season"] == 2024)
+    by_player = {line["player_id"]: line for line in tournament["box"]}
+    factors = [game["factor"] for game in tournament["games_list"]]
+    assert by_player["ada"]["adj_ma"] == pytest.approx(
+        by_player["ada"]["ma"] * sum(p * f for p, f in zip([1, 3, 8], factors)) / 12
+    )
+    points = [game["goals_for"] + game["goals_against"] for game in tournament["games_list"]]
+    assert by_player["ben"]["adj_ma"] == pytest.approx(
+        by_player["ben"]["ma"] * sum(p * f for p, f in zip(points, factors)) / sum(points)
+    )
+    assert by_player["ben"]["adj_ma"] != pytest.approx(by_player["ben"]["ma"] * sum(factors) / 3)

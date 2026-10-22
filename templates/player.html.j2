@@ -12,10 +12,9 @@
 <h2 class="ledger-title">Seasons</h2>
 <div class="ledger-wrap"><table class="ledger ledger--trim"><caption class="visually-hidden">Season totals</caption>{{ headers(['Season', 'Tourn.', 'GP', 'PP', 'A', 'G', 'B', 'T', 'W–L']) }}<tbody>{% for s in player.season_rows %}<tr><th scope="row">{{ s.season }}</th><td>{{ s.tournaments }}</td><td>{{ s.games_played }}</td>{{ stats(s) }}<td>{{ s.wins }}–{{ s.losses }}</td></tr>{% endfor %}</tbody></table></div>
 <h2 class="ledger-title">Advanced</h2>
-<div class="ledger-wrap"><table class="ledger ledger--advanced"><caption class="visually-hidden">Advanced career and season totals</caption>{{ headers(['', 'PP', 'MA', 'MA per 10']) }}<tbody>
-{% for s in [player.career] + player.season_rows %}<tr><th scope="row">{{ 'Career' if loop.first else s.season }}</th><td>{{ s.points_played|statnum }}</td><td>{{ s.ma|statnum(1) }}</td><td>{{ s.ma_per10|statnum(1) }}</td></tr>{% endfor %}
+<div class="ledger-wrap"><table class="ledger ledger--advanced"><caption class="visually-hidden">Advanced career and season totals</caption>{{ headers(['', 'PP', 'MA', 'Adj. MA', 'Adj. MA per 10']) }}<tbody>
+{% for s in [player.career] + player.season_rows %}<tr><th scope="row">{{ 'Career' if loop.first else s.season }}</th><td>{{ s.points_played|statnum }}</td><td>{{ s.ma|statnum(1) }}</td><td>{{ s.adj_ma|statnum(1) }}</td><td>{{ s.adj_ma_per10|statnum(1) }}</td></tr>{% endfor %}
 </tbody></table></div>
-<p class="quiet-link"><a href="{{ root }}advanced.html">How MA works</a></p>
 <h2 class="ledger-title">Tournaments</h2>
 {% for t in player.tournament_rows %}
 {% if t.games_list %}<details class="tournament-detail"><summary class="tournament-row">{% else %}<div class="tournament-row">{% endif %}

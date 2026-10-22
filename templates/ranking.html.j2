@@ -1,0 +1,13 @@
+{% extends "base.html.j2" %}
+{% from "ranking_rows.html.j2" import table with context %}
+{% set nav = "players" %}
+{% set titles = {'performances': 'Tournament performances', 'seasons': 'Seasons', 'careers': 'Careers'} %}
+{% set rows = {'performances': all_performances, 'seasons': all_seasons, 'careers': all_careers}[kind] %}
+{% block title %}{{ titles[kind] }} by Adj. MA · Oozedle{% endblock %}
+{% block description %}Every Ooze {{ titles[kind]|lower }} ranked by opponent-adjusted margin added.{% endblock %}
+{% block main_class %} class="wide"{% endblock %}
+{% block main %}
+<h1 class="page-head">{{ titles[kind] }}</h1>
+{{ table(kind, rows, 'All ' ~ titles[kind]|lower ~ ' by adjusted margin added', sortable=true) }}
+{% endblock %}
+{% block scripts %}<script src="{{ asset('js/tables.js') }}" defer></script>{% endblock %}

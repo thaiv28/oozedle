@@ -58,8 +58,18 @@ Training uses one row per game with `player_games`: sum player A, G, B, T; targe
 
 The fit reports coefficients, in-sample R², n, pooled out-of-fold R² from 10 shuffled folds (`default_rng(0)`), and 95% coefficient intervals from 2,000 game resamples (a separate `default_rng(0)`, 2.5/97.5 percentiles). Tiny test datasets use at most n folds. Per 10 = 10 × stat / points played; display one decimal, or “—” below 20 points played and sort missing values last.
 
-The leaderboard and tournament box score share Box/Advanced switches, persisted as `?view=advanced` alongside `?season=`. Leaderboard JSON contains weights and season totals; filtering recomputes advanced values. Player pages show career/season advanced ledgers. `advanced.html` shows the MA weights with their intervals, a collapsed model-fit table, and lists best tournament performances and the best line per tournament name across seasons.
+The leaderboard and tournament box score share Box/Advanced switches, persisted as `?view=advanced` alongside `?season=`. Leaderboard JSON contains weights and season totals; filtering recomputes MA and sums precomputed season Adj. MA. Player pages show career/season advanced ledgers. `advanced.html` shows the MA weights with their intervals, a collapsed model-fit table, and ranks tournament performances and the best line per tournament name across seasons by Adj. MA.
 
+Ratings live in `ratings/<season>.csv` (rank, team, record, rating), with source and data-through metadata in the first comment. `ratings/aliases.yml` identifies Ooze and maps sheet opponent labels; missing/null labels or teams absent that season are unrated. `scripts/fetch_ratings.py` fetches locally; CSVs and aliases are committed inputs. Past seasons use Wayback snapshots; Cloudflare on the current source requires local Chrome. Builds never fetch ratings.
+
+`ratings.py` joins season ratings to games. Difficulty fits log(team MA / score points) = a + b × (opponent rating − Ooze rating), using positive rates and finite gaps. Factor = exp(−b × (clamped gap − mean gap)); clamp bounds and mean include every rated game. Unrated games count ×1. Adj. MA is authoritative player-tournament Summary MA times the player's PP-weighted mean game factor. Missing player-game rows use the tournament's score-points-weighted factor; no rated games means ×1. Career/season values sum tournament Adj. MA; per-10 retains the 20 PP minimum. Missing ratings leave Adj. MA equal to MA. One tournament switch controls both games and box-score tables; Advanced sorts by Adj. MA.
+
+
+
+
+**Rankings:** `advanced.html` lists the ten best tournament performances, seasons and careers by Adj. MA; `advanced/{performances,seasons,careers}.html` list every row (sortable, default Adj. MA). Import the `ranking_rows.html.j2` macro `with context` so it sees `root`.
+
+**Shrunk per-10:** Adj. MA per 10 = 10 × (Adj. MA + k·m) ÷ (PP + k), where m is the team's Adj. MA per point and k ("prior points") = per-point noise variance ÷ true-skill variance, fit by method of moments on per-game adjusted lines (`fit_shrinkage`; about 49 on current data). It replaces the 20-point cutoff for that column; `tables.js` applies the same formula after season filtering. Plain MA per 10 keeps the cutoff.
 ## Testing
 
 `tests/conftest.py` writes synthetic workbooks in both layouts (plus the Alumni case) with openpyxl; no test touches the network. `test_real_data.py` runs only when `data/raw/manifest.json` exists. `test_steering.py` guards the docs.

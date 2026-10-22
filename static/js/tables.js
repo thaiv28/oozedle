@@ -19,7 +19,7 @@
       if (i === state.column) th.querySelector("button").append(triangle(state.direction === "descending"));
     });
     const rows = [...table.tBodies[0].rows];
-    const value = (row) => row.cells[state.column].dataset.value ?? row.cells[state.column].textContent.trim();
+    const value = (row) => (row.cells[state.column].dataset.value ?? row.cells[state.column].textContent.trim()).replace("−", "-");
     rows.sort((a, b) => {
       const numeric = headers[state.column].dataset.type === "number";
       const aValue = value(a), bValue = value(b);
@@ -36,7 +36,8 @@
   };
   document.querySelectorAll("table[data-sortable]").forEach((table) => {
     const headers = [...table.tHead.rows[0].cells];
-    states.set(table, {column: headers.findIndex(th => th.textContent.trim() === "PP"), direction: "descending"});
+    const first = table.dataset.sort || "PP";  // default sort column, by header label
+    states.set(table, {column: headers.findIndex(th => th.textContent.trim() === first), direction: "descending"});
     headers.forEach((th, column) => th.querySelector("button").addEventListener("click", () => {
       const old = states.get(table);
       const direction = old.column === column
@@ -51,9 +52,10 @@
     const table = document.getElementById(control.dataset.table);
     const setView = view => {
       table.dataset.view = view;
+      document.querySelectorAll("[data-shared-view]").forEach(other => other.dataset.view = view);
       control.querySelectorAll("button").forEach(button =>
         button.setAttribute("aria-pressed", String(button.dataset.view === view)));
-      const key = view === "advanced" ? "ma" : "points_played";
+      const key = view === "advanced" ? "adj_ma" : "points_played";
       const column = [...table.tHead.rows[0].cells].findIndex(th => th.dataset.key === key);
       states.set(table, {column, direction: "descending"});
       sort(table);
@@ -76,14 +78,14 @@
   };
   const data = document.getElementById("players-data");
   if (!data) return;
-  const {lines, weights} = JSON.parse(data.textContent);
+  const {lines, weights, shrink} = JSON.parse(data.textContent);
   const table = document.getElementById("players-table");
   const input = document.getElementById("player-search");
   const buttons = [...document.querySelectorAll("[data-player-seasons] button")];
   const url = new URL(location.href);
   let season = url.searchParams.get("season") || "all";
   if (!buttons.some(b => b.dataset.season === season)) season = "all";
-  const keys = ["tournaments", "games_played", "points_played", "assists", "goals", "blocks", "turnovers", "wins", "losses"];
+  const keys = ["tournaments", "games_played", "points_played", "assists", "goals", "blocks", "turnovers", "wins", "losses", "adj_ma"];
   const update = () => {
     buttons.forEach(b => b.setAttribute("aria-pressed", String(b.dataset.season === season)));
     const players = new Map();
@@ -104,14 +106,16 @@
       name.append(link);
       row.append(name);
       p.ma = Object.entries(weights).reduce((sum, [key, weight]) => sum + p[key] * weight, 0);
-      p.ma_per10 = p.points_played < 20 ? null : 10 * p.ma / p.points_played;
+      // Shrunk toward the team rate, as on the server (see fit_shrinkage).
+      p.adj_ma_per10 = p.points_played <= 0 ? null
+        : 10 * (p.adj_ma + shrink.prior_points * shrink.mean_rate) / (p.points_played + shrink.prior_points);
       [...table.tHead.rows[0].cells].slice(1).forEach(header => {
         const key = header.dataset.key;
         const cell = document.createElement("td");
         cell.className = header.className;
         cell.dataset.value = p[key] === null ? "" : p[key];
         cell.textContent = key === "wins" ? `${p.wins}–${p.losses}`
-          : format(p[key], ["ma", "ma_per10"].includes(key) ? 1 : undefined);
+          : format(p[key], ["ma", "adj_ma", "adj_ma_per10"].includes(key) ? 1 : undefined);
         row.append(cell);
       });
       rows.push(row);

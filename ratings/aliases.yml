@@ -1,0 +1,45 @@
+# Sheet opponent label -> team name in ratings/<season>.csv (USAU college men).
+# Labels not listed here, or mapped to null, are unrated and get a neutral factor.
+ooze: California-Santa Cruz [B]
+opponents:
+  ASU: Arizona State
+  CPP: Cal Poly-Pomona
+  CSU LB: Cal State-Long Beach
+  CSULB: Cal State-Long Beach
+  Cal B: California [B]
+  Chico: Chico State
+  Davis: California-Davis
+  Humboldt: Cal Poly-Humboldt
+  LMU: Loyola Marymount
+  Portland: Portland
+  Reno: Nevada-Reno
+  UNR: Nevada-Reno
+  SCAB: Santa Clara
+  SCAB X: Santa Clara
+  SCAB Y: Santa Clara
+  SCAR: null  # Santa Clara alumni
+  SDSU B: San Diego State [B]
+  SFU: Simon Fraser
+  SJSU: San Jose State
+  SLOB: Cal Poly-SLO [B]
+  SLOC: Cal Poly-SLO [C]
+  Stanford: Stanford
+  UCI: California-Irvine
+  UCI B: California-Irvine [B]
+  UCLA: UCLA
+  UCLA B: UCLA [B]
+  UCLAB: UCLA [B]
+  UCSB: California-Santa Barbara
+  UCSB B: California-Santa Barbara [B]
+  UCSD B: California-San Diego [B]
+  UCSD C: California-San Diego [C]
+  UPS: Puget Sound
+  USC: Southern California
+  USC B: Southern California [B]
+  UW B: Washington [B]
+  # Club, high-school or alumni teams: unrated.
+  7H Bx: null
+  Gold Rush: null
+  MegaByte: null
+  OAK: null
+  Alumni: null
