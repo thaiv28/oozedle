@@ -332,7 +332,11 @@ def stats_context(
     for line in performances:
         best.setdefault(line["tournament_name"], line)
     by_adj = lambda r: (-r["adj_ma"], r["name"])  # noqa: E731
-    best_seasons = sorted(season_lines, key=by_adj)
+    # Seasons differ a lot in length (2026 had twice the games), so rank them by rate, not total.
+    best_seasons = sorted(
+        season_lines,
+        key=lambda r: (r["adj_ma_per10"] is None, -(r["adj_ma_per10"] or 0), r["name"]),
+    )
     best_careers = sorted(
         (
             dict(p["career"], player_id=p["player_id"], name=p["name"], seasons=p["year_range"])
