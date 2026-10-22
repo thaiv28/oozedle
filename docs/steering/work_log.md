@@ -1,5 +1,9 @@
 # Work log
 
+## 2026-10-22 — Share link back to the bare domain
+
+The share text ends with `oozedle.thaiv.dev` again: with `https://`, iMessage turned the message into a preview card the user didn't like. Trade-off: Discord won't make the bare domain a link. Checks: pytest, ruff.
+
 ## 2026-10-22 — Share link with https://
 
 The share text now ends with `https://oozedle.thaiv.dev` so every chat app (Discord included) makes it a link and can show the preview card. Checks: share text captured in headless Chrome, pytest, ruff.
