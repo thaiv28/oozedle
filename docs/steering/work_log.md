@@ -1,5 +1,9 @@
 # Work log
 
+## 2026-10-22 — Share link with https://
+
+The share text now ends with `https://oozedle.thaiv.dev` so every chat app (Discord included) makes it a link and can show the preview card. Checks: share text captured in headless Chrome, pytest, ruff.
+
 ## 2026-10-22 — Share opens the phone share sheet
 
 On touch devices with the Web Share API (iOS Safari, Android Chrome), Share calls `navigator.share({text})`, opening the system sheet (Messages, Copy, ...); closing the sheet does nothing; other failures fall back to copying. Desktops still copy. Checks: headless Chrome with a stubbed `navigator.share` on a touch profile (sheet called with the share text; cancel leaves the button alone) and a desktop profile (copies), pytest, ruff.
