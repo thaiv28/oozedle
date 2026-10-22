@@ -152,6 +152,8 @@ def build(ds: Dataset, out: Path = OUTPUT_DIR, ratings_dir: Path = ROOT / "ratin
             f"tournaments/{tournament['tournament_id']}.html",
             tournament=tournament,
         )
+    for kind in ("performances", "seasons", "careers"):
+        site.render("ranking.html.j2", f"advanced/{kind}.html", kind=kind, **context)
     site.render("404.html.j2", "404.html", root="/")
 
 
@@ -329,7 +331,21 @@ def stats_context(
     best = {}
     for line in performances:
         best.setdefault(line["tournament_name"], line)
+    by_adj = lambda r: (-r["adj_ma"], r["name"])  # noqa: E731
+    best_seasons = sorted(season_lines, key=by_adj)
+    best_careers = sorted(
+        (
+            dict(p["career"], player_id=p["player_id"], name=p["name"], seasons=p["year_range"])
+            for p in players
+        ),
+        key=by_adj,
+    )
     return dict(
+        all_performances=performances,
+        all_seasons=best_seasons,
+        all_careers=best_careers,
+        best_seasons=best_seasons[:10],
+        best_careers=best_careers[:10],
         model=model,
         difficulty=difficulty,
         ratings_available=bool(ratings),

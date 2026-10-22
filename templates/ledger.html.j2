@@ -1,8 +1,8 @@
 {% macro stats(row) -%}
 {% for key in ['points_played', 'assists', 'goals', 'blocks', 'turnovers'] %}<td>{{ row[key]|statnum }}</td>{% endfor %}
 {%- endmacro %}
-{% macro headers(labels, sortable=false, numeric_first=false) -%}
-<thead><tr>{% for label in labels %}<th scope="col"{% if sortable %} data-type="{{ 'text' if loop.first and not numeric_first else 'number' }}" aria-sort="{{ 'descending' if label == 'PP' else 'none' }}"{% endif %}>{% if sortable %}<button type="button">{{ label }}</button>{% else %}{{ label }}{% endif %}</th>{% endfor %}</tr></thead>
+{% macro headers(labels, sortable=false, numeric_first=false, default='PP') -%}
+<thead><tr>{% for label in labels %}<th scope="col"{% if sortable %} data-type="{{ 'text' if loop.first and not numeric_first else 'number' }}" aria-sort="{{ 'descending' if label == default else 'none' }}"{% endif %}>{% if sortable %}<button type="button">{{ label }}</button>{% else %}{{ label }}{% endif %}</th>{% endfor %}</tr></thead>
 {%- endmacro %}
 {% macro score(game) -%}<strong>{{ game.result }}</strong> {{ game.goals_for }}–{{ game.goals_against }}{%- endmacro %}
 {% macro view_switch(target) -%}

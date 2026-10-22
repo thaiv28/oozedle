@@ -19,7 +19,7 @@
       if (i === state.column) th.querySelector("button").append(triangle(state.direction === "descending"));
     });
     const rows = [...table.tBodies[0].rows];
-    const value = (row) => row.cells[state.column].dataset.value ?? row.cells[state.column].textContent.trim();
+    const value = (row) => (row.cells[state.column].dataset.value ?? row.cells[state.column].textContent.trim()).replace("−", "-");
     rows.sort((a, b) => {
       const numeric = headers[state.column].dataset.type === "number";
       const aValue = value(a), bValue = value(b);
@@ -36,7 +36,8 @@
   };
   document.querySelectorAll("table[data-sortable]").forEach((table) => {
     const headers = [...table.tHead.rows[0].cells];
-    states.set(table, {column: headers.findIndex(th => th.textContent.trim() === "PP"), direction: "descending"});
+    const first = table.dataset.sort || "PP";  // default sort column, by header label
+    states.set(table, {column: headers.findIndex(th => th.textContent.trim() === first), direction: "descending"});
     headers.forEach((th, column) => th.querySelector("button").addEventListener("click", () => {
       const old = states.get(table);
       const direction = old.column === column

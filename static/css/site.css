@@ -1042,3 +1042,11 @@ body:has(main.wide) .site-foot {
 @media (max-width: 519px) {
   .ledger--tournament thead th { white-space: normal; font-size: 14px; }
 }
+
+/* Adj. MA rankings: phones keep the name, what it is, and Adj. MA (and its rate). */
+@media (max-width: 519px) {
+  .ledger--rank tr > :nth-child(3),
+  .ledger--rank tr > :nth-child(4) {
+    display: none;
+  }
+}
