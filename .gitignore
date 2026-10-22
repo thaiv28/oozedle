@@ -17,3 +17,4 @@ data/
 .impeccable/build/font-match/
 .impeccable/review/diff/
 .impeccable/config.local.json
+!.impeccable/build/
