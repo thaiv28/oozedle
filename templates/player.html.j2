@@ -2,6 +2,7 @@
 {% from "ledger.html.j2" import stats, headers, score %}
 {% set nav = "players" %}
 {% block title %}{{ player.name }} · Oozedle{% endblock %}
+{% block description %}{{ player.year_range }} · {{ player.career.tournaments }} tournaments · {{ player.career.games_played }} games · MA {{ player.career.ma|statnum(1) }}{% endblock %}
 {% block main_class %} class="wide"{% endblock %}
 {% block main %}
 <h1 class="page-head">{{ player.name }}</h1>

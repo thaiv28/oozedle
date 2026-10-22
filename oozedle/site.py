@@ -18,6 +18,7 @@ TEMPLATES_DIR = ROOT / "templates"
 STATIC_DIR = ROOT / "static"
 EPOCH = "2026-10-21"  # puzzle #1
 MIN_POINTS = 5  # lines with fewer points played are too thin to guess
+SITE_URL = "https://oozedle.thaiv.dev/"  # link previews need absolute URLs
 
 
 def game_data(ds: Dataset) -> dict:
@@ -104,7 +105,11 @@ class Site:
         depth = dest.count("/")
         root = "../" * depth if root is None else root
         html = self.env.get_template(template).render(
-            root=root, asset=lambda p: self.asset_url(p, root), **context
+            root=root,
+            asset=lambda p: self.asset_url(p, root),
+            absolute_asset=lambda p: self.asset_url(p, SITE_URL),
+            page_url=SITE_URL + ("" if dest == "index.html" else dest),
+            **context,
         )
         target = self.out / dest
         target.parent.mkdir(parents=True, exist_ok=True)

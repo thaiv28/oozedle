@@ -1,0 +1,78 @@
+<!doctype html>
+<!-- Link-preview card (1200x630). Rendered to static/og/card.png by scripts/render_og.py. -->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<link rel="stylesheet" href="../static/css/site.css">
+<style>
+  html, body { margin: 0; width: 1200px; height: 630px; overflow: hidden; }
+  body { display: grid; grid-template-columns: 1fr 2px 520px; gap: 48px; align-items: center; padding: 0 64px; box-sizing: border-box; }
+  .card-mark { margin: 0; font: 700 150px/0.85 var(--display); letter-spacing: -0.01em; }
+  .card-line { margin: 28px 0 0; font-size: 40px; font-weight: 800; line-height: 1.1; }
+  .card-url { margin: 26px 0 0; color: var(--ink-soft); font-size: 26px; font-weight: 700; }
+  .card-rule { align-self: stretch; margin: 90px 0; background: #c4c3bc; }
+  .card-board { --row-h: 78px; --stat-w: 70px; }
+  .card-board .guess-board thead th { height: 52px; font-size: 26px; }
+  .card-board .guess-board .player { padding-left: 14px; font-size: 32px; }
+  .card-board .mark { width: 52px; height: 50px; }
+  .card-board .mark svg { width: 30px; height: 40px; }
+  .card-board .mark--same svg { width: 24px; height: 17px; }
+</style>
+</head>
+<body>
+  <div>
+    <p class="card-mark">OOZEDLE</p>
+    <p class="card-line">Guess the Ooze player from one tournament stat line.</p>
+    <p class="card-url">oozedle.thaiv.dev</p>
+  </div>
+  <div class="card-rule"></div>
+  <div class="card-board">
+    <table class="guess-board">
+      <colgroup><col><col class="col-stat"><col class="col-stat"><col class="col-stat"><col class="col-stat"><col class="col-stat"></colgroup>
+      <thead><tr><th class="player-col" style="text-align:left;padding-left:14px">Player</th><th>PP</th><th>A</th><th>G</th><th>B</th><th>T</th></tr></thead>
+      <tbody data-rows></tbody>
+    </table>
+  </div>
+  <script>
+    const ICON = {
+      up: ["0 0 18 24", "M9 22.5V3M2 9.5 9 2.5l7 7", true],
+      down: ["0 0 18 24", "M9 1.5V21M2 14.5l7 7 7-7", true],
+      same: ["0 0 14 10", "M0 0h14v3.5H0zM0 6.5h14V10H0z", false],
+    };
+    const rows = [
+      ["Rowan", false, ["up", "down", "up", "down", "same"]],
+      ["Farmer", false, ["down", "same", "up", "down", "up"]],
+      ["Mithu", true, ["same", "same", "same", "same", "same"]],
+    ];
+    const ns = "http://www.w3.org/2000/svg";
+    for (const [name, right, marks] of rows) {
+      const tr = document.createElement("tr");
+      const td = document.createElement("td");
+      td.className = "player";
+      td.append(right ? name : Object.assign(document.createElement("s"), { textContent: name }));
+      tr.append(td);
+      for (const kind of marks) {
+        const [box, d, stroke] = ICON[kind];
+        const svg = document.createElementNS(ns, "svg");
+        svg.setAttribute("viewBox", box);
+        const path = document.createElementNS(ns, "path");
+        path.setAttribute("d", d);
+        if (stroke) {
+          path.setAttribute("fill", "none"); path.setAttribute("stroke", "currentColor");
+          path.setAttribute("stroke-width", "3"); path.setAttribute("stroke-linecap", "square");
+        } else {
+          path.setAttribute("fill", "currentColor");
+        }
+        svg.append(path);
+        const span = document.createElement("span");
+        span.className = `mark mark--${kind}`;
+        span.append(svg);
+        const cell = document.createElement("td");
+        cell.append(span);
+        tr.append(cell);
+      }
+      document.querySelector("[data-rows]").append(tr);
+    }
+  </script>
+</body>
+</html>

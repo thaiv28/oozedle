@@ -1,5 +1,9 @@
 # Work log
 
+## 2026-10-22 — Link previews
+
+Added Open Graph/Twitter tags, a canonical link and an apple-touch icon to every page, with absolute URLs; player and tournament pages describe themselves (e.g. "2024–2026 · 13 tournaments · 68 games · MA 52.8"). The 1200×630 card is a committed render of `scripts/og_card.html` (`scripts/render_og.py`). Checks: pytest (new tag test), ruff, built pages inspected; the live card verified after deploy. Limit: the card is static; it can't show the day's puzzle.
+
 ## 2026-10-21 — Colored guess arrows
 
 Up arrows are blue (#2563eb, 4.8:1 on the board) and down arrows a deeper orange (#d9480f, 4.0:1), matching the share text's 🟦/🟧; the `=` block stays ink, and the glyphs still carry the meaning. Tokens `--arrow-up` / `--arrow-down`; DESIGN.md updated (exempt from the One Marker rule). Checks: contrast computed, fixture board rendered at 390, pytest and ruff pass.
