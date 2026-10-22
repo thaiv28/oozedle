@@ -50,7 +50,7 @@ Names map through `players.yml` aliases. Validation warns when per-game sums dif
 
 ## Advanced stats
 
-`oozedle/advanced.py` fits once per build; stats contexts keep full precision until display. Box +/- = assists + goals + blocks − turnovers (integer). Margin added (MA) = wA·A + wG·G + wB·B + wT·T, displayed to one decimal. Totals use authoritative Summary totals, including the Alumni Game.
+`oozedle/advanced.py` fits once per build; stats contexts keep full precision until display. Margin added (MA) = wA·A + wG·G + wB·B + wT·T, displayed to one decimal. Totals use authoritative Summary totals, including the Alumni Game.
 
 Training uses one row per game with `player_games`: sum player A, G, B, T; target is float goals_for − goals_against. M1 fits margin = c0 + c1·S + c2·B + c3·T, S=(A+G)/2, with numpy ordinary least squares and an intercept. MA weights are wA=wG=c1/2, wB=c2, wT=c3; the intercept is excluded. M2 fits margin = d0 + d1·B + d2·T on the same games.
 

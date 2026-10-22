@@ -103,9 +103,7 @@
       link.textContent = p.name;
       name.append(link);
       row.append(name);
-      p.plus_minus = Math.trunc(p.assists + p.goals + p.blocks - p.turnovers);
       p.ma = Object.entries(weights).reduce((sum, [key, weight]) => sum + p[key] * weight, 0);
-      p.plus_minus_per10 = p.points_played < 20 ? null : 10 * p.plus_minus / p.points_played;
       p.ma_per10 = p.points_played < 20 ? null : 10 * p.ma / p.points_played;
       [...table.tHead.rows[0].cells].slice(1).forEach(header => {
         const key = header.dataset.key;
@@ -113,7 +111,7 @@
         cell.className = header.className;
         cell.dataset.value = p[key] === null ? "" : p[key];
         cell.textContent = key === "wins" ? `${p.wins}–${p.losses}`
-          : format(p[key], ["ma", "ma_per10", "plus_minus_per10"].includes(key) ? 1 : undefined);
+          : format(p[key], ["ma", "ma_per10"].includes(key) ? 1 : undefined);
         row.append(cell);
       });
       rows.push(row);

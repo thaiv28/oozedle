@@ -1,4 +1,4 @@
-"""Box plus-minus and reproducible game-margin linear models."""
+"""Reproducible game-margin linear models and derived advanced stats."""
 
 from dataclasses import dataclass
 
@@ -91,10 +91,6 @@ def fit_margin_model(ds) -> MarginModel:
         scoring,
         possession,
     )
-
-
-def plus_minus(row) -> int:
-    return int(row["assists"] + row["goals"] + row["blocks"] - row["turnovers"])
 
 
 def margin_added(row, weights) -> float:

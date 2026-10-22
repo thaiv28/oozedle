@@ -1,5 +1,9 @@
 # Work log
 
+## 2026-10-21 — Drop box plus/minus
+
++/- dropped: without point-by-point lines it is only a box-score count; MA kept. Removed the derived count, columns, copy, and tests; MA and per-10 views remain. Checks: `uv run --no-sync ruff format`, `ruff check`, `pytest -q` (30 passed), real-data site build (51 players, 17 tournaments, 12 warnings), and source grep (no matches).
+
 Newest first. One entry per substantive change: what changed, checks actually run, remaining limits. At most 150 words each.
 
 ## 2026-10-21 — Advanced stats (local)

@@ -7,7 +7,7 @@ import pandas as pd
 import pytest
 from conftest import make_layout_a
 
-from oozedle.advanced import fit, game_totals, margin_added, per10, plus_minus
+from oozedle.advanced import fit, game_totals, margin_added, per10
 from oozedle.dataset import build_dataset
 from oozedle.site import build, stats_context
 
@@ -35,7 +35,6 @@ def test_fit_recovers_coefficients():
 def test_stat_helpers():
     row = dict(assists=2, goals=3, blocks=1, turnovers=8)
     weights = dict(assists=0.5, goals=0.5, blocks=0.3, turnovers=-0.2)
-    assert plus_minus(row) == -2
     assert margin_added(row, weights) == pytest.approx(1.2)
     assert per10(12, 19) is None
     assert per10(12, 0) is None
@@ -55,7 +54,6 @@ def test_advanced_build(tmp_path):
     payload = json.loads(context["players_json"])
     assert set(payload["weights"]) == {"assists", "goals", "blocks", "turnovers"}
     for player in context["players"]:
-        assert player["career"]["plus_minus"] == plus_minus(player["career"])
         assert player["career"]["ma"] == pytest.approx(
             margin_added(player["career"], payload["weights"])
         )

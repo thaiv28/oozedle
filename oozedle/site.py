@@ -10,7 +10,7 @@ from pathlib import Path
 import pandas as pd
 from jinja2 import Environment, FileSystemLoader, select_autoescape
 
-from oozedle.advanced import MarginModel, fit_margin_model, margin_added, per10, plus_minus
+from oozedle.advanced import MarginModel, fit_margin_model, margin_added, per10
 from oozedle.config import OUTPUT_DIR, ROOT
 from oozedle.dataset import Dataset
 
@@ -183,9 +183,7 @@ def stats_context(ds: Dataset, model: MarginModel | None = None) -> dict:
     model = model or fit_margin_model(ds)
 
     def advanced(row):
-        row["plus_minus"] = plus_minus(row)
         row["ma"] = margin_added(row, model.weights)
-        row["plus_minus_per10"] = per10(row["plus_minus"], row["points_played"])
         row["ma_per10"] = per10(row["ma"], row["points_played"])
         return row
 
