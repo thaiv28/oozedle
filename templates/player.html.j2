@@ -19,7 +19,7 @@
 {% for t in player.tournament_rows %}
 {% if t.games_list %}<details class="tournament-detail"><summary class="tournament-row">{% else %}<div class="tournament-row">{% endif %}
 <span><a href="{{ root }}tournaments/{{ t.tournament_id }}.html">{{ t.name }}</a> · {{ t.season }}</span>
-{% for key, label in [('points_played','PP'), ('assists','A'), ('goals','G'), ('blocks','B'), ('turnovers','T')] %}<span>{{ t[key] }} <small>{{ label }}</small></span>{% endfor %}
+{% for key, label in [('points_played','PP'), ('assists','A'), ('goals','G'), ('blocks','B'), ('turnovers','T')] %}<span>{{ t[key] }} <small>{{ label }}</small></span>{% endfor %}<span>{{ t.adj_ma_per10|statnum(1) }} <small>AMA/10</small></span>
 {% if t.games_list %}</summary><div class="ledger-wrap"><table class="ledger"><caption class="visually-hidden">{{ t.name }} games</caption>{{ headers(['Opponent', 'Score', 'PP', 'A', 'G', 'B', 'T']) }}<tbody>{% for g in t.games_list %}<tr><th scope="row">{{ g.opponent_label }}</th><td>{{ score(g) }}</td>{{ stats(g) }}</tr>{% endfor %}</tbody></table></div></details>{% else %}</div>{% endif %}
 {% endfor %}
 {% endblock %}

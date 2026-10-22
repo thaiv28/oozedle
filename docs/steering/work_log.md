@@ -1,5 +1,9 @@
 # Work log
 
+## 2026-10-22 — AMA/10 on player tournament rows
+
+Each tournament row on a player page shows that tournament's (shrunk) Adj. MA per 10, labelled "AMA/10", after T. Checks: pytest, ruff, localhost at 1280 and 390.
+
 ## 2026-10-22 — Win% on the Players table
 
 Box score view adds Win% (wins ÷ decided games played, ties excluded; "—" with none) after W–L, rendered server-side and recomputed by `tables.js` after season filtering; sortable. Checks: pytest, ruff, localhost at 1280 and 390 (no overflow), season filter and sort.

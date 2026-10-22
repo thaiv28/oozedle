@@ -684,7 +684,7 @@ main.wide {
 }
 .tournament-row {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) repeat(5, 48px);
+  grid-template-columns: minmax(0, 1fr) repeat(5, 48px) 60px;
   align-items: center;
   gap: 4px;
   min-height: 48px;
@@ -753,7 +753,7 @@ main.wide {
 }
 @media (max-width: 519px) {
   .tournament-row {
-    grid-template-columns: minmax(0, 1fr) repeat(5, 32px);
+    grid-template-columns: minmax(0, 1fr) repeat(5, 32px) 46px;
     gap: 2px;
     font-size: 16px;
   }
