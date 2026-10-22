@@ -1,0 +1,5 @@
+# Tournament order within a season, where the sheets' Drive creation times are wrong.
+# Names as shown on the site (sheet name minus " Stats"). Tournaments not listed
+# come after the listed ones, by creation time.
+order:
+  2026: [Carmen Classic, Spartan Showdown, SBQ, PDQ, Stanford Open, SVR, Regionals, Alumni Game]

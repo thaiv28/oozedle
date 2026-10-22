@@ -9,6 +9,7 @@ DATA_DIR = ROOT / "data"
 RAW_DIR = DATA_DIR / "raw"
 MANIFEST = RAW_DIR / "manifest.json"
 PLAYERS_FILE = ROOT / "players.yml"
+TOURNAMENTS_FILE = ROOT / "tournaments.yml"
 OUTPUT_DIR = ROOT / "output"
 SEASON_FOLDERS: dict[int, str] = {
     2024: "1yoSAskG38yq8k9PalbrivHZopKhkucUv",

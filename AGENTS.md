@@ -71,6 +71,7 @@ Copy `data/`, don't symlink it: sync rewrites and deletes files there.
 | `oozedle/dataset.py` | All workbooks → `players`, `tournaments`, `games`, `player_games`, `player_tournaments`, plus warnings |
 | `oozedle/site.py` | Jinja2 rendering, game JSON, the design-comp hero fixture |
 | `players.yml` | Alias map: raw sheet name → canonical player name |
+| `tournaments.yml` | Per-season tournament order where Drive creation times are wrong |
 | `templates/`, `static/` | Jinja2 templates; hand-written CSS, vanilla JS, self-hosted fonts |
 | `static/js/tables.js` | Stats ledger sorting and leaderboard season/search controls |
 | `.impeccable/` | Design comps, surface briefs, design system sidecar |

@@ -55,3 +55,13 @@ def test_unlisted_sorts_after_manifest_without_created(tmp_path):
     manifest = [dict(season=2024, name="Z Stats", path="2024/Z Stats.xlsx", created=None)]
     dataset = build_dataset(tmp_path, manifest, {})
     assert dataset.tournaments.name.tolist() == ["Z", "A"]
+
+
+def test_order_override_puts_listed_tournaments_in_order(tmp_path):
+    from oozedle.dataset import load_order, tournament_name
+
+    path = tmp_path / "tournaments.yml"
+    path.write_text("order:\n  2026: [Regionals, Alumni Game]\n")
+    assert load_order(path) == {2026: ["Regionals", "Alumni Game"]}
+    assert load_order(tmp_path / "missing.yml") == {}
+    assert tournament_name({"name": "Alumni Game Stats"}) == "Alumni Game"

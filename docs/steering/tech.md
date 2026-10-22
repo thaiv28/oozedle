@@ -33,7 +33,7 @@ Games are matched **by position**, never by name (opponents repeat: "Chico" twic
 
 `build_dataset()` returns pandas tables plus `warnings`:
 
-- `tournaments`: `tournament_id` (`<season>-<slug>`), season, name, `order` (by Drive created time within the season), games, W-L, goals for/against.
+- `tournaments`: `tournament_id` (`<season>-<slug>`), season, name, `order` (by Drive created time within the season, unless `tournaments.yml` lists that season's order: listed names first, in order, then the rest by creation time; 2026 is listed so the Alumni Game follows Regionals), games, W-L, goals for/against.
 - `games`: `game_id` (`<tournament_id>-g<n>`), opponent, score, result, team blocks/turnovers, clean holds.
 - `player_games`: one row per player per game played.
 - `player_tournaments`: Summary totals (authoritative), games played, W-L in games played.
