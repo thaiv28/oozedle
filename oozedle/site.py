@@ -136,7 +136,6 @@ def build(ds: Dataset, out: Path = OUTPUT_DIR, ratings_dir: Path = ROOT / "ratin
     context = stats_context(ds, model, ratings_dir)
     site.render("players.html.j2", "players.html", **context)
     site.render("advanced.html.j2", "advanced.html", **context)
-    site.render("roles.html.j2", "roles.html", **context)
     site.render("tournaments.html.j2", "tournaments.html", **context)
     for player in context["players"]:
         site.render("player.html.j2", f"players/{player['player_id']}.html", player=player)
@@ -315,23 +314,6 @@ def stats_context(
     best = {}
     for line in performances:
         best.setdefault(line["tournament_name"], line)
-    role_seasons = []
-    role_careers = []
-    for player in players:
-        for row in [*player["season_rows"], dict(player["career"], season="Career")]:
-            pp = row["points_played"]
-            scoring = row["assists"] + row["goals"]
-            if pp < 60 or scoring <= 0:
-                continue
-            point = dict(
-                player_id=player["player_id"],
-                name=player["name"],
-                season=row["season"],
-                **{key: row[key] for key in STAT_COLUMNS},
-                assist_share=row["assists"] / scoring,
-                blocks_per_point=row["blocks"] / pp,
-            )
-            (role_careers if row["season"] == "Career" else role_seasons).append(point)
     eligible = sorted(
         [row for row in season_lines if row["points_played"] >= 60],
         key=lambda row: (row["name"], row["season"], row["player_id"]),
@@ -372,8 +354,6 @@ def stats_context(
             for year, r in sorted(ratings.items())
             if aliases[0] in r.teams
         ],
-        roles_json=to_json(dict(seasons=role_seasons, careers=role_careers)),
-        roles_rows=role_seasons,
         best_performances=performances[:10],
         best_tournaments=[best[name] for name in sorted(best)],
         players=players,

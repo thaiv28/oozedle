@@ -218,9 +218,6 @@ Replaces the guess control when the game ends: 2px ink border, Raised Board fill
 ### Ledgers (stats tables)
 Collapsed borders on a 1px Hairline grid, 40px rows, 6px 10px padding, nowrap. Headers 17px/800; row heads 18px/800, left-aligned; numbers centered. Sortable headers are buttons with an 8x7px Marker Orange triangle on the active sort only. Links inside tables are underlined 1px in Strong Rule, darkening on hover. Career totals row uses display-face numerals.
 
-### Charts
-Roles uses a single-series SVG dot chart, with no legend or border box. Dots are ink at 0.55 opacity with a 2px board ring; sqrt(PP) sets radii from 5–13px. Hairline rule grids and 13px soft-ink ticks match the ledgers. Search highlights matching dots and their season-order paths in orange while fading others to 0.2; focus has a visible ring. Linked dots have ≥12px hit radii, HTML tooltips, and a disclosed data ledger. A responsive viewBox keeps the chart at 0.75× width on desktop and square below 520px.
-
 ### Tournament rows
 A grid of one flexible name column and five stat columns (48px, 32px under 519px), 48px minimum height, ruled underneath. Rows are `details` disclosures with a 7x8px ink triangle that rotates 90deg when open.
 

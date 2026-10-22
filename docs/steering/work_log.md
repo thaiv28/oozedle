@@ -1,5 +1,9 @@
 # Work log
 
+## 2026-10-22 — Roles page removed
+
+Removed `roles.html`, `roles.js`, its CSS, links and docs at the user's request (little value). "Plays most like" on player pages stays; it never used the roles data. Checks: pytest, ruff, build; grep finds no roles references.
+
 ## 2026-10-21 — Opponent adjustment and Roles
 
 Added local USAU ratings joins, the log MA-per-point difficulty fit, and Summary-based Adj. MA weighted by each player's game PP. Leaderboard season filtering sums adjusted totals; tournament games show ratings/factors with a shared view switch. Added the season/career Roles map, accessible chart ledger, player search paths, and nearest-season “Plays most like” links.

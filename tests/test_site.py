@@ -53,7 +53,7 @@ def test_build(site_dataset, tmp_path):
     ds = site_dataset
     out = tmp_path / "output"
     build(ds, out)
-    for name in ["index", "players", "tournaments", "advanced", "roles", "404"]:
+    for name in ["index", "players", "tournaments", "advanced", "404"]:
         assert (out / f"{name}.html").is_file()
     assert len(list((out / "players").glob("*.html"))) == len(ds.players)
     assert len(list((out / "tournaments").glob("*.html"))) == len(ds.tournaments)
@@ -134,7 +134,7 @@ def test_adjusted_build_and_neutral_fallback(site_dataset, tmp_path):
             sum(row["adj_ma"] for row in player["season_rows"])
         )
     build(site_dataset, tmp_path / "adjusted", ratings_dir=ratings)
-    assert (tmp_path / "adjusted" / "roles.html").is_file()
+    assert not (tmp_path / "adjusted" / "roles.html").exists()
     neutral = stats_context(site_dataset, ratings_dir=tmp_path / "absent")
     assert not neutral["ratings_available"]
     for player in neutral["players"]:
@@ -178,18 +178,10 @@ def test_summary_adjustment_uses_player_weights_and_missing_game_fallback(
     assert by_player["ben"]["adj_ma"] != pytest.approx(by_player["ben"]["ma"] * sum(factors) / 3)
 
 
-def test_roles_thresholds_and_other_player_neighbors(site_dataset, tmp_path):
+def test_plays_most_like_neighbors(site_dataset, tmp_path):
     ds = site_dataset
     ds.player_tournaments["points_played"] *= 10
     context = stats_context(ds, ratings_dir=tmp_path / "absent")
-    roles = json.loads(context["roles_json"])
-    assert len(roles["seasons"]) == 6
-    assert len(roles["careers"]) == 2
-    for point in roles["seasons"] + roles["careers"]:
-        assert point["points_played"] >= 60
-        assert point["assist_share"] == pytest.approx(
-            point["assists"] / (point["assists"] + point["goals"])
-        )
     for player in context["players"]:
         if player["career"]["points_played"] < 60:
             assert "most_like" not in player
