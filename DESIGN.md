@@ -9,6 +9,8 @@ colors:
   marker-orange: "#ff5a1f"
   marker-orange-pressed: "#e84c13"
   orange-ink: "#c2410c"
+  arrow-up: "#2563eb"
+  arrow-down: "#d9480f"
   rule: "#cecdc6"
   rule-strong: "#b9b7af"
 typography:
@@ -118,10 +120,11 @@ Dense, flat, legible one-handed on a phone. Copy is minimal and never shames a p
 
 ## Colors
 
-Warm white board stock, near-black marker ink, grey-green hairlines, and one saturated orange. No other hues exist.
+Warm white board stock, near-black marker ink, grey-green hairlines, and one saturated orange. The only other hues are the two guess-arrow colors.
 
 ### Primary
 - **Marker Orange** (#ff5a1f): the single "this is current/active" signal. Used for the Guess button fill, the current row's number, the active sort triangle in ledger headers, the focus ring (3px outline), and the input caret. Hover deepens to #e84c13.
+- **Arrow Up** (#2563eb) and **Arrow Down** (#d9480f): guess-board arrows only, matching the share text's 🟦 and 🟧. Both clear 3:1 on the board (4.8 and 4.0). The `=` block stays ink.
 - **Orange Ink** (#c2410c): the darker orange used only for text on the board (the form note under the guess control), where plain marker orange would be too light to read.
 
 ### Neutral
@@ -133,7 +136,7 @@ Warm white board stock, near-black marker ink, grey-green hairlines, and one sat
 - **Strong Rule** (#b9b7af): input borders, link underlines at rest, disabled button fill.
 
 ### Named Rules
-**The One Marker Rule.** Orange marks exactly one current or active thing per view: the Guess button, the current row number, or the active sort triangle. If a second thing wants orange, it is wrong; make it ink.
+**The One Marker Rule.** Orange marks exactly one current or active thing per view: the Guess button, the current row number, or the active sort triangle. If a second thing wants orange, it is wrong; make it ink. The deeper Arrow Down orange on guess arrows is a feedback color, not a marker, and is exempt.
 
 **The Never-Color-Alone Rule.** No state is communicated by color. Higher/lower is an arrow, equal is a solid block, wrong is struck through, selected is inverted ink. Color may reinforce, never carry.
 
