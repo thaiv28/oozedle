@@ -1,11 +1,14 @@
 {% extends "base.html.j2" %}
 {% from "ledger.html.j2" import headers %}
 {% from "ranking_rows.html.j2" import table with context %}
-{% set nav = "players" %}
+{% set nav = "advanced" %}
 {% block title %}Advanced · Oozedle{% endblock %}
 {% block main_class %} class="wide"{% endblock %}
 {% block main %}
 <h1 class="page-head">Advanced</h1>
+<p class="fact-line">MA weights each stat by how much it moved the score, from a regression of game margin on team stats; Adj. MA scales each game by the opponent's USAU rating relative to Ooze's.</p>
+<details class="method">
+<summary>How MA is calculated</summary>
 <h2 class="ledger-title">Margin added</h2>
 <div class="ledger-wrap"><table class="ledger"><caption class="visually-hidden">Margin added weights</caption>{{ headers(['Stat', 'Goals of margin', '95% interval']) }}<tbody>
 {% for label,index,scale in [('Assist',0,0.5),('Goal',0,0.5),('Block',1,1),('Turnover',2,1)] %}<tr><th scope="row">{{ label }}</th><td>{{ (model.scoring.coef[index] * scale)|statnum(2) }}</td><td>{{ (model.scoring.low[index] * scale)|statnum(2) }} to {{ (model.scoring.high[index] * scale)|statnum(2) }}</td></tr>{% endfor %}
@@ -16,6 +19,7 @@
 <div class="ledger-wrap"><table class="ledger"><caption class="visually-hidden">Ooze's USAU college ratings</caption>{{ headers(['Season', 'Rating', 'Rank', 'Data through']) }}<tbody>{% for row in season_ratings %}<tr><th scope="row">{{ row.season }}</th><td>{{ row.rating|statnum(0) }}</td><td>{{ row.rank|statnum }}</td><td>{{ row.as_of }}</td></tr>{% endfor %}</tbody></table></div>
 {% else %}<p class="fact-line">Ratings are unavailable. Adj. MA equals MA.</p>{% endif %}
 <p class="rating-source">Ratings: Ultiworld Projected Rankings (formerly frisbee-rankings.com); past seasons from Internet Archive snapshots.</p>
+</details>
 
 <h2 class="ledger-title">Best tournament performances</h2>
 {{ table('performances', best_performances, 'Ten best tournament performances by adjusted margin added per 10 points') }}

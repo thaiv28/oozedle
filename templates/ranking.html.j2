@@ -1,6 +1,6 @@
 {% extends "base.html.j2" %}
 {% from "ranking_rows.html.j2" import table with context %}
-{% set nav = "players" %}
+{% set nav = "advanced" %}
 {% set titles = {'performances': 'Tournament performances', 'seasons': 'Seasons', 'careers': 'Greatest careers'} %}
 {% set rows = {'performances': all_performances, 'seasons': all_seasons, 'careers': all_careers}[kind] %}
 {% block title %}{{ titles[kind] }} by Adj. MA · Oozedle{% endblock %}

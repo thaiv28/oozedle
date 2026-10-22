@@ -30,15 +30,13 @@
       <nav class="topnav" aria-label="Site">
         <a href="{{ root }}players.html"{% if nav == "players" %} aria-current="page"{% endif %}>Players</a>
         <a href="{{ root }}tournaments.html"{% if nav == "tournaments" %} aria-current="page"{% endif %}>Tournaments</a>
+        <a href="{{ root }}advanced.html"{% if nav == "advanced" %} aria-current="page"{% endif %}>Advanced</a>
       </nav>
     </div>
   </header>
   <main id="main"{% block main_attrs %}{% block main_class %}{% endblock %}{% endblock %}>
     {% block main %}{% endblock %}
   </main>
-  <footer class="site-foot">
-    {% block foot %}Stats from Ooze's tournament stat sheets.{% endblock %}
-  </footer>
   {% block scripts %}{% endblock %}
 </body>
 </html>

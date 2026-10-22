@@ -1,5 +1,9 @@
 # Work log
 
+## 2026-10-22 — Advanced page method folded
+
+One line under the heading says how MA and Adj. MA are computed; the Margin added and Opponent adjustment tables (and the ratings source) sit in a closed "How MA is calculated" disclosure. "Advanced" joins the header nav (current on the Advanced and ranking pages); the Players page link to it is gone. Removed the site footer ("Stats from Ooze's tournament stat sheets.") and the game's "Name the player. 6 guesses." line. Checks: pytest, ruff, build, localhost at 390 and 1280 (closed and opened).
+
 ## 2026-10-22 — Rankings per 10
 
 Best tournament performances (now with a per-10 column) and best seasons (Advanced top 10 and full pages) now rank by shrunk Adj. MA per 10 instead of total Adj. MA: 2026 had 44 games and 824 team points against 25/412 (2024) and 23/397 (2025), so totals favoured it (8 of the top 10). Greatest careers (renamed) and best-at-each-tournament still rank by total; the latter links to `advanced/tournaments.html` (all 17 tournaments, most recent first, each with its top line). New `tournaments.yml` overrides a season's order where Drive creation times are wrong (2026: the Alumni Game sheet predates Regionals'); it applies site-wide. Checks: pytest, ruff, build, localhost.
