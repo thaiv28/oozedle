@@ -7,12 +7,14 @@ import json
 import shutil
 from pathlib import Path
 
+import numpy as np
 import pandas as pd
 from jinja2 import Environment, FileSystemLoader, select_autoescape
 
-from oozedle.advanced import MarginModel, fit_margin_model, margin_added, per10
+from oozedle.advanced import MarginModel, fit_difficulty, fit_margin_model, margin_added, per10
 from oozedle.config import OUTPUT_DIR, ROOT
 from oozedle.dataset import Dataset
+from oozedle.ratings import game_ratings, load_aliases, load_ratings
 
 TEMPLATES_DIR = ROOT / "templates"
 STATIC_DIR = ROOT / "static"
@@ -124,16 +126,17 @@ def to_json(data: dict | list) -> str:
     return json.dumps(data, separators=(",", ":"), ensure_ascii=False).replace("</", "<\\/")
 
 
-def build(ds: Dataset, out: Path = OUTPUT_DIR) -> None:
+def build(ds: Dataset, out: Path = OUTPUT_DIR, ratings_dir: Path = ROOT / "ratings") -> None:
     if out.exists():
         shutil.rmtree(out)
     site = Site(out)
     site.copy_static()
     site.render("index.html.j2", "index.html", game_json=to_json(game_data(ds)))
     model = fit_margin_model(ds)
-    context = stats_context(ds, model)
+    context = stats_context(ds, model, ratings_dir)
     site.render("players.html.j2", "players.html", **context)
     site.render("advanced.html.j2", "advanced.html", **context)
+    site.render("roles.html.j2", "roles.html", **context)
     site.render("tournaments.html.j2", "tournaments.html", **context)
     for player in context["players"]:
         site.render("player.html.j2", f"players/{player['player_id']}.html", player=player)
@@ -182,14 +185,52 @@ def statnum(value, decimals=None):
     return text.replace("-", "−")
 
 
-def stats_context(ds: Dataset, model: MarginModel | None = None) -> dict:
+def stats_context(
+    ds: Dataset, model: MarginModel | None = None, ratings_dir: Path = ROOT / "ratings"
+) -> dict:
     """Precompute page joins, ordering, and totals; templates only present values."""
 
     model = model or fit_margin_model(ds)
 
+    ratings = load_ratings(ratings_dir)
+    aliases = load_aliases(Path(ratings_dir) / "aliases.yml")
+    rated_games = game_ratings(ds, ratings, aliases)
+    difficulty = fit_difficulty(ds, model.weights, rated_games)
+    factors = rated_games.gap.map(difficulty.factor)
+    player_tournaments = ds.player_tournaments.copy()
+    player_games = ds.player_games.copy()
+    player_games["factor"] = player_games.game_id.map(factors)
+    tournament_factors = {}
+    for tid, frame in ds.games.groupby("tournament_id"):
+        points = frame.goals_for + frame.goals_against
+        tournament_factors[tid] = (
+            float(np.average(frame.game_id.map(factors), weights=points))
+            if points.sum() > 0
+            else 1.0
+        )
+    player_factors = {}
+    for key, frame in player_games.groupby(["player_id", "tournament_id"]):
+        player_factors[key] = (
+            float(np.average(frame.factor, weights=frame.points_played))
+            if frame.points_played.sum() > 0
+            else tournament_factors.get(key[1], 1.0)
+        )
+    player_tournaments["adj_ma"] = [
+        margin_added(row._asdict(), model.weights)
+        * player_factors.get(
+            (row.player_id, row.tournament_id), tournament_factors.get(row.tournament_id, 1.0)
+        )
+        for row in player_tournaments.itertuples()
+    ]
+
+    def aggregate(frame):
+        return dict(totals(frame), adj_ma=float(frame.adj_ma.sum()))
+
     def advanced(row):
         row["ma"] = margin_added(row, model.weights)
         row["ma_per10"] = per10(row["ma"], row["points_played"])
+        row.setdefault("adj_ma", row["ma"])
+        row["adj_ma_per10"] = per10(row["adj_ma"], row["points_played"])
         return row
 
     def records(frame):
@@ -206,12 +247,15 @@ def stats_context(ds: Dataset, model: MarginModel | None = None) -> dict:
     by_id = {t["tournament_id"]: t for t in tournaments}
     games = {}
     for game in records(ds.games.sort_values("index")):
+        rating = rated_games.loc[game["game_id"]]
+        game["opponent_rating"] = number(rating.opponent_rating)
+        game["factor"] = difficulty.factor(rating.gap) if np.isfinite(rating.gap) else None
         games[game["game_id"]] = game
     for t in tournaments:
         tid = t["tournament_id"]
         t["games_list"] = [g for g in games.values() if g["tournament_id"] == tid]
         t["has_clean_holds"] = any(g["clean_holds"] is not None for g in t["games_list"])
-        box = records(ds.player_tournaments[ds.player_tournaments.tournament_id == tid])
+        box = records(player_tournaments[player_tournaments.tournament_id == tid])
         for line in box:
             line["name"] = people[line["player_id"]]["name"]
             advanced(line)
@@ -233,11 +277,11 @@ def stats_context(ds: Dataset, model: MarginModel | None = None) -> dict:
         )
     players = []
     season_lines = []
-    for pid, frame in ds.player_tournaments.groupby("player_id"):
-        player = dict(people[pid], career=advanced(totals(frame)))
+    for pid, frame in player_tournaments.groupby("player_id"):
+        player = dict(people[pid], career=advanced(aggregate(frame)))
         seasons = []
         for season, lines in frame.groupby("season", sort=True):
-            row = advanced(dict(season=int(season), **totals(lines)))
+            row = advanced(dict(season=int(season), **aggregate(lines)))
             seasons.append(row)
             season_lines.append(dict(player_id=pid, name=player["name"], **row))
         years = [s["season"] for s in seasons]
@@ -267,12 +311,69 @@ def stats_context(ds: Dataset, model: MarginModel | None = None) -> dict:
         for t in tournaments
         for line in t["box"]
     ]
-    performances.sort(key=lambda r: (-r["ma"], r["name"], r["tournament_id"]))
+    performances.sort(key=lambda r: (-r["adj_ma"], r["name"], r["tournament_id"]))
     best = {}
     for line in performances:
         best.setdefault(line["tournament_name"], line)
+    role_seasons = []
+    role_careers = []
+    for player in players:
+        for row in [*player["season_rows"], dict(player["career"], season="Career")]:
+            pp = row["points_played"]
+            scoring = row["assists"] + row["goals"]
+            if pp < 60 or scoring <= 0:
+                continue
+            point = dict(
+                player_id=player["player_id"],
+                name=player["name"],
+                season=row["season"],
+                **{key: row[key] for key in STAT_COLUMNS},
+                assist_share=row["assists"] / scoring,
+                blocks_per_point=row["blocks"] / pp,
+            )
+            (role_careers if row["season"] == "Career" else role_seasons).append(point)
+    eligible = sorted(
+        [row for row in season_lines if row["points_played"] >= 60],
+        key=lambda row: (row["name"], row["season"], row["player_id"]),
+    )
+    features = ["assists", "goals", "blocks", "turnovers"]
+    if eligible:
+        vectors = np.array([[r[k] / r["points_played"] for k in features] for r in eligible])
+        means, sd = vectors.mean(axis=0), vectors.std(axis=0)
+        sd[sd == 0] = 1
+        standardized = (vectors - means) / sd
+        for player in players:
+            career = player["career"]
+            if career["points_played"] < 60:
+                continue
+            vector = np.array([career[k] / career["points_played"] for k in features])
+            distances = np.linalg.norm(standardized - (vector - means) / sd, axis=1)
+            nearest = sorted(range(len(eligible)), key=lambda i: distances[i])
+            player["most_like"] = [
+                {k: eligible[i][k] for k in ("player_id", "name", "season")}
+                for i in nearest
+                if eligible[i]["player_id"] != player["player_id"]
+            ][:3]
     return dict(
         model=model,
+        difficulty=difficulty,
+        ratings_available=bool(ratings),
+        adjustment_pct=100 * (1 - np.exp(100 * difficulty.b)),
+        gap_factors=[
+            dict(gap=gap, factor=difficulty.factor(gap)) for gap in (-1000, -500, 0, 500, 1000)
+        ],
+        season_ratings=[
+            dict(
+                season=year,
+                rating=number(r.teams[aliases[0]]),
+                rank=r.ranks[aliases[0]],
+                as_of=r.as_of,
+            )
+            for year, r in sorted(ratings.items())
+            if aliases[0] in r.teams
+        ],
+        roles_json=to_json(dict(seasons=role_seasons, careers=role_careers)),
+        roles_rows=role_seasons,
         best_performances=performances[:10],
         best_tournaments=[best[name] for name in sorted(best)],
         players=players,

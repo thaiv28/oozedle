@@ -51,9 +51,10 @@
     const table = document.getElementById(control.dataset.table);
     const setView = view => {
       table.dataset.view = view;
+      document.querySelectorAll("[data-shared-view]").forEach(other => other.dataset.view = view);
       control.querySelectorAll("button").forEach(button =>
         button.setAttribute("aria-pressed", String(button.dataset.view === view)));
-      const key = view === "advanced" ? "ma" : "points_played";
+      const key = view === "advanced" ? "adj_ma" : "points_played";
       const column = [...table.tHead.rows[0].cells].findIndex(th => th.dataset.key === key);
       states.set(table, {column, direction: "descending"});
       sort(table);
@@ -83,7 +84,7 @@
   const url = new URL(location.href);
   let season = url.searchParams.get("season") || "all";
   if (!buttons.some(b => b.dataset.season === season)) season = "all";
-  const keys = ["tournaments", "games_played", "points_played", "assists", "goals", "blocks", "turnovers", "wins", "losses"];
+  const keys = ["tournaments", "games_played", "points_played", "assists", "goals", "blocks", "turnovers", "wins", "losses", "adj_ma"];
   const update = () => {
     buttons.forEach(b => b.setAttribute("aria-pressed", String(b.dataset.season === season)));
     const players = new Map();
@@ -104,14 +105,14 @@
       name.append(link);
       row.append(name);
       p.ma = Object.entries(weights).reduce((sum, [key, weight]) => sum + p[key] * weight, 0);
-      p.ma_per10 = p.points_played < 20 ? null : 10 * p.ma / p.points_played;
+      p.adj_ma_per10 = p.points_played < 20 ? null : 10 * p.adj_ma / p.points_played;
       [...table.tHead.rows[0].cells].slice(1).forEach(header => {
         const key = header.dataset.key;
         const cell = document.createElement("td");
         cell.className = header.className;
         cell.dataset.value = p[key] === null ? "" : p[key];
         cell.textContent = key === "wins" ? `${p.wins}–${p.losses}`
-          : format(p[key], ["ma", "ma_per10"].includes(key) ? 1 : undefined);
+          : format(p[key], ["ma", "adj_ma", "adj_ma_per10"].includes(key) ? 1 : undefined);
         row.append(cell);
       });
       rows.push(row);

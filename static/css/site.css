@@ -668,7 +668,8 @@ main.wide {
   background: var(--ink);
   color: var(--board);
 }
-#player-search {
+#player-search,
+#roles-search {
   width: 200px;
   max-width: 100%;
   height: 40px;
@@ -1028,7 +1029,56 @@ body:has(main.wide) .site-foot {
 }
 
 @media (max-width: 519px) {
-  .ledger--top tr > :nth-child(3) {
+  .ledger--top tr > :nth-child(3),
+  .ledger--top tr > :nth-child(4),
+  .ledger[data-view="advanced"] .phone-ma {
     display: none;
   }
+}
+
+/* Roles uses the ledger's ink and rules, without a chart frame. */
+.roles-chart {
+  position: relative;
+  width: 100%;
+  min-width: 0;
+}
+.roles-chart > svg {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+.roles-chart text {
+  font: 600 13px var(--text);
+  fill: var(--ink-soft);
+}
+.roles-chart .roles-axis {
+  fill: var(--ink);
+  font-weight: 800;
+}
+.roles-dot { outline: none; }
+.roles-hit { stroke: transparent; stroke-width: 2; }
+.roles-dot:focus-visible .roles-hit { stroke: var(--orange); }
+.roles-dot:hover .roles-hit { stroke: var(--ink); }
+.roles-tooltip {
+  position: absolute;
+  z-index: 3;
+  width: 300px;
+  max-width: 100%;
+  padding: 8px 10px;
+  border: 1px solid var(--ink);
+  background: var(--board);
+  font-size: 16px;
+  pointer-events: auto;
+}
+.rating-source {
+  font-size: 14px;
+  color: var(--ink-soft);
+}
+@media (max-width: 519px) {
+  .ledger--roles th, .ledger--roles td {
+    min-width: 0;
+    padding: 6px 4px;
+    white-space: normal;
+  }
+  .ledger--tournament thead th { white-space: normal; font-size: 14px; }
 }

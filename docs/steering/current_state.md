@@ -10,6 +10,8 @@
 
 - Margin added (MA) on the leaderboard, player and tournament pages, and an Advanced page (branch `advanced-stats`, local only).
 
+- Opponent-adjusted Margin added (Adj. MA), Roles season/career map, and player “Plays most like” comparisons (branch `opponent-adjusted`, local only).
+
 ## Known limits
 
 - No line data: the sheets don't record who was on the field each point.
@@ -21,4 +23,4 @@
 
 - Wire the parent Drive folder so new seasons are discovered automatically.
 - Advanced stats: usage and best single-game performances.
-- A simple opponent-strength Elo from game scores.
+- Shrunk per-10 rates for small samples.

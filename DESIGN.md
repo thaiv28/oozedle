@@ -201,7 +201,7 @@ Square and ruled. Controls (inputs, button, season chips, rail chips) take a 3px
 - **Style:** Board Stock fill, 1.5px ink border (1px on stats-page buttons), 3px corners on links, display face 18px, min-width 52px.
 - **State:** the selected season is inverted (ink fill, board text; `aria-current` or `aria-pressed`). The rail on the tournaments page sizes each chip by its share of the season's tournaments; hover inverts.
 
-The Box/Advanced view switch reuses the season chip style: ink borders, inverted selected state via `aria-pressed`, and the same display face. A shared button group changes ledger columns and preserves its choice in the URL; switching to Advanced sorts by MA.
+The Box/Advanced view switch reuses the season chip style: ink borders, inverted selected state via `aria-pressed`, and the same display face. A shared button group changes ledger columns and preserves its choice in the URL; switching to Advanced sorts by Adj. MA. One tournament switch drives both ledgers.
 
 ### Inputs / Fields
 - **Guess input:** Raised Board fill, 1.5px Strong Rule border, 3px corners, 18px Sofia 600, orange caret. Focus swaps the border to ink and doubles it with a 2px ink box-shadow ring (no browser outline).
@@ -217,6 +217,9 @@ Replaces the guess control when the game ends: 2px ink border, Raised Board fill
 
 ### Ledgers (stats tables)
 Collapsed borders on a 1px Hairline grid, 40px rows, 6px 10px padding, nowrap. Headers 17px/800; row heads 18px/800, left-aligned; numbers centered. Sortable headers are buttons with an 8x7px Marker Orange triangle on the active sort only. Links inside tables are underlined 1px in Strong Rule, darkening on hover. Career totals row uses display-face numerals.
+
+### Charts
+Roles uses a single-series SVG dot chart, with no legend or border box. Dots are ink at 0.55 opacity with a 2px board ring; sqrt(PP) sets radii from 5–13px. Hairline rule grids and 13px soft-ink ticks match the ledgers. Search highlights matching dots and their season-order paths in orange while fading others to 0.2; focus has a visible ring. Linked dots have ≥12px hit radii, HTML tooltips, and a disclosed data ledger. A responsive viewBox keeps the chart at 0.75× width on desktop and square below 520px.
 
 ### Tournament rows
 A grid of one flexible name column and five stat columns (48px, 32px under 519px), 48px minimum height, ruled underneath. Rows are `details` disclosures with a 7x8px ink triangle that rotates 90deg when open.

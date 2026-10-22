@@ -1,5 +1,13 @@
 # Work log
 
+## 2026-10-21 — Opponent adjustment and Roles
+
+Added local USAU ratings joins, the log MA-per-point difficulty fit, and Summary-based Adj. MA weighted by each player's game PP. Leaderboard season filtering sums adjusted totals; tournament games show ratings/factors with a shared view switch. Added the season/career Roles map, accessible chart ledger, player search paths, and nearest-season “Plays most like” links.
+
+Observed a=−0.542857721, b=−0.001131162; R²=0.394630409; 82 rated games, 80 fitted. Played-game factors range 0.311791–3.107335; rating gaps −1011.29–1021.30.
+
+Checks: Ruff format/check, pytest (37 passed), JS syntax, static UI review, and real build (51 players, 17 tournaments, 12 existing warnings) passed. Browser launch was denied by the sandbox, so desktop/390px visual inspection remains unverified. No network, commits, or publishing.
+
 ## 2026-10-22 — Link previews
 
 Added Open Graph/Twitter tags, a canonical link and an apple-touch icon to every page, with absolute URLs; player and tournament pages describe themselves (e.g. "2024–2026 · 13 tournaments · 68 games · MA 52.8"). The 1200×630 card is a committed render of `scripts/og_card.html` (`scripts/render_og.py`). Checks: pytest (new tag test), ruff, built pages inspected; the live card verified after deploy. Limit: the card is static; it can't show the day's puzzle.

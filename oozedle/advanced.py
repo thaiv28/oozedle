@@ -96,3 +96,49 @@ def margin_added(row, weights) -> float:
 
 def per10(value, points_played) -> float | None:
     return 10 * value / points_played if points_played >= 20 else None
+
+
+@dataclass(frozen=True)
+class Difficulty:
+    a: float
+    b: float
+    n_rated: int
+    n_fit: int
+    r2: float
+    gap_min: float
+    gap_max: float
+    gap_mean: float
+
+    def factor(self, gap: float) -> float:
+        if np.isnan(gap):
+            return 1.0
+        clamped = np.clip(gap, self.gap_min, self.gap_max)
+        return float(np.exp(-self.b * (clamped - self.gap_mean)))
+
+
+def fit_difficulty(ds, weights, game_ratings) -> Difficulty:
+    """Fit game MA per score point against opponent-minus-Ooze ratings."""
+    lines = ds.player_games.copy()
+    lines["ma"] = sum(lines[key] * weight for key, weight in weights.items())
+    sums = lines.groupby("game_id").ma.sum()
+    games = ds.games.set_index("game_id").join(game_ratings[["gap"]])
+    rated = games[np.isfinite(games.gap)]
+    rate = sums.reindex(games.index) / (games.goals_for + games.goals_against)
+    usable = np.isfinite(games.gap) & np.isfinite(rate) & (rate > 0)
+    gaps = games.loc[usable, "gap"].to_numpy(dtype=float)
+    y = np.log(rate[usable].to_numpy(dtype=float))
+    a = b = r2 = 0.0
+    if len(y):
+        x = np.column_stack([np.ones(len(y)), gaps])
+        a, b = np.linalg.lstsq(x, y, rcond=None)[0]
+        r2 = _r2(y, x @ np.array([a, b]))
+    return Difficulty(
+        float(a),
+        float(b),
+        len(rated),
+        len(y),
+        r2,
+        float(rated.gap.min()) if len(rated) else 0.0,
+        float(rated.gap.max()) if len(rated) else 0.0,
+        float(rated.gap.mean()) if len(rated) else 0.0,
+    )
