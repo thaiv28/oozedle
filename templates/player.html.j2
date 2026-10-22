@@ -15,7 +15,6 @@
 <div class="ledger-wrap"><table class="ledger ledger--advanced"><caption class="visually-hidden">Advanced career and season totals</caption>{{ headers(['', 'PP', 'MA', 'Adj. MA', 'Adj. MA per 10']) }}<tbody>
 {% for s in [player.career] + player.season_rows %}<tr><th scope="row">{{ 'Career' if loop.first else s.season }}</th><td>{{ s.points_played|statnum }}</td><td>{{ s.ma|statnum(1) }}</td><td>{{ s.adj_ma|statnum(1) }}</td><td>{{ s.adj_ma_per10|statnum(1) }}</td></tr>{% endfor %}
 </tbody></table></div>
-<p class="quiet-link"><a href="{{ root }}advanced.html">How MA works</a></p>
 <h2 class="ledger-title">Tournaments</h2>
 {% for t in player.tournament_rows %}
 {% if t.games_list %}<details class="tournament-detail"><summary class="tournament-row">{% else %}<div class="tournament-row">{% endif %}

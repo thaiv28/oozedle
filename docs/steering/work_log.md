@@ -1,5 +1,9 @@
 # Work log
 
+## 2026-10-22 — Advanced pages trimmed
+
+Removed explanatory copy at the user's request: the MA and opponent-adjustment sentences, the fit and shrinkage lines, Model details, and the ranking pages' count line. Tables, "All …" links, hidden captions and the ratings source credit stay. The Players link now reads "Advanced"; player pages no longer link there. Checks: pytest, ruff, build.
+
 ## 2026-10-22 — Adj. MA rankings
 
 The Advanced page shows the ten best tournament performances, seasons and careers by Adj. MA, each linking to a full sortable page (`advanced/performances.html`, `seasons.html`, `careers.html`; one `ranking.html.j2`, rows in `ranking_rows.html.j2`). `tables.js` takes a per-table default sort (`data-sort`) and now sorts "−" values as negatives (they previously sank as non-numbers). Checks: pytest (link check caught a missing `with context` on the macro import), ruff, localhost at 390 and 1280.
