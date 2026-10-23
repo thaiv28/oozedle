@@ -1,5 +1,9 @@
 # Work log
 
+## 2026-10-23 — Plain Adj. MA per 10
+
+Adj. MA per 10 (ADV) is now 10 × Adj. MA ÷ PP, — under 20 PP, on the server and in `tables.js`. The empirical-Bayes shrinkage is gone: it pulled low-minute players toward the team rate (+0.97 per 10), so a negative MA could show a positive rate. `Shrinkage` and `fit_shrinkage` removed. Limit: lines just over 20 PP can top the per-10 rankings. Checks: pytest, ruff, build.
+
 ## 2026-10-22 — Share link back to the bare domain
 
 The share text ends with `oozedle.thaiv.dev` again: with `https://`, iMessage turned the message into a preview card the user didn't like. Trade-off: Discord won't make the bare domain a link. Checks: pytest, ruff.
