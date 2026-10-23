@@ -15,7 +15,6 @@ from oozedle.advanced import (
     MarginModel,
     fit_difficulty,
     fit_margin_model,
-    fit_shrinkage,
     margin_added,
     per10,
 )
@@ -232,14 +231,6 @@ def stats_context(
         for row in player_tournaments.itertuples()
     ]
 
-    game_lines = player_games.assign(
-        value=sum(player_games[key] * weight for key, weight in model.weights.items())
-        * player_games.factor.fillna(1.0)
-    )
-    points = float(player_tournaments.points_played.sum())
-    mean_rate = float(player_tournaments.adj_ma.sum()) / points if points else 0.0
-    shrinkage = fit_shrinkage(game_lines, mean_rate)
-
     def aggregate(frame):
         return dict(totals(frame), adj_ma=float(frame.adj_ma.sum()))
 
@@ -247,7 +238,7 @@ def stats_context(
         row["ma"] = margin_added(row, model.weights)
         row["ma_per10"] = per10(row["ma"], row["points_played"])
         row.setdefault("adj_ma", row["ma"])
-        row["adj_ma_per10"] = shrinkage.per10(row["adj_ma"], row["points_played"])
+        row["adj_ma_per10"] = per10(row["adj_ma"], row["points_played"])
         return row
 
     def records(frame):
@@ -385,13 +376,7 @@ def stats_context(
         players_json=to_json(
             dict(
                 weights=model.weights,
-                shrink=dict(
-                    # JSON has no infinity; a huge prior is the same in practice
-                    prior_points=min(shrinkage.prior_points, 1e9),
-                    mean_rate=shrinkage.mean_rate,
-                ),
                 lines=season_lines,
             )
         ),
-        shrinkage=shrinkage,
     )

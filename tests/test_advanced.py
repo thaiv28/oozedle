@@ -62,32 +62,3 @@ def test_advanced_build(tmp_path):
     assert (out / "advanced.html").is_file()
     assert '"weights":' in (out / "players.html").read_text()
     assert 'data-view="advanced"' in (out / "players.html").read_text()
-
-
-def test_shrinkage_pulls_small_samples_to_the_team_rate():
-    from oozedle.advanced import Shrinkage
-
-    s = Shrinkage(prior_points=50, mean_rate=0.1)
-    assert s.per10(0, 0) is None
-    assert s.per10(5, 5) == pytest.approx(10 * (5 + 5) / 55)  # 5 PP at 1.0/pt -> mostly team rate
-    assert s.per10(300, 3000) == pytest.approx(10 * (300 + 5) / 3050)  # big sample barely moves
-    assert Shrinkage(float("inf"), 0.1).per10(5, 5) == pytest.approx(1.0)
-
-
-def test_fit_shrinkage_recovers_prior_points():
-    import numpy as np
-    import pandas as pd
-
-    from oozedle.advanced import fit_shrinkage
-
-    rng = np.random.default_rng(0)
-    skill_sd, noise_sd, rows = 0.05, 0.25, []
-    for p in range(300):
-        true = 0.1 + rng.normal(0, skill_sd)
-        for _ in range(8):
-            pts = 10
-            rows.append((p, pts, true * pts + rng.normal(0, noise_sd * np.sqrt(pts))))
-    games = pd.DataFrame(rows, columns=["player_id", "points_played", "value"])
-    mean = games.value.sum() / games.points_played.sum()
-    k = fit_shrinkage(games, mean).prior_points
-    assert k == pytest.approx((noise_sd / skill_sd) ** 2, rel=0.3)

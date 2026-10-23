@@ -10,7 +10,7 @@
 
 - Margin added (MA) on the leaderboard, player and tournament pages, and an Advanced page (branch `advanced-stats`, local only).
 
-- Opponent-adjusted Margin added (Adj. MA) with shrunk per-10 rates (branch `opponent-adjusted`, local only).
+- Opponent-adjusted Margin added (Adj. MA) with plain per-10 rates (— under 20 PP).
 
 ## Known limits
 
