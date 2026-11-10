@@ -15,4 +15,5 @@ SEASON_FOLDERS: dict[int, str] = {
     2024: "1yoSAskG38yq8k9PalbrivHZopKhkucUv",
     2025: "1V5zom_cnQYJZT7W7IIkdaoD3Ilfjia5j",
     2026: "1R7Ep1Ne-3GV0GjlniSRIDBjnqtsr9YNA",
+    2027: "1Zsfsr7uSEZ7VdhYoQux6J8Scx-cwxetp",
 }

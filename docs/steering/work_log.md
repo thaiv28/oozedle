@@ -1,5 +1,9 @@
 # Work log
 
+## 2026-11-09 — 2027 season folder
+
+Added the 2027 Drive folder to `SEASON_FOLDERS`. Sync pulled one workbook (Carmen Classic, 3-3) with no data warnings; its six new names (Andrew, Charlie, Christian, Garen, Jack, Zach) don't look like aliases of earlier players. Raised the real-data test floor to 18 tournaments and 4 seasons. Checks: sync, check_data, pytest, ruff, build.
+
 ## 2026-10-23 — Plain Adj. MA per 10
 
 Adj. MA per 10 (ADV) is now 10 × Adj. MA ÷ PP, — under 20 PP, on the server and in `tables.js`. The empirical-Bayes shrinkage is gone: it pulled low-minute players toward the team rate (+0.97 per 10), so a negative MA could show a positive rate. `Shrinkage` and `fit_shrinkage` removed. Limit: lines just over 20 PP can top the per-10 rankings. Checks: pytest, ruff, build.

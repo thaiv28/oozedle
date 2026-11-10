@@ -6,7 +6,7 @@ Python ≥ 3.12 with uv; pandas, openpyxl, gdown (plus requests and BeautifulSou
 
 ## Data source
 
-One Drive folder per season (`SEASON_FOLDERS` in `oozedle/config.py`), each holding Google Sheets files named "<Tournament> Stats". The tournament name is the file name minus " Stats". Seasons are the spring college season (2024, 2025, 2026 so far). A parent folder that would let new seasons appear on their own is not wired up yet: add a season by adding its folder ID.
+One Drive folder per season (`SEASON_FOLDERS` in `oozedle/config.py`), each holding Google Sheets files named "<Tournament> Stats". The tournament name is the file name minus " Stats". Seasons are the spring college season (2024–2027 so far). A parent folder that would let new seasons appear on their own is not wired up yet: add a season by adding its folder ID.
 
 ## Sync (`oozedle/drive.py`, `scripts/sync_data.py`)
 
