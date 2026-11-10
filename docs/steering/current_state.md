@@ -2,7 +2,7 @@
 
 ## Shipped
 
-- Drive sync for the 2024, 2025 and 2026 season folders (17 workbooks), with change detection from Drive modified times.
+- Drive sync for the 2024–2027 season folders (18 workbooks), with change detection from Drive modified times.
 - Parser for both workbook layouts and the Alumni Game special case; tidy tables with validation warnings.
 - The daily game ("Field Board" design): one puzzle a day from any season, a season switch, arrow-only feedback, saved progress, share text, yesterday's answer, a personal record.
 - Published at oozedle.thaiv.dev by `publish.yml` (first deploy 2026-10-21); the old GitHub Pages URL redirects there.
