@@ -39,7 +39,7 @@ Games are matched **by position**, never by name (opponents repeat: "Chico" twic
 - `player_tournaments`: Summary totals (authoritative), games played, W-L in games played.
 - `players`: `player_id` (slug of the canonical name), seasons, tournament count.
 
-Names map through `players.yml` aliases. Validation warns when per-game sums differ from Summary totals, when player goals in a game exceed the team's, and on empty workbooks. Known warnings: the 2025 Stanford Open's player sheets carry PDQ's opponent headers (values are right) and two games' goal sums exceed the score; the Spartan Showdown joke rows; the Alumni Game's stale sheets.
+Names map through `players.yml` aliases; a season key (e.g. `2027:`) holds that season's overrides, checked before the shared map, to split players who share a first name. Validation warns when per-game sums differ from Summary totals, when player goals in a game exceed the team's, and on empty workbooks. Known warnings: the 2025 Stanford Open's player sheets carry PDQ's opponent headers (values are right) and two games' goal sums exceed the score; the Spartan Showdown joke rows; the Alumni Game's stale sheets.
 
 ## Site (`oozedle/site.py`, `scripts/build_site.py`)
 

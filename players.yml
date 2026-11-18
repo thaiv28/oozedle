@@ -1,3 +1,8 @@
 # Raw sheet name → canonical name; merges nicknames/misspellings across seasons.
+# A season key (e.g. 2027) maps names for that season only, ahead of the shared map.
 # Checked 2026-10-21: "Juice" (2024 SVR only) is a separate player, not an alias.
-aliases: {}
+aliases:
+  Cole: Pine
+  2027:
+    Henry: Henry U.
+    Milo: Milo F.
