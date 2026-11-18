@@ -17,7 +17,8 @@ def test_tables_order_aliases_validation_csv(tmp_path):
     book = load_workbook(paths[0])
     book["Ada"].cell(3, 2, 4)
     book.save(paths[0])
-    dataset = build_dataset(tmp_path, manifest, {"Ada": "A. Player", "Ben": "A. Player"})
+    aliases = {"Ada": "A. Player", "Ben": "A. Player", 2025: {"Ada": "Ada N."}}
+    dataset = build_dataset(tmp_path, manifest, aliases)
     assert dataset.tournaments.name.tolist() == ["Zebra", "Alpha", "Last"]
     assert dataset.tournaments.order.tolist() == [1, 2, 3]
     assert dataset.tournaments.tournament_id.tolist() == ["2024-zebra", "2024-alpha", "2024-last"]
@@ -42,8 +43,8 @@ def test_empty_and_aliases(tmp_path):
     assert dataset.players.columns.tolist()[0] == "player_id"
     assert load_aliases(tmp_path / "missing.yml") == {}
     path = tmp_path / "players.yml"
-    path.write_text("aliases: {Nickname: Full Name}\n")
-    assert load_aliases(path) == {"Nickname": "Full Name"}
+    path.write_text("aliases: {Nickname: Full Name, 2027: {Name: Name B.}}\n")
+    assert load_aliases(path) == {"Nickname": "Full Name", 2027: {"Name": "Name B."}}
     assert slugify("Héllo, World!") == "hello-world"
 
 
@@ -65,3 +66,12 @@ def test_order_override_puts_listed_tournaments_in_order(tmp_path):
     assert load_order(path) == {2026: ["Regionals", "Alumni Game"]}
     assert load_order(tmp_path / "missing.yml") == {}
     assert tournament_name({"name": "Alumni Game Stats"}) == "Alumni Game"
+
+
+def test_season_alias_applies_only_to_its_season(tmp_path):
+    for year in ("2024", "2025"):
+        (tmp_path / year).mkdir()
+        make_layout_a(tmp_path / year / "T Stats.xlsx")
+    dataset = build_dataset(tmp_path, [], {"Ben": "Ada", 2025: {"Ada": "Ada N.", "Ben": "Ada N."}})
+    by_player = dataset.player_tournaments.groupby("player_id").tournament_id.apply(sorted)
+    assert by_player.to_dict() == {"ada": ["2024-t"], "ada-n": ["2025-t"]}

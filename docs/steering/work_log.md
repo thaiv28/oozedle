@@ -1,5 +1,9 @@
 # Work log
 
+## 2026-11-18 — Season-scoped player aliases
+
+`players.yml` aliases can now be keyed by season. 2027's Henry and Milo are new players, shown as Henry U. and Milo F.; earlier seasons keep Henry and Milo. Cole is Pine in every season (one player, shown as Pine). Checks: pytest, ruff, check_data (no new warnings), build (no "Cole" in output). Limit: merging Cole into Pine shrinks the answer pool, so today's puzzle may change.
+
 ## 2026-11-09 — 2027 season folder
 
 Added the 2027 Drive folder to `SEASON_FOLDERS`. Sync pulled one workbook (Carmen Classic, 3-3) with no data warnings; its six new names (Andrew, Charlie, Christian, Garen, Jack, Zach) don't look like aliases of earlier players. Raised the real-data test floor to 18 tournaments and 4 seasons. Checks: sync, check_data, pytest, ruff, build.

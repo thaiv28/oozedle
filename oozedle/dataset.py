@@ -57,8 +57,8 @@ def load_manifest() -> list[dict]:
     return json.loads(MANIFEST.read_text())["files"] if MANIFEST.exists() else []
 
 
-def load_aliases(path: Path = PLAYERS_FILE) -> dict[str, str]:
-    """Read the optional raw-name to canonical-name map."""
+def load_aliases(path: Path = PLAYERS_FILE) -> dict:
+    """Read the raw-name to canonical-name map; a season key holds that season's overrides."""
     if not path.exists():
         return {}
     return (yaml.safe_load(path.read_text()) or {}).get("aliases") or {}
@@ -100,7 +100,7 @@ def _created_key(entry: dict) -> tuple:
 def build_dataset(
     raw_dir: Path = RAW_DIR,
     manifest: list[dict] | None = None,
-    aliases: dict[str, str] | None = None,
+    aliases: dict | None = None,
     order: dict[int, list[str]] | None = None,
 ) -> Dataset:
     """Parse local inputs, merge aliases, and report consistency problems."""
@@ -172,7 +172,11 @@ def build_dataset(
             merged: dict[str, dict] = {}
             raw_names: dict[str, set[str]] = defaultdict(set)
             for line in lines:
-                canonical = aliases.get(line.name, line.name).strip()
+                canonical = (
+                    (aliases.get(season) or {}).get(line.name)
+                    or aliases.get(line.name)
+                    or line.name
+                ).strip()
                 pid = slugify(canonical)
                 raw_names[pid].add(line.name)
                 if pid not in merged:
